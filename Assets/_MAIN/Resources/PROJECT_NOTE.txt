@@ -1,0 +1,37 @@
+------------ GENERAL DIALOGUE FORMAT --------------
+<CharacterName> "<Dialogue>" <Commands>
+if <CharacterName> isnt specified, it will be replaced with the name of the character that is currently speaking.
+
+
+
+------------- DIALOGUE SEGMENTATION --------------
+Dialogue segmentation: A way to split a single line dialogue into multiple segments. The way we split is by {} with flags
+
+{c} clear -> clear current segment then display new one        | -> wait for player input
+{a} append -> append new segment to current one                |
+{wc n} wait clear               | -> wait for time (n is amount of seconds)
+{wa n} wait append              |
+
+speaker "This is a very long dialogue {c} that will be split {a} into multiple segments." 
+
+
+
+------------- SPEAKER CASTING DATA --------------
+Speaker name format: speakerName as anotherName at 1:1 [0:Anger, 1:Happy, ...]
+-> The speaker name appears on screen with anotherName (if have one) at the specific position with expression on layer
+
+as: anotherName
+at: position 
+[]: expression
+
+
+
+------------- COMMAND HANDLING --------------
+Command Parser will extract command from the dialohue line, find that command in command database then retrieve the command data to execute
+
+A command looks like this: PlaySong("This is song name" -v 1 -p 1)
+-> args are separated by space, space which inside "" will be ignored
+
+There is a case where we only want to execute the following command after the previous one is done
+-> John "Move left then right" [wait]MoveCharDemo(left), MoveCharDemo(right)
+[wait] keyword is added to the first command means wait the first command to finish before execute the second

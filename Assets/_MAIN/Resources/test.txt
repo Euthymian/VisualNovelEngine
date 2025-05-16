@@ -1,0 +1,8 @@
+Dragon as mystery creature at 2:4 [0:???] "What make you here, little human? {wc 3}I see. {wc 3}No return... {a} You coward!" Command1("Play Song" -v 1 -p 1), Command2("Play Sound" -v 1 -p 1), Command3("Play Animation" -v 1 -p 1), Command4("Play Effect" -v 1 -p 1)
+Dragon at 5:5 [0:Rage, 1:Pride] "You think you can defeat me? {wc 1}I will show you the true meaning of power! {c}Prepare yourself!"
+Narrator as ??? "The knight took off the invisibilitas pallium and revealed himself to the dragon." setPos(1:1), setExpression(Anger), setLayer(0), setName("Knight") 
+The knight [0:Prepared] "I am not afraid of you, dragon! {wc 1}I have come to put an end to your reign of terror! {c}Prepare to meet your doom!"
+Narrator at 5:5 "The dragon roared in anger and charged at the knight{wc 2.5} But the knight was ready."
+Narrator "His sword glowed with a bright light as he swung it at the dragon." loadScene("Main menu" -m forced)
+
+onlyCommand("Play Song" -v 1 -p 1)

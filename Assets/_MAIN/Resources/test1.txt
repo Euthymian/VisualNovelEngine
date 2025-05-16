@@ -1,0 +1,5 @@
+print_1p("This is test print of command system")
+
+John "Move left then right" print_1p("start moving"), [wait]MoveCharDemo(left), [wait]MoveCharDemo(right), print_1p("done moving"),
+
+print_1p("Another test print of command system")
