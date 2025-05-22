@@ -35,3 +35,11 @@ A command looks like this: PlaySong("This is song name" -v 1 -p 1)
 There is a case where we only want to execute the following command after the previous one is done
 -> John "Move left then right" [wait]MoveCharDemo(left), MoveCharDemo(right)
 [wait] keyword is added to the first command means wait the first command to finish before execute the second
+
+
+
+------------- CHARACTER TYPES --------------
+Text character: Only for render text on screen, it can store some varibles but no art assets -> A large crowd 
+Sprite (sheet) character: A traditional 2d character with sprite
+Live 2d character: With animation
+3d character: With model

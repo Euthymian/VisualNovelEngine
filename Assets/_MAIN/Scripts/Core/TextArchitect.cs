@@ -29,6 +29,9 @@ public class TextArchitect
 
     public bool hurryUp = false;
 
+    private Coroutine buildProcess = null;
+    public bool isBuilding => buildProcess != null;
+
     public TextArchitect(TextMeshProUGUI tmpro_ui)
     {
         this.tmpro_ui = tmpro_ui;
@@ -39,7 +42,7 @@ public class TextArchitect
         this.tmpro_world = tmpro_world;
     }
 
-    public Coroutine Build(string text)
+    public Coroutine Build(string text) // is it necessaru to return a coroutine here?
     {
         preText = "";
         targetText = text;
@@ -64,6 +67,7 @@ public class TextArchitect
     private IEnumerator Building()
     {
         Prepare();
+
         switch (buildMethod)
         {
             case BuildMethod.typewriter:
@@ -237,7 +241,7 @@ public class TextArchitect
 
             tmpro.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
             
-            bool lastCharIsInvisible = !textInfo.characterInfo[maxRange-1].isVisible;
+            bool lastCharIsInvisible = !textInfo.characterInfo[maxRange-1].isVisible;  // space is invisiable character, visible doesnt mean its color
             if (alphas[maxRange-1] > alphaThreshold || lastCharIsInvisible)
             {
                 if (maxRange < textInfo.characterCount)
@@ -249,9 +253,6 @@ public class TextArchitect
             yield return new WaitForEndOfFrame();
         }
     }
-
-    private Coroutine buildProcess = null;
-    public bool isBuilding => buildProcess != null;
 
     public void Stop()
     {
