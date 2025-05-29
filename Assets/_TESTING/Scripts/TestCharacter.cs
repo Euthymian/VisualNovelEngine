@@ -5,19 +5,52 @@ using CHARACTER;
 
 public class TestCharacter : MonoBehaviour
 {
+    private Character CreateCharacter(string name) => CharacterManager.Instance.CreateCharacter(name);
+
     // Start is called before the first frame update
     void Start()
     {
-        //Character char1 = CharacterManager.Instance.CreateCharacter("Stella");
-        //Character char2 = CharacterManager.Instance.CreateCharacter("ben");
-        //Character char3 = CharacterManager.Instance.CreateCharacter("bfuiewghf");
-        StartCoroutine(TestCharSay());
+        //StartCoroutine(TestCharSay());
+        //StartCoroutine(TestCreateChar());
+        StartCoroutine(TestCreateCharCasting());
+    }
+
+    IEnumerator TestCreateCharCasting()
+    {
+        Character guard0 = CreateCharacter("Guard0 as Generic");
+        Character fs2 = CreateCharacter("Female Student 2");
+        Character rae = CreateCharacter("Raelin");
+        Character kyo = CreateCharacter("KyoyaAkase");
+
+        guard0.SetPosition(Vector2.zero);
+        kyo.SetPosition(Vector2.one);
+        fs2.SetPosition(new Vector2(0.5f, 0.5f));
+        rae.SetPosition(new Vector2(2f, 0));
+
+        yield return guard0.Show();
+        fs2.Show();
+        rae.Show();
+        kyo.Show();
+
+        yield return guard0.MoveToPosition(Vector2.one, smooth:true);
+        yield return guard0.MoveToPosition(Vector2.zero, smooth: true);
+
+        yield return null;
+    }
+
+    IEnumerator TestCreateChar()
+    {
+        Character char1 = CreateCharacter("Generic");
+
+        yield return char1.Hide();
+        yield return char1.Show();
+        yield return char1.Say("\"STOPPPPP!\"");
     }
 
     IEnumerator TestCharSay()
     {
-        Character char0 = CharacterManager.Instance.CreateCharacter("Elen");
-        Character char1 = CharacterManager.Instance.CreateCharacter("ben");
+        Character char0 = CreateCharacter("Elen");
+        Character char1 = CreateCharacter("ben");
         List<string> lines = new List<string>()
         {
             "\"Hello, how are you?\"",

@@ -6,7 +6,7 @@ namespace CHARACTER
 {
     public class Character_Model3D : Character
     {
-        public Character_Model3D(string name, CharacterConfigData configData) : base(name, configData)
+        public Character_Model3D(string name, CharacterConfigData configData, GameObject prefab) : base(name, configData, prefab)
         {
             Debug.Log("Character_Model3D constructor called with name: " + name);
         }
