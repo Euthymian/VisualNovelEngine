@@ -11,11 +11,37 @@ namespace CHARACTER
 
     public abstract class Character 
     {
+        public const float UNHIGHLIGHTED_DARKEN_STRENGTH = 0.65f;
+
+        protected bool showOnStart = false; 
         public string name = "";
         public string displayName = "";
         public RectTransform root = null;
         public CharacterConfigData configData;
-        public Animator animator; 
+        public Animator animator;
+
+        public Color color { get; protected set; } = Color.white;
+        protected Color displayColor => highlighted ? highlightedColor : unhighlightedColor;
+        protected Color highlightedColor => color;
+        protected Color unhighlightedColor => new Color(color.r * UNHIGHLIGHTED_DARKEN_STRENGTH, color.g * UNHIGHLIGHTED_DARKEN_STRENGTH, color.b * UNHIGHLIGHTED_DARKEN_STRENGTH, color.a);
+        public bool highlighted { get; protected set; } = true;
+
+        protected CharacterManager characterManager => CharacterManager.Instance;
+
+        protected Coroutine co_hiding, co_showing;
+        public bool isShowing => co_showing != null;
+        public bool isHiding => co_hiding != null;
+        public virtual bool isVisible {get; set;}  // Always false for text characters
+
+        protected Coroutine co_moving;
+        public bool isMoving => co_moving != null;
+
+        protected Coroutine co_changingColor;
+        public bool isChangingColor => co_changingColor != null;
+
+        public Coroutine co_highlighting;
+        public bool isHighlighting => (highlighted && co_highlighting != null);
+        public bool isUnHighlighting => (!highlighted && co_highlighting != null);
 
         public Character(string name, CharacterConfigData configData, GameObject prefab = null)
         {
@@ -34,16 +60,6 @@ namespace CHARACTER
                 animator = ob.GetComponentInChildren<Animator>();
             }
         }
-
-        protected CharacterManager characterManager => CharacterManager.Instance;
-
-        protected Coroutine co_hiding, co_showing;
-        public bool isShowing => co_showing != null;
-        public bool isHiding => co_hiding != null;
-        public virtual bool isVisible => false;  // Always false for text characters
-
-        protected Coroutine co_moving;
-        public bool isMoving => co_moving != null;
 
         public virtual Coroutine Show()
         {
@@ -164,6 +180,60 @@ namespace CHARACTER
             Vector2 maxAnchorTarget = minAnchorTarget + padding;
 
             return (minAnchorTarget, maxAnchorTarget);
+        }
+
+        public virtual void SetColor(Color color)
+        {
+            this.color = color;
+        }
+
+        public Coroutine TransitionColor(Color color, float speed = 1f)
+        {
+            this.color = color;
+
+            if(isChangingColor)
+                characterManager.StopCoroutine(co_changingColor);
+            
+            co_changingColor = characterManager.StartCoroutine(TransitioningColor(displayColor, speed));
+            return co_changingColor;
+        }
+
+        public virtual IEnumerator TransitioningColor(Color color, float speed)
+        {
+            Debug.Log("Cant call IEnumerator TransitioningColor() on base character class");
+            yield return null;
+        }
+
+        public Coroutine Highlight(float speed = 1f)
+        {
+            if(isHighlighting)
+                return co_highlighting;
+
+            if (isUnHighlighting)
+                characterManager.StopCoroutine(co_highlighting);
+
+            highlighted = true;
+            co_highlighting = characterManager.StartCoroutine(Highlighting(highlighted, speed));
+            return co_highlighting;
+        }
+
+        public Coroutine UnHighlight(float speed = 1f)
+        {
+            if (isUnHighlighting)
+                return co_highlighting;
+
+            if (isHighlighting)
+                characterManager.StopCoroutine(co_highlighting);
+
+            highlighted = false;
+            co_highlighting = characterManager.StartCoroutine(Highlighting(highlighted, speed));
+            return co_highlighting;
+        }
+
+        public virtual IEnumerator Highlighting(bool highlight, float speedMultiplier)
+        {
+            Debug.Log("Cant call IEnumerator Highlighting() on base character class");
+            yield return null;
         }
 
         public enum CharacterType

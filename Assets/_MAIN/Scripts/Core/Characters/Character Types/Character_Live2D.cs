@@ -6,7 +6,7 @@ namespace CHARACTER
 {
     public class Character_Live2D : Character
     {
-        public Character_Live2D(string name, CharacterConfigData configData, GameObject prefab) : base(name, configData, prefab)
+        public Character_Live2D(string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(name, configData, prefab)
         {
             Debug.Log("Character_Live2D constructor called with name: " + name);
         }

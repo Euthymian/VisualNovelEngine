@@ -22,6 +22,7 @@ namespace CHARACTER
             we cant create another character with the same name, exept for Generic character (such as guard).
             We can have multiple guards share the same Generic character prefab, but we need to assign a casting name for each guard.
             */
+            public string rootCharacterFolderPath = "";
             public CharacterConfigData characterConfigData = null;
             public GameObject prefab;
         }
@@ -83,6 +84,7 @@ namespace CHARACTER
             res.name = nameData[0];
             res.castingName = nameData.Length > 1 ? nameData[1].Trim() : res.name;
             res.characterConfigData = GetCharacterConfigData(res.castingName); 
+            res.rootCharacterFolderPath = FormatCharacterPath(characterRootPathFormat, res.castingName);
             res.prefab = GetPrefabForCharacter(res.castingName);
 
             return res;
@@ -112,13 +114,13 @@ namespace CHARACTER
                      
                 case Character.CharacterType.Sprite:
                 case Character.CharacterType.SpriteSheet:
-                    return new Character_Sprite(info.name, configData, info.prefab);
+                    return new Character_Sprite(info.name, configData, info.prefab, info.rootCharacterFolderPath);
 
                 case Character.CharacterType.Live2D:
-                    return new Character_Live2D(info.name, configData, info.prefab);
+                    return new Character_Live2D(info.name, configData, info.prefab, info.rootCharacterFolderPath);
 
                 case Character.CharacterType.Model3D:
-                    return new Character_Model3D(info.name, configData, info.prefab);
+                    return new Character_Model3D(info.name, configData, info.prefab, info.rootCharacterFolderPath);
             }
         }
     

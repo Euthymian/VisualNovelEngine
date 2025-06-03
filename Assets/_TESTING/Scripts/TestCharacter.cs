@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CHARACTER;
+using UnityEngine.Experimental.AI;
 
 public class TestCharacter : MonoBehaviour
 {
@@ -12,31 +13,106 @@ public class TestCharacter : MonoBehaviour
     {
         //StartCoroutine(TestCharSay());
         //StartCoroutine(TestCreateChar());
-        StartCoroutine(TestCreateCharCasting());
+        //StartCoroutine(TestCharActions());
+        StartCoroutine(TestCharColor());
     }
 
-    IEnumerator TestCreateCharCasting()
+    IEnumerator TestCharColor()
     {
-        Character guard0 = CreateCharacter("Guard0 as Generic");
-        Character fs2 = CreateCharacter("Female Student 2");
-        Character rae = CreateCharacter("Raelin");
-        Character kyo = CreateCharacter("KyoyaAkase");
+        Character_Sprite rae = CreateCharacter("Raelin") as Character_Sprite;
+        Character_Sprite kyo = CreateCharacter("KyoyaAkase") as Character_Sprite;
 
-        guard0.SetPosition(Vector2.zero);
-        kyo.SetPosition(Vector2.one);
-        fs2.SetPosition(new Vector2(0.5f, 0.5f));
-        rae.SetPosition(new Vector2(2f, 0));
+        rae.SetPosition(new Vector2(0.3f, 0f));
+        kyo.SetPosition(new Vector2(0.7f, 0f));
 
-        yield return guard0.Show();
-        fs2.Show();
         rae.Show();
         kyo.Show();
 
-        yield return guard0.MoveToPosition(Vector2.one, smooth:true);
-        yield return guard0.MoveToPosition(Vector2.zero, smooth: true);
+        kyo.UnHighlight();
+        yield return rae.Say("\"Hello, I am Raelin.\"");
+
+        kyo.Highlight();
+        rae.UnHighlight();
+        yield return kyo.Say("\"Hello, I am Kyoya.\"");
+
+        rae.Highlight();
+        kyo.UnHighlight();
+        yield return rae.Say("\"I am a student at the academy.\"");
+    
+        kyo.Highlight();
+        rae.UnHighlight();
+        yield return kyo.Say("\"OK, but ...{wc 2} Whos ask?\"");
+
+        rae.Highlight();
+        rae.TransitionSprite(rae.GetSprite("Raelin-A_Shock"), layer: 1);
+        yield return rae.Say("\"....\"");
+    }
+
+    IEnumerator TestCharActions()
+    {
+        Character_Sprite guard0 = CreateCharacter("Guard0 as Generic") as Character_Sprite;
+        Character_Sprite fs2 = CreateCharacter("Female Student 2") as Character_Sprite;
+        Character_Sprite rae = CreateCharacter("Raelin") as Character_Sprite;
+        Character_Sprite kyo = CreateCharacter("KyoyaAkase") as Character_Sprite;
+        Character char1 = CreateCharacter("Elen");
+
+        //guard0.SetPosition(Vector2.zero);
+        //guard0.SetSprite(guard0.GetSprite("Monk"), 0);
+        //yield return guard0.Show();
+        //yield return new WaitForSeconds(1f);
+        //guard0.TransitionSprite(guard0.GetSprite("Dad"));
+        //yield return guard0.MoveToPosition(Vector2.one, smooth:true);
+        //yield return guard0.MoveToPosition(Vector2.zero, smooth: true);
+
+
+        kyo.Show();
+        kyo.SetPosition(Vector2.one);
+        yield return new WaitForSeconds(1f);
+        kyo.TransitionSprite(kyo.GetSprite("p2"), 0);
+        yield return kyo.TransitionSprite(kyo.GetSprite("p2e3"), 1);
+        kyo.layersList[1].SetColor(Color.red);
+        yield return new WaitForSeconds(1f);
+        yield return kyo.MoveToPosition(Vector2.zero, smooth: true);
+        //yield return TestKyoChangeExpression(kyo);
+
+
+        fs2.SetPosition(new Vector2(0.5f, 0.5f));
+        //fs2.Show();
+
+
+        rae.Show();
+        rae.SetPosition(new Vector2(1f, 0));
+        yield return new WaitForSeconds(1f);
+        rae.TransitionSprite(rae.GetSprite("Raelin-B2"), layer:0);
+        yield return rae.TransitionSprite(rae.GetSprite("Raelin-B_Blush"), layer:1);
+
+        yield return new WaitForSeconds(1f);
+
+        yield return rae.TransitionSprite(rae.GetSprite("Raelin-B_Stern"), layer:1);
+
+        rae.MoveToPosition(new Vector2(0.3f, 0f), smooth: true);
+        kyo.MoveToPosition(new Vector2(0.7f, 0f), smooth: true);
+
+        
+
+        //NOTE: use yield to setup sequence of actions, without yield, actions will be executed in parallel 
+
+        //Debug.Log(rae.isVisible);
+
+
+
 
         yield return null;
     }
+    
+    IEnumerator TestKyoChangeExpression(Character_Sprite kyo)
+    {
+        yield return new WaitForSeconds(1f);
+        kyo.SetSprite(kyo.GetSprite("p2"), 0);
+        kyo.SetSprite(kyo.GetSprite("p2e3"), 1);
+        yield return new WaitForSeconds(1f);
+        kyo.SetSprite(kyo.GetSprite("p2e2"), 1);
+    } 
 
     IEnumerator TestCreateChar()
     {

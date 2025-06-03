@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Characters_0
+      name: Monk
       rect:
         serializedVersion: 2
         x: 5
@@ -144,31 +144,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Characters_1
+      name: Child
       rect:
         serializedVersion: 2
-        x: 508
-        y: 1511
-        width: 496
-        height: 746
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: df4c6ef22cfe80345be54fcbe92b1ba6
-      internalID: 2058288508
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Characters_2
-      rect:
-        serializedVersion: 2
-        x: 5
+        x: 7
         y: 758
         width: 496
         height: 746
@@ -186,7 +165,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Characters_3
+      name: Dad
       rect:
         serializedVersion: 2
         x: 508
@@ -207,7 +186,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Characters_4
+      name: Guard
       rect:
         serializedVersion: 2
         x: 5
@@ -238,12 +217,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Characters_0: 868266631
       Characters_1: 2058288508
-      Characters_2: 1080889024
-      Characters_3: -964242304
-      Characters_4: -1957405950
       Characters_5: 1670357963
+      Child: 1080889024
+      Dad: -964242304
+      Guard: -1957405950
+      Monk: 868266631
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
