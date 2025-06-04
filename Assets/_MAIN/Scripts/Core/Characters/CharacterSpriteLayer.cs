@@ -25,6 +25,10 @@ namespace CHARACTER
         private Coroutine co_transitioningColor = null;
         public bool isTransitioningColor => co_transitioningColor != null;
 
+        private Coroutine co_flipping = null;
+        public bool isFlipping => co_flipping != null;
+        public bool isFacingLeft = Character.DEFAULT_ORIENTATION_IS_LEFT;
+
         private const float DEFAULT_TRANSITION_SPEED = 3f;
         private float transitionSpeedMultiplier = 1f;
 
@@ -172,6 +176,59 @@ namespace CHARACTER
             characterManager.StopCoroutine(co_transitioningColor);
             co_transitioningColor = null;
         }
+        public Coroutine Flip(float speed = 1, bool immediate = false)
+        {
+            if (isFacingLeft)
+                return FaceRight(speed, immediate);
+            else
+                return FaceLeft(speed, immediate);
+        }
 
+
+        public Coroutine FaceLeft(float speed = 1f, bool immediate = false)
+        {
+            if (isFlipping)
+                characterManager.StopCoroutine(co_flipping);
+
+            isFacingLeft = true;
+            co_flipping = characterManager.StartCoroutine(FlippingCoroutine(isFacingLeft, speed, immediate));
+            return co_flipping;
+        }
+
+        public Coroutine FaceRight(float speed = 1f, bool immediate = false)
+        {
+            if (isFlipping)
+                characterManager.StopCoroutine(co_flipping);
+
+            isFacingLeft = false;
+            co_flipping = characterManager.StartCoroutine(FlippingCoroutine(isFacingLeft, speed, immediate));
+            return co_flipping;
+        }
+
+        private IEnumerator FlippingCoroutine(bool faceLeft, float speedMultiplier, bool immediate)
+        {
+            float xScale = faceLeft ? 1f : -1f;
+
+            Vector3 newScale = new Vector3(xScale, 1, 1);
+
+            if (!immediate)
+            {
+                Image newRenderer = CreateRenderer(renderer.transform.parent);
+
+                newRenderer.transform.localScale = newScale;
+
+                transitionSpeedMultiplier = speedMultiplier;
+                TryStartIncrementingAlpha();
+
+                while(isIncrementingAlpha)
+                    yield return null;
+            }
+            else
+            {
+                renderer.transform.localScale = newScale;
+            }
+
+            co_flipping = null;
+        }
     }
 }

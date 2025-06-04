@@ -12,6 +12,8 @@ namespace CHARACTER
     public abstract class Character 
     {
         public const float UNHIGHLIGHTED_DARKEN_STRENGTH = 0.65f;
+        public const bool DEFAULT_ORIENTATION_IS_LEFT = true;
+        public const string ANIMATION_TRIGGER_TRIGGER_REFRESH_ID = "Refresh";
 
         protected bool showOnStart = false; 
         public string name = "";
@@ -26,22 +28,30 @@ namespace CHARACTER
         protected Color unhighlightedColor => new Color(color.r * UNHIGHLIGHTED_DARKEN_STRENGTH, color.g * UNHIGHLIGHTED_DARKEN_STRENGTH, color.b * UNHIGHLIGHTED_DARKEN_STRENGTH, color.a);
         public bool highlighted { get; protected set; } = true;
 
-        protected CharacterManager characterManager => CharacterManager.Instance;
-
-        protected Coroutine co_hiding, co_showing;
-        public bool isShowing => co_showing != null;
-        public bool isHiding => co_hiding != null;
-        public virtual bool isVisible {get; set;}  // Always false for text characters
-
-        protected Coroutine co_moving;
-        public bool isMoving => co_moving != null;
-
         protected Coroutine co_changingColor;
         public bool isChangingColor => co_changingColor != null;
 
         public Coroutine co_highlighting;
         public bool isHighlighting => (highlighted && co_highlighting != null);
         public bool isUnHighlighting => (!highlighted && co_highlighting != null);
+
+        protected bool facingLeft = DEFAULT_ORIENTATION_IS_LEFT; 
+        public bool isFacingLeft => facingLeft;
+        public bool isFacingRight => !facingLeft;
+        protected Coroutine co_flipping;
+        public bool isFlipping => co_flipping != null;
+
+        protected CharacterManager characterManager => CharacterManager.Instance;
+
+        protected Coroutine co_hiding, co_showing;
+        public bool isShowing => co_showing != null;
+        public bool isHiding => co_hiding != null;
+        public virtual bool isVisible { get; set; } = false;  // Always false for text characters
+
+        protected Coroutine co_moving;
+        public bool isMoving => co_moving != null;
+
+        public int priority { get; protected set; }
 
         public Character(string name, CharacterConfigData configData, GameObject prefab = null)
         {
@@ -234,6 +244,59 @@ namespace CHARACTER
         {
             Debug.Log("Cant call IEnumerator Highlighting() on base character class");
             yield return null;
+        }
+
+        public Coroutine Flip(float speed = 1, bool immediate = false)
+        {
+            if (isFacingLeft)
+                return FaceRight(speed, immediate);
+            else
+                return FaceLeft(speed, immediate);
+        }
+
+        public Coroutine FaceLeft(float speed = 1, bool immediate = false)
+        {
+            if(isFlipping)
+                characterManager.StopCoroutine(co_flipping);
+
+            facingLeft = true;
+            co_flipping = characterManager.StartCoroutine(Flipping(facingLeft, speed, immediate));
+            return co_flipping;
+        }
+
+        public Coroutine FaceRight(float speed = 1, bool immediate = false)
+        {
+            if (isFlipping)
+                characterManager.StopCoroutine(co_flipping);
+
+            facingLeft = false;
+            co_flipping = characterManager.StartCoroutine(Flipping(facingLeft, speed, immediate));
+            return co_flipping;
+        }
+
+        public virtual IEnumerator Flipping(bool facingLeft, float speed, bool immediate)
+        {
+            Debug.Log("Cant call IEnumerator Flipping() on base character class");
+            yield return null;
+        }
+
+        public void SetPriority(int priority, bool autoSortCharacterOnUI = true)
+        {
+            this.priority = priority;
+
+            if (autoSortCharacterOnUI)
+                characterManager.SortCharacters();
+        }
+
+        public void Animate(string animation)
+        {
+            animator.SetTrigger(animation);
+        }
+
+        public void Animate(string animation, bool state)
+        {
+            animator.SetBool(animation, state);
+            animator.SetTrigger(ANIMATION_TRIGGER_TRIGGER_REFRESH_ID);
         }
 
         public enum CharacterType

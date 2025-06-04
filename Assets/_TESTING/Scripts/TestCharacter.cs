@@ -15,6 +15,44 @@ public class TestCharacter : MonoBehaviour
         //StartCoroutine(TestCreateChar());
         //StartCoroutine(TestCharActions());
         StartCoroutine(TestCharColor());
+        //StartCoroutine(TestPriority());
+    }
+
+    IEnumerator TestPriority()
+    {
+        Character_Sprite rae = CreateCharacter("Raelin") as Character_Sprite;
+        Character_Sprite kyo = CreateCharacter("KyoyaAkase") as Character_Sprite;
+        Character_Sprite guard = CreateCharacter("Guard as Generic") as Character_Sprite;
+        Character_Sprite redGuard = CreateCharacter("Red Guard as Generic") as Character_Sprite;
+
+        redGuard.SetColor(Color.red);
+
+        rae.SetPosition(new Vector2(0.3f, 0f));
+        kyo.SetPosition(new Vector2(0.4f, 0.2f));
+        guard.SetPosition(new Vector2(0.5f, 0.3f));
+        redGuard.SetPosition(new Vector2(0.6f, 0.5f));
+
+        rae.Show();
+        kyo.Show();
+        guard.Show();
+        redGuard.Show();
+
+        rae.SetPriority(1);
+        guard.SetPriority(2);
+        kyo.SetPriority(34);
+        redGuard.SetPriority(100);
+
+        yield return new WaitForSeconds(3);
+
+        CharacterManager.Instance.SortCharacters(new string[] { "Raelin", "KyoyaAkase" });
+
+        Debug.Log($"Rae: {rae.priority}\nKyo: {kyo.priority}\nGuard: {guard.priority}\nRed Guard: {redGuard.priority}");
+
+        yield return new WaitForSeconds(3);
+
+
+        CharacterManager.Instance.SortCharacters(new string[] { "KyoyaAkase", "Guard", "Red Guard", "Raelin" });
+        Debug.Log($"Rae: {rae.priority}\nKyo: {kyo.priority}\nGuard: {guard.priority}\nRed Guard: {redGuard.priority}");
     }
 
     IEnumerator TestCharColor()
@@ -25,12 +63,18 @@ public class TestCharacter : MonoBehaviour
         rae.SetPosition(new Vector2(0.3f, 0f));
         kyo.SetPosition(new Vector2(0.7f, 0f));
 
+
         rae.Show();
         kyo.Show();
 
         kyo.UnHighlight();
         yield return rae.Say("\"Hello, I am Raelin.\"");
 
+        yield return rae.Flip(0.5f);
+        yield return new WaitForSeconds(0.5f);
+        yield return rae.FaceLeft(immediate:true);
+        yield return new WaitForSeconds(0.5f);
+        yield return rae.FaceRight(immediate: true);
         kyo.Highlight();
         rae.UnHighlight();
         yield return kyo.Say("\"Hello, I am Kyoya.\"");
@@ -44,8 +88,12 @@ public class TestCharacter : MonoBehaviour
         yield return kyo.Say("\"OK, but ...{wc 2} Whos ask?\"");
 
         rae.Highlight();
+        rae.Animate("Hop");
         rae.TransitionSprite(rae.GetSprite("Raelin-A_Shock"), layer: 1);
         yield return rae.Say("\"....\"");
+        rae.TransitionSprite(rae.GetSprite("Raelin-A_Scared"), layer: 1);
+        rae.Animate("Shiver", true);
+        yield return rae.Say("\"Aaaaaaa.....\"");
     }
 
     IEnumerator TestCharActions()
@@ -119,7 +167,15 @@ public class TestCharacter : MonoBehaviour
         Character char1 = CreateCharacter("Generic");
 
         yield return char1.Hide();
+
+        Debug.Log(char1.isVisible);
+        yield return new WaitForSeconds(2f);
+
         yield return char1.Show();
+
+        Debug.Log(char1.isVisible);
+
+
         yield return char1.Say("\"STOPPPPP!\"");
     }
 

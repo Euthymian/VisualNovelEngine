@@ -9,10 +9,10 @@ namespace CHARACTER
 {
     public class Character_Sprite : Character
     {
-        public override bool isVisible 
-        { 
-            get { return isShowing || rootCanvasGroup.alpha == 1; } 
-            set { rootCanvasGroup.alpha = value ? 1 : 0; } 
+        public override bool isVisible
+        {
+            get { return isShowing || rootCanvasGroup.alpha == 1; }
+            set { rootCanvasGroup.alpha = value ? 1 : 0; }
         }
 
         private const string SPRITE_RENDERERS_PARENT_NAME = "Renderers";
@@ -165,5 +165,24 @@ namespace CHARACTER
 
             co_highlighting = null;
         }
+
+        public override IEnumerator Flipping(bool faceLeftNow, float speedMultiplier, bool immediate)
+        {
+            foreach (CharacterSpriteLayer layer in layersList)
+            {
+                if (faceLeftNow)
+                    layer.FaceLeft(speedMultiplier, immediate);
+                else
+                    layer.FaceRight(speedMultiplier, immediate);
+            }
+
+            yield return null;
+
+            while (layersList.Any(layer => layer.isFlipping))
+                yield return null;
+
+            co_flipping = null;
+        }
+
     }
 }

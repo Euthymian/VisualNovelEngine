@@ -1,7 +1,9 @@
 using DIALOGUE;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CHARACTER
@@ -13,7 +15,7 @@ namespace CHARACTER
     {
         public class CHARACTER_INFO
         {
-            public string name; 
+            public string name;
             public string castingName;
             /*
             When create a character, we call CreateCharacter() method with a character name. The name we pass in can simply be a name of the character
@@ -30,7 +32,7 @@ namespace CHARACTER
         public static CharacterManager Instance { get; private set; }
 
         private const string CHARACTER_CAST_ID = " as ";
-        
+
         private const string CHARACTER_NAME_ID = "<character_name>";
         public string characterRootPathFormat => $"Characters/{CHARACTER_NAME_ID}";
         public string characterPrefabNameFormat => $"Character - [{CHARACTER_NAME_ID}]";
@@ -70,7 +72,7 @@ namespace CHARACTER
 
             Character character = CreateCharacterFromCHARACTER_INFO(info);
 
-            characterDictionary.Add(characterName.ToLower(), character);
+            characterDictionary.Add(info.name.ToLower(), character);
 
             return character;
         }
@@ -83,7 +85,10 @@ namespace CHARACTER
 
             res.name = nameData[0];
             res.castingName = nameData.Length > 1 ? nameData[1].Trim() : res.name;
-            res.characterConfigData = GetCharacterConfigData(res.castingName); 
+
+            // If characterName is "Guard as Generic", then res.name will be "Guard" and res.castingName will be "Generic"
+
+            res.characterConfigData = GetCharacterConfigData(res.castingName);
             res.rootCharacterFolderPath = FormatCharacterPath(characterRootPathFormat, res.castingName);
             res.prefab = GetPrefabForCharacter(res.castingName);
 
@@ -111,7 +116,7 @@ namespace CHARACTER
 
                 case Character.CharacterType.Text:
                     return new Character_Text(info.name, configData);
-                     
+
                 case Character.CharacterType.Sprite:
                 case Character.CharacterType.SpriteSheet:
                     return new Character_Sprite(info.name, configData, info.prefab, info.rootCharacterFolderPath);
@@ -123,10 +128,10 @@ namespace CHARACTER
                     return new Character_Model3D(info.name, configData, info.prefab, info.rootCharacterFolderPath);
             }
         }
-    
-        public Character GetCharacter(string characterName, bool createIfDoentExist = false) 
+
+        public Character GetCharacter(string characterName, bool createIfDoentExist = false)
         {
-            if(characterDictionary.ContainsKey(characterName.ToLower()))
+            if (characterDictionary.ContainsKey(characterName.ToLower()))
             {
                 return characterDictionary[characterName.ToLower()];
             }
@@ -138,6 +143,50 @@ namespace CHARACTER
             return null;
         }
 
+        public void SortCharacters()
+        {
+            List<Character> activeCharacterList = characterDictionary.Values.Where(character => character.root.gameObject.activeInHierarchy && character.isVisible).ToList();
+            List<Character> inactiveCharacterList = characterDictionary.Values.Except(activeCharacterList).ToList();
 
+            activeCharacterList.Sort((a, b) => a.priority.CompareTo(b.priority));
+            List<Character> finalSortedCharacterList = activeCharacterList.Concat(inactiveCharacterList).ToList();
+
+            SortCharacters(finalSortedCharacterList);
+        }
+
+        // Every character which is named in characterNames will appear on top of the character panel no matter their priority, in the order they are listed.
+        public void SortCharacters(string[] characterNames)
+        {
+            List<Character> selectedCharacters = new List<Character>();
+
+            selectedCharacters = characterNames
+                .Select(name => GetCharacter(name))
+                .Where(character => character != null)
+                .ToList();
+
+            List<Character> remainCharacters = characterDictionary.Values
+                .Except(selectedCharacters)
+                .OrderBy(character => character.priority)
+                .ToList();
+
+            selectedCharacters.Reverse();
+
+            int currentMaxPriority = remainCharacters.Count > 0 ? remainCharacters.Max(character => character.priority) : 0;
+            for (int i = 0; i < selectedCharacters.Count; i++)
+            {
+                selectedCharacters[i].SetPriority(currentMaxPriority + i + 1, autoSortCharacterOnUI:false);
+            }
+
+            List<Character> finalSortedCharacterList = remainCharacters.Concat(selectedCharacters).ToList();
+
+            SortCharacters(finalSortedCharacterList);
+        }
+
+        private void SortCharacters(List<Character> charactersSortingOrder)
+        {
+            int index = 0;
+            foreach (Character character in charactersSortingOrder)
+                character.root.SetSiblingIndex(index++);
+        }
     }
 }
