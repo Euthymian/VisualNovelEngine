@@ -28,8 +28,8 @@ namespace CHARACTER
         protected Color unhighlightedColor => new Color(color.r * UNHIGHLIGHTED_DARKEN_STRENGTH, color.g * UNHIGHLIGHTED_DARKEN_STRENGTH, color.b * UNHIGHLIGHTED_DARKEN_STRENGTH, color.a);
         public bool highlighted { get; protected set; } = true;
 
-        protected Coroutine co_changingColor;
-        public bool isChangingColor => co_changingColor != null;
+        protected Coroutine co_transitioningColor;
+        public bool isTransitioningColor => co_transitioningColor != null;
 
         public Coroutine co_highlighting;
         public bool isHighlighting => (highlighted && co_highlighting != null);
@@ -61,7 +61,23 @@ namespace CHARACTER
 
             if(prefab != null)
             {
-                GameObject ob = Object.Instantiate(prefab, CharacterManager.Instance.CharacterPanel);
+                RectTransform parentPanel = null;
+
+                switch(configData.characterType)
+                {
+                    case Character.CharacterType.Live2D:
+                        parentPanel = CharacterManager.Instance.CharacterPanelLive2D;
+                        break;
+                    case Character.CharacterType.Model3D:
+                        parentPanel = CharacterManager.Instance.CharacterPanelModel3D;
+                        break;
+                    case Character.CharacterType.Sprite:
+                    case Character.CharacterType.SpriteSheet:
+                        parentPanel = CharacterManager.Instance.CharacterPanel;
+                        break;
+                }
+
+                GameObject ob = Object.Instantiate(prefab, parentPanel);
                 // after instantiating the prefab, by default, the name of the object will be the prefab name with "(Clone)" suffix.
                 // We set the name of the object to the character prefab name so it is more readable and easier to find in the hierarchy.
                 ob.name = characterManager.FormatCharacterPath(characterManager.characterPrefabNameFormat, name);
@@ -201,11 +217,11 @@ namespace CHARACTER
         {
             this.color = color;
 
-            if(isChangingColor)
-                characterManager.StopCoroutine(co_changingColor);
+            if(isTransitioningColor)
+                characterManager.StopCoroutine(co_transitioningColor);
             
-            co_changingColor = characterManager.StartCoroutine(TransitioningColor(displayColor, speed));
-            return co_changingColor;
+            co_transitioningColor = characterManager.StartCoroutine(TransitioningColor(displayColor, speed));
+            return co_transitioningColor;
         }
 
         public virtual IEnumerator TransitioningColor(Color color, float speed)
@@ -274,7 +290,7 @@ namespace CHARACTER
             return co_flipping;
         }
 
-        public virtual IEnumerator Flipping(bool facingLeft, float speed, bool immediate)
+        public virtual IEnumerator Flipping(bool facingLeftNow, float speedMultiplier, bool immediate)
         {
             Debug.Log("Cant call IEnumerator Flipping() on base character class");
             yield return null;
@@ -286,6 +302,11 @@ namespace CHARACTER
 
             if (autoSortCharacterOnUI)
                 characterManager.SortCharacters();
+        }
+
+        public virtual void OnSort(int sortingIndex)
+        {
+            return;
         }
 
         public void Animate(string animation)

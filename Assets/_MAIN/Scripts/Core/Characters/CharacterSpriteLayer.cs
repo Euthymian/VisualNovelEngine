@@ -207,7 +207,7 @@ namespace CHARACTER
 
         private IEnumerator FlippingCoroutine(bool faceLeft, float speedMultiplier, bool immediate)
         {
-            float xScale = faceLeft ? 1f : -1f;
+            float xScale = faceLeft ? 1f : -1f; // This is because default orientation is left, if we want to face right, the xScale will be its original value, else, the opposite
 
             Vector3 newScale = new Vector3(xScale, 1, 1);
 

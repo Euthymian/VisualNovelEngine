@@ -14,8 +14,9 @@ public class TestCharacter : MonoBehaviour
         //StartCoroutine(TestCharSay());
         //StartCoroutine(TestCreateChar());
         //StartCoroutine(TestCharActions());
-        StartCoroutine(TestCharColor());
+        //StartCoroutine(TestCharColor());
         //StartCoroutine(TestPriority());
+        StartCoroutine(TestLive2D());
     }
 
     IEnumerator TestPriority()
@@ -114,7 +115,10 @@ public class TestCharacter : MonoBehaviour
 
 
         kyo.Show();
-        kyo.SetPosition(Vector2.one);
+        yield return new WaitForSeconds(1f);
+
+        yield return kyo.Flip();
+        yield return kyo.MoveToPosition(Vector2.one);
         yield return new WaitForSeconds(1f);
         kyo.TransitionSprite(kyo.GetSprite("p2"), 0);
         yield return kyo.TransitionSprite(kyo.GetSprite("p2e3"), 1);
@@ -162,9 +166,76 @@ public class TestCharacter : MonoBehaviour
         kyo.SetSprite(kyo.GetSprite("p2e2"), 1);
     } 
 
+    IEnumerator TestLive2D()
+    {
+        Character_Live2D koharu = CreateCharacter("Koharu") as Character_Live2D;
+        Character_Live2D natori = CreateCharacter("Natori") as Character_Live2D;
+        Character_Live2D rice = CreateCharacter("Rice") as Character_Live2D;
+        Character_Live2D mao = CreateCharacter("Mao") as Character_Live2D;
+
+        koharu.SetPosition(new Vector2(0.3f, 0.5f));
+        natori.SetPosition(new Vector2(0.35f, 0.5f));
+        rice.SetPosition(new Vector2(0.4f, 0.5f));
+        mao.SetPosition(new Vector2(0.45f, 0.5f));
+
+
+        //koharu.Show();
+        natori.Show();
+        //rice.Show();
+        mao.Show();
+        rice.Show();
+        //yield return rice.Flip(0.5f);
+
+        CharacterManager.Instance.SortCharacters(new string[] { "Koharu", "Natori", "Rice", "Mao" });
+
+        yield return new WaitForSeconds(2f);
+        natori.SetPriority(10);
+        yield return new WaitForSeconds(60f);
+
+
+
+
+        rice.SetColor(Color.green);
+        yield return new WaitForSeconds(0.5f);
+        rice.TransitionColor(Color.yellow);
+
+        mao.SetExpression("happy");
+
+        yield return new WaitForSeconds(1f);
+        koharu.Hide();
+
+
+        yield return rice.TransitionColor(Color.white, 1f);
+        yield return rice.UnHighlight();
+        yield return rice.TransitionColor(Color.red, .1f);
+        rice.Highlight(0.1f);
+        mao.SetAnimation("Blink Heart");
+        rice.SetAnimation("Beam");
+        natori.SetAnimation("Think");
+
+
+        yield return new WaitForSeconds(8f);
+        rice.Hide();
+
+        mao.SetAnimation("Happy Lean");
+
+        yield return new WaitForSeconds(2f);
+        rice.Show();
+        rice.Highlight();
+
+        mao.SetAnimation("Proud");
+
+    }
+
     IEnumerator TestCreateChar()
     {
         Character char1 = CreateCharacter("Generic");
+
+        char1.SetPosition(new Vector2(0, 0));
+
+        char1.Show();
+
+        yield return new WaitForSeconds(1f);
 
         yield return char1.Hide();
 

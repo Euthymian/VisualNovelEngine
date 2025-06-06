@@ -146,7 +146,7 @@ namespace CHARACTER
                 yield return null;
             }
 
-            co_changingColor = null; // Reset the coroutine reference when done
+            co_transitioningColor = null; // Reset the coroutine reference when done
         }
 
         public override IEnumerator Highlighting(bool highlight, float speedMultiplier)

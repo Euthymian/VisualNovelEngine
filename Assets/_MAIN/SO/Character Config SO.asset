@@ -13,20 +13,6 @@ MonoBehaviour:
   m_Name: Character Config SO
   m_EditorClassIdentifier: 
   characterConfigDatas:
-  - name: Stella
-    alias: s
-    characterType: 1
-    nameColor: {r: 1, g: 1, b: 1, a: 1}
-    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
-    nameFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-    dialogueFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  - name: Elen
-    alias: e
-    characterType: 0
-    nameColor: {r: 1, g: 0.5613208, b: 0.8052288, a: 1}
-    dialogueColor: {r: 1, g: 0.79708797, b: 0, a: 1}
-    nameFont: {fileID: 11400000, guid: 15d5380dfe36cd74bae8d1a2c0b97acb, type: 2}
-    dialogueFont: {fileID: 11400000, guid: fe007923094e533429c0f7279e2a857c, type: 2}
   - name: Female Student 2
     alias: fs2
     characterType: 1
@@ -55,3 +41,31 @@ MonoBehaviour:
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
     dialogueFont: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  - name: Mao
+    alias: mao
+    characterType: 3
+    nameColor: {r: 1, g: 0.5879759, b: 0.0141509175, a: 1}
+    dialogueColor: {r: 1, g: 1, b: 1, a: 1}
+    nameFont: {fileID: 11400000, guid: 1f9987afb925cfc46ad034ca97acfba8, type: 2}
+    dialogueFont: {fileID: 11400000, guid: bc1aff5a11f4e29449e05565bfe84b3e, type: 2}
+  - name: Koharu
+    alias: ko
+    characterType: 3
+    nameColor: {r: 0.99817634, g: 1, b: 0.015686274, a: 1}
+    dialogueColor: {r: 0.9892618, g: 0.990566, b: 0.9017889, a: 1}
+    nameFont: {fileID: 11400000, guid: a6a9963a494a04c47bfb712ccfd23da3, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 7dae9413b6eca944f84676b3355aa848, type: 2}
+  - name: Natori
+    alias: na
+    characterType: 3
+    nameColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
+    dialogueColor: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
+    nameFont: {fileID: 11400000, guid: bbf6bc86227210a459a242ec3708763d, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
+  - name: Rice
+    alias: ric
+    characterType: 3
+    nameColor: {r: 1, g: 0.6462264, b: 0.86075675, a: 1}
+    dialogueColor: {r: 0.93126017, g: 1, b: 0.0990566, a: 1}
+    nameFont: {fileID: 11400000, guid: e94f9ea549dac6348b79fb33e9451f34, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 6a888d69a87eec245b2ce096aa58c7b4, type: 2}

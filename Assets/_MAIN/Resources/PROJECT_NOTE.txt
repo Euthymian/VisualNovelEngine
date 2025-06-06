@@ -43,3 +43,26 @@ Text character: Only for render text on screen, it can store some varibles but n
 Sprite (sheet) character: A traditional 2d character with sprite
 Live 2d character: With animation
 3d character: With model
+
+
+
+--------------- SPRITE CHARACTER SETUP --------------
+- Watch video https://www.youtube.com/watch?v=RcCM4pm5sbA&list=PLGSox0FgA5B58Ki4t4VqAPDycEpmkBd0i&index=17
+
+
+
+------------- LIVE2D CHARACTER SETUP --------------
+Current setup:
+- Becuase we are working with multiple character types (Sprite, Live2D) in the same scene (best practice is having only 1 type) and
+  Live2D character is a complex one, so handling Live2D requires some extra steps
+  - Create brand new Canvas and Camera to render Live2D character
+  - Change canvas type to Camera and assign the new cam
+  - Both cameras (main camera and Live2D camera) and canvases should have the same setting (ortographic for cam and distance from cam for canvas) 
+  - Create new Layer "UI - Live2D" and assign it to the new canvas
+  - Limit culling mask of new camera to only render the "UI - Live2D" layer
+  - Assign new layer to Live2D character prefab (Sample prefab)
+  - Inside prefab, on CubismRenderController -> Sorting section, set Order in Layer to 1 and Mode to "Back To Front Order" -> This will 
+	make Unity render all parts of Live2D char in the order of its parts
+  - Create a new CustomRenderTexture to render Live2D character
+  - Output of the new camera is assigned to the new CustomRenderTexture
+  - In the main render group, inside Characters panel, create a new RawImage and assign the CustomRenderTexture to it

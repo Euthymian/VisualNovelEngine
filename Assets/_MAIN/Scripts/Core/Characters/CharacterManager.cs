@@ -41,7 +41,11 @@ namespace CHARACTER
         public Dictionary<string, Character> characterDictionary = new Dictionary<string, Character>();
 
         [SerializeField] private RectTransform characterPanel;
+        [SerializeField] private RectTransform characterPanel_Live2D;
+        [SerializeField] private RectTransform characterPanel_Model3D;
         public RectTransform CharacterPanel => characterPanel;
+        public RectTransform CharacterPanelLive2D => characterPanel_Live2D;
+        public RectTransform CharacterPanelModel3D => characterPanel_Model3D;
 
         private void Awake()
         {
@@ -186,7 +190,10 @@ namespace CHARACTER
         {
             int index = 0;
             foreach (Character character in charactersSortingOrder)
+            {
                 character.root.SetSiblingIndex(index++);
+                character.OnSort(index);
+            }
         }
     }
 }
