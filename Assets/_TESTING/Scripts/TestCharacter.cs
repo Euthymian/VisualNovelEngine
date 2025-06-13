@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using CHARACTER;
 using UnityEngine.Experimental.AI;
+using System;
 
 public class TestCharacter : MonoBehaviour
 {
@@ -14,9 +15,99 @@ public class TestCharacter : MonoBehaviour
         //StartCoroutine(TestCharSay());
         //StartCoroutine(TestCreateChar());
         //StartCoroutine(TestCharActions());
-        //StartCoroutine(TestCharColor());
         //StartCoroutine(TestPriority());
-        StartCoroutine(TestLive2D());
+        //StartCoroutine(TestCharColor());
+        //StartCoroutine(TestLive2D());
+        StartCoroutine(TestModel3D());
+    }
+
+    private IEnumerator TestModel3D()
+    {
+        Character_Model3D celeste = CreateCharacter("Celeste") as Character_Model3D;
+        //Character_Model3D celeste1 = CreateCharacter("Celeste1 as Celeste") as Character_Model3D;
+        yield return celeste.Show();
+        yield return new WaitForSeconds(1f);
+        yield return celeste.Hide();
+        yield return new WaitForSeconds(1f);
+        yield return celeste.Show();
+        celeste.SetColor(Color.red);
+        //celeste1.MoveToPosition(Vector2.zero, smooth: true);      
+        //yield return celeste.MoveToPosition(new Vector2(1,1),smooth:true);
+        //celeste.SetMotion("Meow");
+
+        yield return celeste.TransitionColor(Color.green);
+        yield return celeste.UnHighlight();
+        yield return celeste.TransitionColor(Color.white, 1f);
+        yield return celeste.Highlight(0.5f);
+
+        yield return celeste.Flip(0.5f);
+        yield return celeste.FaceLeft(0.3f);
+
+        yield return celeste.SetExpression("Sad", immediate:false, speedMultiplier:.5f);
+        yield return new WaitForSeconds(5f);
+
+        yield return celeste.SetExpression("Sad", percent:0, immediate:false, speedMultiplier:.3f);
+        yield return new WaitForSeconds(1f);
+        
+        celeste.SetExpression("Smile", percent:60, immediate:false, speedMultiplier:.1f);
+    }
+    IEnumerator TestLive2D()
+    {
+        Character_Live2D koharu = CreateCharacter("Koharu") as Character_Live2D;
+        Character_Live2D natori = CreateCharacter("Natori") as Character_Live2D;
+        Character_Live2D rice = CreateCharacter("Rice") as Character_Live2D;
+        Character_Live2D mao = CreateCharacter("Mao") as Character_Live2D;
+
+        koharu.SetPosition(new Vector2(0.65f, 1));
+        natori.SetPosition(new Vector2(0.1f, 0.5f));
+        rice.SetPosition(new Vector2(0.5f, 0.5f));
+        mao.SetPosition(new Vector2(0.9f, 0.5f));
+
+
+        koharu.Show();
+        natori.Show();
+        mao.Show();
+        rice.Show();
+        //yield return rice.Flip(0.5f);
+
+        CharacterManager.Instance.SortCharacters(new string[] { "Koharu", "Natori", "Rice", "Mao" });
+
+        yield return new WaitForSeconds(2f);
+        natori.SetPriority(10);
+        //yield return new WaitForSeconds(60f);
+
+
+
+
+        rice.SetColor(Color.green);
+        yield return new WaitForSeconds(0.5f);
+        rice.TransitionColor(Color.yellow);
+
+        mao.SetExpression("happy");
+
+        yield return new WaitForSeconds(1f);
+        koharu.Hide();
+
+        yield return rice.TransitionColor(Color.white, 1f);
+        yield return rice.UnHighlight();
+        yield return rice.TransitionColor(Color.red, .1f);
+        rice.Highlight(0.1f);
+        mao.SetAnimation("Blink Heart");
+        rice.SetAnimation("Beam");
+        natori.SetAnimation("Think");
+
+
+        yield return new WaitForSeconds(8f);
+        rice.Hide();
+
+        mao.SetAnimation("Happy Lean");
+
+        yield return new WaitForSeconds(2f);
+        rice.Show();
+        rice.Highlight();
+
+        mao.SetAnimation("Proud");
+
     }
 
     IEnumerator TestPriority()
@@ -166,67 +257,6 @@ public class TestCharacter : MonoBehaviour
         kyo.SetSprite(kyo.GetSprite("p2e2"), 1);
     } 
 
-    IEnumerator TestLive2D()
-    {
-        Character_Live2D koharu = CreateCharacter("Koharu") as Character_Live2D;
-        Character_Live2D natori = CreateCharacter("Natori") as Character_Live2D;
-        Character_Live2D rice = CreateCharacter("Rice") as Character_Live2D;
-        Character_Live2D mao = CreateCharacter("Mao") as Character_Live2D;
-
-        koharu.SetPosition(new Vector2(0.3f, 0.5f));
-        natori.SetPosition(new Vector2(0.35f, 0.5f));
-        rice.SetPosition(new Vector2(0.4f, 0.5f));
-        mao.SetPosition(new Vector2(0.45f, 0.5f));
-
-
-        //koharu.Show();
-        natori.Show();
-        //rice.Show();
-        mao.Show();
-        rice.Show();
-        //yield return rice.Flip(0.5f);
-
-        CharacterManager.Instance.SortCharacters(new string[] { "Koharu", "Natori", "Rice", "Mao" });
-
-        yield return new WaitForSeconds(2f);
-        natori.SetPriority(10);
-        yield return new WaitForSeconds(60f);
-
-
-
-
-        rice.SetColor(Color.green);
-        yield return new WaitForSeconds(0.5f);
-        rice.TransitionColor(Color.yellow);
-
-        mao.SetExpression("happy");
-
-        yield return new WaitForSeconds(1f);
-        koharu.Hide();
-
-
-        yield return rice.TransitionColor(Color.white, 1f);
-        yield return rice.UnHighlight();
-        yield return rice.TransitionColor(Color.red, .1f);
-        rice.Highlight(0.1f);
-        mao.SetAnimation("Blink Heart");
-        rice.SetAnimation("Beam");
-        natori.SetAnimation("Think");
-
-
-        yield return new WaitForSeconds(8f);
-        rice.Hide();
-
-        mao.SetAnimation("Happy Lean");
-
-        yield return new WaitForSeconds(2f);
-        rice.Show();
-        rice.Highlight();
-
-        mao.SetAnimation("Proud");
-
-    }
-
     IEnumerator TestCreateChar()
     {
         Character char1 = CreateCharacter("Generic");
@@ -267,11 +297,5 @@ public class TestCharacter : MonoBehaviour
         yield return char0.Say("\"Oh {wa 4} What a surprise! {wc 3} You are my enemy then.\"");
         yield return char1.Say("\"I am not your enemy! {wc 2} I am your friend!\"");
         yield return char0.Say("\"SO WHY DO YOU KILL MY PARENT?? {wc 6} ANWSER ADAM!\"");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

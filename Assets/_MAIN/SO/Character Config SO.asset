@@ -69,3 +69,10 @@ MonoBehaviour:
     dialogueColor: {r: 0.93126017, g: 1, b: 0.0990566, a: 1}
     nameFont: {fileID: 11400000, guid: e94f9ea549dac6348b79fb33e9451f34, type: 2}
     dialogueFont: {fileID: 11400000, guid: 6a888d69a87eec245b2ce096aa58c7b4, type: 2}
+  - name: Celeste
+    alias: cel
+    characterType: 4
+    nameColor: {r: 0.990566, g: 0.34109113, b: 0.7307763, a: 1}
+    dialogueColor: {r: 1, g: 0.09803921, b: 0.43568227, a: 1}
+    nameFont: {fileID: 11400000, guid: 2a0a41832e57a1240a307d451795ad2a, type: 2}
+    dialogueFont: {fileID: 11400000, guid: 15e26ddfa07c7504b9f007c20597bb1d, type: 2}

@@ -18,6 +18,12 @@ namespace CHARACTER
 
         private List<CubismRenderController> oldCubismRenderControllerList = new List<CubismRenderController>();
 
+        public override bool isVisible 
+        { 
+            get => isShowing || cubismRenderController.Opacity > 0;
+            set => cubismRenderController.Opacity = value ? 1 : 0; 
+        }
+
         public Character_Live2D(string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(name, configData, prefab)
         {
             Debug.Log("Character_Live2D constructor called with name: " + name);
@@ -61,12 +67,6 @@ namespace CHARACTER
             return -1;
         }
 
-        public override bool isVisible 
-        { 
-            get => isShowing || cubismRenderController.Opacity == 1;
-            set => cubismRenderController.Opacity = value ? 1 : 0; 
-        }
-
         public override IEnumerator ShowingOrHiding(bool show)
         {
             float targetOpacity = show ? 1f : 0f;
@@ -92,14 +92,14 @@ namespace CHARACTER
             }
         }
 
-        public override IEnumerator TransitioningColor(Color color, float speed)
+        public override IEnumerator TransitioningColor(float speed)
         {
-            yield return TransitioningColorLive2D(color, speed);
+            yield return TransitioningColorLive2D(speed);
 
             co_transitioningColor = null;
         }
 
-        private IEnumerator TransitioningColorLive2D(Color targetColor, float speed)
+        private IEnumerator TransitioningColorLive2D(float speed)
         {
             CubismRenderer[] crs = cubismRenderController.Renderers;
             Color startColor = crs[0].Color;
@@ -109,7 +109,7 @@ namespace CHARACTER
             {
                 //colorPercent = Mathf.Clamp01(colorPercent + DEFAULT_TRANSITION_SPEED * speed * Time.deltaTime);
                 colorPercent = colorPercent + DEFAULT_TRANSITION_SPEED * speed * Time.deltaTime;
-                Color currentLerpedColor = Color.Lerp(startColor, targetColor, colorPercent);
+                Color currentLerpedColor = Color.Lerp(startColor, displayColor, colorPercent);
 
                 foreach (CubismRenderer cr in cubismRenderController.Renderers)
                 {
@@ -120,11 +120,10 @@ namespace CHARACTER
             }
         }
 
-        public override IEnumerator Highlighting(bool highlight, float speedMultiplier)
+        public override IEnumerator Highlighting(float speedMultiplier)
         {
-            Color targetColor = displayColor;
-
-            yield return TransitioningColorLive2D(targetColor, speedMultiplier);
+            if(!isTransitioningColor)
+                yield return TransitioningColorLive2D(speedMultiplier);
 
             co_highlighting = null;
         }

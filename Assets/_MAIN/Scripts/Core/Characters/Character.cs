@@ -61,8 +61,15 @@ namespace CHARACTER
 
             if(prefab != null)
             {
-                RectTransform parentPanel = null;
 
+                /*
+                This is old setup, we have 3 different panels for different character types. But actually, we only need 2
+                because only Live2D needs a separate panel, Model3D and Sprite/SpriteSheet can share the same panel.
+                Each Model3D character will have its own RenderGroup prefab which will be instantiated in the Model3D panel (RenderGroup container)
+                then there will be a RenderTexture to project the model on a RawImage which located in the CharacterPanel in the main canvas 
+                (which we are using to render SpriteCharacter).
+                
+                Transform parentPanel = null;
                 switch(configData.characterType)
                 {
                     case Character.CharacterType.Live2D:
@@ -76,6 +83,8 @@ namespace CHARACTER
                         parentPanel = CharacterManager.Instance.CharacterPanel;
                         break;
                 }
+                */
+                Transform parentPanel = configData.characterType == CharacterType.Live2D ? CharacterManager.Instance.CharacterPanelLive2D : CharacterManager.Instance.CharacterPanel;
 
                 GameObject ob = Object.Instantiate(prefab, parentPanel);
                 // after instantiating the prefab, by default, the name of the object will be the prefab name with "(Clone)" suffix.
@@ -220,11 +229,11 @@ namespace CHARACTER
             if(isTransitioningColor)
                 characterManager.StopCoroutine(co_transitioningColor);
             
-            co_transitioningColor = characterManager.StartCoroutine(TransitioningColor(displayColor, speed));
+            co_transitioningColor = characterManager.StartCoroutine(TransitioningColor(speed));
             return co_transitioningColor;
         }
 
-        public virtual IEnumerator TransitioningColor(Color color, float speed)
+        public virtual IEnumerator TransitioningColor(float speedMultiplier)
         {
             Debug.Log("Cant call IEnumerator TransitioningColor() on base character class");
             yield return null;
@@ -239,7 +248,7 @@ namespace CHARACTER
                 characterManager.StopCoroutine(co_highlighting);
 
             highlighted = true;
-            co_highlighting = characterManager.StartCoroutine(Highlighting(highlighted, speed));
+            co_highlighting = characterManager.StartCoroutine(Highlighting(speed));
             return co_highlighting;
         }
 
@@ -252,11 +261,11 @@ namespace CHARACTER
                 characterManager.StopCoroutine(co_highlighting);
 
             highlighted = false;
-            co_highlighting = characterManager.StartCoroutine(Highlighting(highlighted, speed));
+            co_highlighting = characterManager.StartCoroutine(Highlighting(speed));
             return co_highlighting;
         }
 
-        public virtual IEnumerator Highlighting(bool highlight, float speedMultiplier)
+        public virtual IEnumerator Highlighting(float speedMultiplier)
         {
             Debug.Log("Cant call IEnumerator Highlighting() on base character class");
             yield return null;

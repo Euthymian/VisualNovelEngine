@@ -184,7 +184,6 @@ namespace CHARACTER
                 return FaceLeft(speed, immediate);
         }
 
-
         public Coroutine FaceLeft(float speed = 1f, bool immediate = false)
         {
             if (isFlipping)

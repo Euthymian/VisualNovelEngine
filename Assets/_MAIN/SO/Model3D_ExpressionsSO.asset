@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f62bfca6dff3a428921e1bee6654f4, type: 3}
+  m_Name: Model3D_ExpressionsSO
+  m_EditorClassIdentifier: 
+  expressions:
+  - name: Sad
+    eyeBlendShapes:
+    - eyesBlendShapeName: eyes_01.eyeLookDownLeft
+      weight: 64
+    - eyesBlendShapeName: eyes_01.eyeLookDownRight
+      weight: 64
+    headBlendShapes:
+    - headBlendShapeName: head_01.browInnerUp
+      weight: 100
+    - headBlendShapeName: head_01.mouthRollLower
+      weight: 50
+    lashesBlendShapes: []
+  - name: Smile
+    eyeBlendShapes: []
+    headBlendShapes:
+    - headBlendShapeName: head_01.mouthDimpleRight
+      weight: 100
+    - headBlendShapeName: head_01.mouthDimpleLeft
+      weight: 100
+    - headBlendShapeName: head_01.mouthSmileRight
+      weight: 20
+    - headBlendShapeName: head_01.mouthSmileLeft
+      weight: 20
+    - headBlendShapeName: head_01.eyeSquintRight
+      weight: 100
+    - headBlendShapeName: head_01.eyeSquintLeft
+      weight: 100
+    lashesBlendShapes: []

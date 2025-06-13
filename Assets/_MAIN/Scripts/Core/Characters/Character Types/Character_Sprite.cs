@@ -11,7 +11,7 @@ namespace CHARACTER
     {
         public override bool isVisible
         {
-            get { return isShowing || rootCanvasGroup.alpha == 1; }
+            get { return isShowing || rootCanvasGroup.alpha > 0; }
             set { rootCanvasGroup.alpha = value ? 1 : 0; }
         }
 
@@ -132,12 +132,10 @@ namespace CHARACTER
             }
         }
 
-        public override IEnumerator TransitioningColor(Color color, float speed)
+        public override IEnumerator TransitioningColor(float speed)
         {
             foreach (CharacterSpriteLayer layer in layersList)
-            {
-                layer.TransitioningColor(color, speed);
-            }
+                layer.TransitioningColor(displayColor, speed);
 
             yield return null;
 
@@ -149,7 +147,7 @@ namespace CHARACTER
             co_transitioningColor = null; // Reset the coroutine reference when done
         }
 
-        public override IEnumerator Highlighting(bool highlight, float speedMultiplier)
+        public override IEnumerator Highlighting(float speedMultiplier)
         {
             Color targetColor = displayColor;
 

@@ -42,10 +42,12 @@ namespace CHARACTER
 
         [SerializeField] private RectTransform characterPanel;
         [SerializeField] private RectTransform characterPanel_Live2D;
-        [SerializeField] private RectTransform characterPanel_Model3D;
+        [SerializeField] private Transform characterPanel_Model3D; // This is RenderGroup prefab container for Model3D characters
         public RectTransform CharacterPanel => characterPanel;
         public RectTransform CharacterPanelLive2D => characterPanel_Live2D;
-        public RectTransform CharacterPanelModel3D => characterPanel_Model3D;
+        public Transform CharacterPanelModel3D => characterPanel_Model3D;
+
+        public Model3D_ExpressionsSO model3DExpressionsSO;
 
         private void Awake()
         {
@@ -194,6 +196,11 @@ namespace CHARACTER
                 character.root.SetSiblingIndex(index++);
                 character.OnSort(index);
             }
+        }
+
+        public int GetCurrentNumberOfCharactersByType(Character.CharacterType type)
+        {
+            return characterDictionary.Values.Count(character => character.configData.characterType == type);
         }
     }
 }
