@@ -9,10 +9,12 @@ namespace COMMAND
     {
         private Dictionary<string, Delegate> database = new Dictionary<string, Delegate>();
 
-        public bool HasCommand(string command) => database.ContainsKey(command);
+        public bool HasCommand(string commandName) => database.ContainsKey(commandName.ToLower());
 
         public void AddCommand(string commandName, Delegate command)
         {
+            commandName = commandName.ToLower();
+
             if (!database.ContainsKey(commandName))
             {
                 database.Add(commandName, command);
@@ -25,6 +27,8 @@ namespace COMMAND
 
         public Delegate GetCommand(string commandName)
         {
+            commandName = commandName.ToLower();
+
             if (database.ContainsKey(commandName))
             {
                 return database[commandName];

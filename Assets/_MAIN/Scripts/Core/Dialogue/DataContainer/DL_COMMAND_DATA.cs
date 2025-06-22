@@ -11,6 +11,7 @@ namespace DIALOGUE
         private const char ARGUMENTS_SEPARATOR = ' ';
         private const char ARGUMENTS_CONTAINER = '(';
         private const string WAIT_COMMAND_ID = "[wait]";
+        private const string WAITLINE_COMMAND_ID = "[waitline]";
 
         public List<Command> commands;
 

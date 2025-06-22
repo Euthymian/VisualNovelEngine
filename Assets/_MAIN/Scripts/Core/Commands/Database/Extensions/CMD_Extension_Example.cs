@@ -13,6 +13,7 @@ namespace COMMAND
             commandDatabase.AddCommand("print_0p", new Action(PrintDefaultMessage));
             commandDatabase.AddCommand("print_1p", new Action<string>(PrintCustomMessage));
             commandDatabase.AddCommand("print_mp", new Action<string[]>(PrintLines));
+            commandDatabase.AddCommand("print", new Action<string>(Print));
 
             // Add lambda command
             commandDatabase.AddCommand("lambda_0p", new Action(() => Debug.Log("Lambda expression with no parameters.")));
@@ -31,6 +32,11 @@ namespace COMMAND
         private static void PrintDefaultMessage()
         {
             Debug.Log("Default message from CMD_Extension_Example");
+        }
+
+        private static void Print(string msg)
+        {
+            Debug.Log(msg);
         }
 
         private static void PrintCustomMessage(string message)
@@ -79,7 +85,8 @@ namespace COMMAND
         {
             bool leftDir = dir.ToLower() == "left";
 
-            Transform character = GameObject.Find("DemoChar").transform;
+            Transform character = GameObject.Find("Character - [Celeste]").transform;
+
             float speed = 15f;
 
             float targetX = leftDir ? -8f : 8f;

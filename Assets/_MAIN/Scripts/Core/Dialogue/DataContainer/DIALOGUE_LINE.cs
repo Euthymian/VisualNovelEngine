@@ -16,6 +16,8 @@ namespace DIALOGUE
         public bool hasCommands => commandsData != null;
         public bool hasSpeaker => speakerData != null;
 
+        public bool hasWaitlineKeyword = false; //wait for all commands on this line to finish before continuing
+
         public DIALOGUE_LINE(string speaker, string dialogue, string commands)
         {
             this.speakerData = string.IsNullOrWhiteSpace(speaker) ? null : new DL_SPEAKER_DATA(speaker);

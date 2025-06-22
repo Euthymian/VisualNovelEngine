@@ -66,9 +66,9 @@ namespace CHARACTER
             return DialogueSystem.Instance.dialogueSystemConfigSO.characterConfigSO.GetCharacterConfigData(characterName);
         }
 
-        public Character CreateCharacter(string characterName)
+        public Character CreateCharacter(string characterName, bool showAfterCreated = false)
         {
-            if (characterDictionary.ContainsKey(characterName))
+            if (characterDictionary.ContainsKey(characterName.ToLower()))
             {
                 Debug.LogWarning($"Character {characterName} already exists.");
                 return null;
@@ -79,6 +79,9 @@ namespace CHARACTER
             Character character = CreateCharacterFromCHARACTER_INFO(info);
 
             characterDictionary.Add(info.name.ToLower(), character);
+
+            if(showAfterCreated)
+                character.Show();
 
             return character;
         }
@@ -133,6 +136,11 @@ namespace CHARACTER
                 case Character.CharacterType.Model3D:
                     return new Character_Model3D(info.name, configData, info.prefab, info.rootCharacterFolderPath);
             }
+        }
+
+        public bool HasCharacter(string characterName)
+        {
+            return characterDictionary.ContainsKey(characterName.ToLower());
         }
 
         public Character GetCharacter(string characterName, bool createIfDoentExist = false)

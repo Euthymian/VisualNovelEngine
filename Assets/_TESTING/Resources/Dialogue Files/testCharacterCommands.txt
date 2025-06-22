@@ -1,0 +1,108 @@
+wait(10), CreateCharacter("Guard1 as Generic" -e true -i true), wait(1), CreateCharacter(Raelin), CreateCharacter(KyoyaAkase)
+CreateCharacter(Celeste), CreateCharacter(Mao)
+Celeste.Move(0 0), [wait]Mao.Move(1 0)
+Raelin.Move(0.3 0), [wait]KyoyaAkase.Move(0.7 0)
+
+[wait]Show(Celeste Mao KyoyaAkase Raelin -i false -spd 0.1)
+wait(2)
+
+[wait]KyoyaAkase.Unhighlight(-i true)
+wait(2)
+[wait]KyoyaAkase.Highlight(-i true)
+wait(2)
+
+
+//KyoyaAkase.SetSprite(-l 0 1 -spt p2 p2e7 -spd 1)
+
+//        ^
+// -------|
+
+
+KyoyaAkase.SetSprite(-l 0 -spt p2 -spd 0.2)
+[wait]KyoyaAkase.SetSprite(-l 1 -spt p2e7 -spd 0.2)
+wait(2)
+
+/*
+KyoyaAkase.SetSprite(-l 0 -spt p1 -spd 0.2)
+[wait]KyoyaAkase.SetSprite(-l 1 -spt p1e3 -spd 0.2)
+wait(2)
+*/
+
+
+/*
+[wait]Mao.Unhighlight(-spd 0.1)
+wait(2)
+[wait]Mao.Highlight(-spd 1)
+wait(2)
+
+[wait]Celeste.Unhighlight(-i true)
+wait(2)
+[wait]Celeste.Highlight(-i true)
+wait(2)
+*/
+
+print("START UNHIGHLIGHT")
+[wait]UnhighlightCharacters(Raelin KyoyaAkase Guard1 Celeste Mao -spd 0.05)
+print("END UNHIGHLIGHT")
+wait(5)
+print("START HIGHLIGHT")
+[wait]HighlightCharacters(Raelin KyoyaAkase Guard1 Celeste Mao -spd 0.05)
+print("END HIGHLIGHT")
+
+/*
+[wait]Guard1.Unhighlight()
+print("unhighlight 1")
+wait(1)
+[wait]Guard1.Unhighlight()
+print("unhighlight 2")
+wait(1)
+[wait]Guard1.Unhighlight()
+print("unhighlight 3")
+wait(1)
+[wait]Show(Raelin KyoyaAkase -i false -spd 0.1)
+Raelin.SetPriority(5), wait(2), KyoyaAkase.SetPriority(6), wait(2), Guard1.SetPriority(7)
+wait(2)
+SetCharactersPriority(Raelin KyoyaAkase)
+[wait]Raelin.SetColor(red)
+[wait]Raelin.Unhighlight(), wait(1), [wait]Raelin.setColor(white)
+Raelin.Highlight(), [wait]KyoyaAkase.Unhighlight()
+
+wait(1)
+Celeste.SetColor(blue), [wait]Mao.SetColor(green)
+wait(1)
+Celeste.SetColor(white), [wait]Mao.SetColor(white)
+wait(1)
+Celeste.UnHighlight(), [wait]Mao.Unhighlight()
+
+wait(3)
+*/
+
+/*
+// We have 2 command types: 1 is global command; 2 is character command
+[wait]MoveCharacter(KyoyaAkase 0 0 2 true)
+[wait]KyoyaAkase.Move(1 1 2 true) 
+[wait]KyoyaAkase.Hide(-spd 0.1), [wait]KyoyaAkase.Show(-spd 0.1)
+[wait]KyoyaAkase.Move(0 0 2 true) 
+*/
+
+
+/*
+This is in comment section text
+everything inside this comment will not be executed
+Raelin "Dm thang Thanh no lai comment tao, cu vl"
+Kyo "Thanh la bro cua tao, tao khong cu no, m ga"
+*/
+
+
+Kyo "Hello, this is Kyoya Akase speaking."
+[wait]MoveCharacter(Raelin -x 0 -spd 0.75 -sm true)
+
+
+//But in case we dont want to specify the params, the MoveCharacter command can also be called but make sure that the order of the parameters is correct
+//and order of params of MoveCharacter is: x y speed smooth immediate
+
+MoveCharacter(KyoyaAkase 1 -2 true true)
+// this mean x = 1, y = -2, smooth = true, immediate = true
+
+[wait]MoveCharacter(Raelin 1 1 0.75 true), [wait]MoveCharacter(KyoyaAkase 0 0 0.75 true)
+??? "fe"

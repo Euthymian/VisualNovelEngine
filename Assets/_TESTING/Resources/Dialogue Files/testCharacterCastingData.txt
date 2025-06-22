@@ -1,0 +1,9 @@
+Raelin "First line"
+
+enter Raelin as Rae at 0:0 [0:Raelin-A2, 1:Raelin-A_Blush] "Hi {wa 1} Im Raelin! {wc 1} Nice to meet you!"
+
+enter KyoyaAkase as Kyo at 1:0 [0:p2, 1:p2e2] "OK";
+
+enter Female Student 2 as Sakura [female student 2 - surprised] "Haha, poor you Rae {wc 1} He doenst care"
+
+enter Generic as Dad at 0.5:0.5 [Dad] "How dare you talk to my daughter like that! {wc 1} I will not allow it!"

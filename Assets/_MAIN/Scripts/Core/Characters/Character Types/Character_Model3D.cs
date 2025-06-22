@@ -84,7 +84,7 @@ namespace CHARACTER
             rootCanvasGroup.alpha = showOnStart ? 1 : 0;
         }
 
-        public void SetMotion(string motionName)
+        public void SetAnimation(string motionName)
         {
             modelAnimator.Play(motionName);
         }
@@ -191,13 +191,13 @@ namespace CHARACTER
             return true;
         }
 
-        public override IEnumerator ShowingOrHiding(bool show)
+        public override IEnumerator ShowingOrHiding(bool show, float speedMultiplier = 1)
         {
             float targetAlpha = show ? 1.0f : 0.0f;
 
             while (rootCanvasGroup.alpha != targetAlpha)
             {
-                rootCanvasGroup.alpha = Mathf.MoveTowards(rootCanvasGroup.alpha, targetAlpha, 3f * Time.deltaTime);
+                rootCanvasGroup.alpha = Mathf.MoveTowards(rootCanvasGroup.alpha, targetAlpha, DEFAULT_TRANSITION_SPEED * Time.deltaTime * speedMultiplier);
                 yield return null;
             }
 
@@ -222,12 +222,27 @@ namespace CHARACTER
             co_transitioningColor = null;
         }
 
-        public override IEnumerator Highlighting(float speedMultiplier)
+        public override IEnumerator Highlighting(float speedMultiplier, bool immediate = false)
         {
-            if(!isTransitioningColor)
-                yield return TransitionColorCoroutine(speedMultiplier);
+            if (!isTransitioningColor)
+            {
+                if (immediate)
+                {
+                    ApplyImmediateColor(displayColor);
+                }
+                else
+                    yield return TransitionColorCoroutine(speedMultiplier);
+            }
 
             co_highlighting = null;
+        }
+
+        private void ApplyImmediateColor(Color color)
+        {
+            mainCanvasRenderer.color = color;
+
+            foreach (OldRenderer oldRenderer in oldRenderers)
+                oldRenderer.oldMainCanvasRenderer.color = color;
         }
 
         private IEnumerator TransitionColorCoroutine(float speedMultiplier)
@@ -269,6 +284,8 @@ namespace CHARACTER
             modelCamera = renderGroup.GetComponentInChildren<Camera>();
             modelContainer = modelCamera.transform.GetChild(0);
             model = modelContainer.GetChild(0);
+            model.localPosition = Vector3.zero;
+            model.localEulerAngles = new Vector3(0, 180, 0);
             modelAnimator = model.GetComponent<Animator>();
 
             SkinnedMeshRenderer[] headSkinnedMeshRendererList = model.GetChild(0).GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -339,6 +356,11 @@ namespace CHARACTER
             }
 
             co_flipping = null; 
+        }
+
+        public override void OnReceiveCastingExpression(int layer, string expression)
+        {
+            SetExpression(expression, 100);
         }
     }
 }

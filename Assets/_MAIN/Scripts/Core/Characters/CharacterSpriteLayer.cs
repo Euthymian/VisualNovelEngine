@@ -43,7 +43,26 @@ namespace CHARACTER
 
         public void SetSprite(Sprite sprite)
         {
+            if(isIncrementingAlpha)
+            {
+                characterManager.StopCoroutine(co_incrementingAlpha);
+                co_incrementingAlpha = null; 
+            }
+
+            if(isTransitioningSprite)
+            {
+                characterManager.StopCoroutine(co_transitioningSprite);
+                co_transitioningSprite = null;
+            }
+
+            foreach (CanvasGroup oldRendererCG in oldRenderers)
+            {
+                UnityEngine.Object.Destroy(oldRendererCG.gameObject);
+            }
+            oldRenderers.Clear();
+
             renderer.sprite = sprite;
+            rendererCanvasGroup.alpha = 1f; 
         }
 
         public Coroutine TransitioningSprite(Sprite newSprite, float speed = 0.5f)
@@ -123,6 +142,9 @@ namespace CHARACTER
 
         public void SetColor(Color color)
         {
+            if(isTransitioningColor)
+                characterManager.StopCoroutine(co_transitioningColor);
+
             renderer.color = color;
 
             foreach (CanvasGroup oldRendererCG in oldRenderers)
@@ -159,6 +181,8 @@ namespace CHARACTER
                 renderer.color = Color.Lerp(oldColor, color, colorPercent);
                 foreach (Image item in oldImages)
                 {
+                    if (item == null)
+                        continue;
                     item.color = renderer.color;
                 }
 

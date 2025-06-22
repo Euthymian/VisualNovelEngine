@@ -13,6 +13,16 @@ namespace DIALOGUE
 
         public List<DIALOGUE_SEGMENT> segments;
 
+        public struct DIALOGUE_SEGMENT
+        {
+            public string dialogue;
+            public StartSignal startSignal;
+            public float signalDelay;
+            public enum StartSignal { NONE, C, A, WC, WA }
+
+            public bool append => startSignal == StartSignal.A || startSignal == StartSignal.WA ? true : false;
+        }
+
         public DL_DIALOGUE_DATA(string rawDialogue)
         {
             segments = RipSegments(rawDialogue);
@@ -67,16 +77,6 @@ namespace DIALOGUE
             }
 
             return segments;
-        }
-
-        public struct DIALOGUE_SEGMENT
-        {
-            public string dialogue;
-            public StartSignal startSignal;
-            public float signalDelay;
-            public enum StartSignal { NONE, C, A, WC, WA }
-
-            public bool append => startSignal == StartSignal.A || startSignal == StartSignal.WA ? true : false;
         }
     }
 }

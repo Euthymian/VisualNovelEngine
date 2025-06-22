@@ -11,9 +11,18 @@ namespace CHARACTER
 
     public abstract class Character 
     {
-        public const float UNHIGHLIGHTED_DARKEN_STRENGTH = 0.65f;
+        public enum CharacterType
+        {
+            Text,
+            Sprite,
+            SpriteSheet,
+            Live2D,
+            Model3D
+        }
+
+        protected const float UNHIGHLIGHTED_DARKEN_STRENGTH = 0.1f;
         public const bool DEFAULT_ORIENTATION_IS_LEFT = true;
-        public const string ANIMATION_TRIGGER_TRIGGER_REFRESH_ID = "Refresh";
+        protected const string ANIMATION_TRIGGER_TRIGGER_REFRESH_ID = "Refresh";
 
         protected bool showOnStart = false; 
         public string name = "";
@@ -96,7 +105,7 @@ namespace CHARACTER
             }
         }
 
-        public virtual Coroutine Show()
+        public virtual Coroutine Show(float speedMultiplier = 1)
         {
             if(isShowing) return co_showing;
 
@@ -105,11 +114,11 @@ namespace CHARACTER
                 characterManager.StopCoroutine(co_hiding);
             }
 
-            co_showing = characterManager.StartCoroutine(ShowingOrHiding(true));
+            co_showing = characterManager.StartCoroutine(ShowingOrHiding(true, speedMultiplier));
             return co_showing;
         }
 
-        public virtual Coroutine Hide()
+        public virtual Coroutine Hide(float speedMultiplier = 1)
         {
             if(isHiding) return co_hiding;
 
@@ -118,11 +127,11 @@ namespace CHARACTER
                 characterManager.StopCoroutine(co_showing);
             }
 
-            co_hiding = characterManager.StartCoroutine(ShowingOrHiding(false));
+            co_hiding = characterManager.StartCoroutine(ShowingOrHiding(false, speedMultiplier));
             return co_hiding;
         }
 
-        public virtual IEnumerator ShowingOrHiding(bool show)
+        public virtual IEnumerator ShowingOrHiding(bool show, float speedMultiplier = 1)
         {
             Debug.Log("Cant call IEnumerator ShowingOrHiding() on base character class");
             yield return null;
@@ -239,33 +248,43 @@ namespace CHARACTER
             yield return null;
         }
 
-        public Coroutine Highlight(float speed = 1f)
+        public Coroutine Highlight(float speed = 1f, bool immediate = false)
         {
-            if(isHighlighting)
-                return co_highlighting;
+            if (isHighlighting)
+            {
+                if(!immediate)
+                    return co_highlighting;
+                else
+                    characterManager.StopCoroutine(co_highlighting);
+            }
 
             if (isUnHighlighting)
                 characterManager.StopCoroutine(co_highlighting);
 
             highlighted = true;
-            co_highlighting = characterManager.StartCoroutine(Highlighting(speed));
+            co_highlighting = characterManager.StartCoroutine(Highlighting(speed, immediate));
             return co_highlighting;
         }
 
-        public Coroutine UnHighlight(float speed = 1f)
+        public Coroutine UnHighlight(float speed = 1f, bool immediate = false)
         {
             if (isUnHighlighting)
-                return co_highlighting;
+            {
+                if (!immediate)
+                    return co_highlighting;
+                else
+                    characterManager.StopCoroutine(co_highlighting);
+            }
 
             if (isHighlighting)
                 characterManager.StopCoroutine(co_highlighting);
 
             highlighted = false;
-            co_highlighting = characterManager.StartCoroutine(Highlighting(speed));
+            co_highlighting = characterManager.StartCoroutine(Highlighting(speed, immediate));
             return co_highlighting;
         }
 
-        public virtual IEnumerator Highlighting(float speedMultiplier)
+        public virtual IEnumerator Highlighting(float speedMultiplier, bool immediate = false)
         {
             Debug.Log("Cant call IEnumerator Highlighting() on base character class");
             yield return null;
@@ -329,13 +348,9 @@ namespace CHARACTER
             animator.SetTrigger(ANIMATION_TRIGGER_TRIGGER_REFRESH_ID);
         }
 
-        public enum CharacterType
+        public virtual void OnReceiveCastingExpression(int layer, string expression)
         {
-            Text,
-            Sprite,
-            SpriteSheet,
-            Live2D,
-            Model3D
+            return;
         }
     }
 }

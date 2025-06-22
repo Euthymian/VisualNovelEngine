@@ -31,10 +31,11 @@ namespace DIALOGUE
         public void ApplySpeakerDataToDialogueContainer(string speakerName)
         {
             Character character = CharacterManager.Instance.GetCharacter(speakerName);
-            CharacterConfigData characterConfigData = character != null ? character.configData : CharacterConfigData.Default;
-            // CharacterConfigData characterConfigData = character != null ? character.configData : CharacterManager.Instance.GetCharacterConfigData(speakerName);
-            // This is in video version. When create character, we already called DialogueSystem.Instance.dialogueSystemConfigSO.characterConfigSO.GetCharacterConfigData(characterName);
-            // -> its not necessary to call it again 
+
+            CharacterConfigData characterConfigData = character != null ? character.configData : CharacterManager.Instance.GetCharacterConfigData(speakerName);
+            // When create character, we already called DialogueSystem.Instance.dialogueSystemConfigSO.characterConfigSO.GetCharacterConfigData(characterName);
+            // but we still need to call it here beacuase there is a case that we have a character but we dont want to create it,
+            // we just want to use the character config data directly
 
             ApplySpeakerDataToDialogueContainer(characterConfigData);
         }

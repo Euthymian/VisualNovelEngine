@@ -18,6 +18,7 @@ namespace CHARACTER
         private const string SPRITE_RENDERERS_PARENT_NAME = "Renderers";
         private const string DEFAULT_SPRITESHEET_NAME = "Default";
         private const char SPRITESHEET_SPRITE_SEPERATOR = '-';
+        private const float DEFAULT_TRANSITION_SPEED = 3f;
 
         private CanvasGroup rootCanvasGroup;
         public List<CharacterSpriteLayer> layersList = new List<CharacterSpriteLayer>();
@@ -106,13 +107,13 @@ namespace CHARACTER
             return spriteLayer.TransitioningSprite(sprite, speed);
         }
 
-        public override IEnumerator ShowingOrHiding(bool show)
+        public override IEnumerator ShowingOrHiding(bool show, float speedMultiplier = 1)
         {
             float targetAlpha = show ? 1.0f : 0.0f;
 
             while (rootCanvasGroup.alpha != targetAlpha)
             {
-                rootCanvasGroup.alpha = Mathf.MoveTowards(rootCanvasGroup.alpha, targetAlpha, 3f * Time.deltaTime);
+                rootCanvasGroup.alpha = Mathf.MoveTowards(rootCanvasGroup.alpha, targetAlpha, DEFAULT_TRANSITION_SPEED * Time.deltaTime * speedMultiplier);
                 yield return null;
             }
 
@@ -147,12 +148,19 @@ namespace CHARACTER
             co_transitioningColor = null; // Reset the coroutine reference when done
         }
 
-        public override IEnumerator Highlighting(float speedMultiplier)
+        public override IEnumerator Highlighting(float speedMultiplier, bool immediate = false)
         {
             Color targetColor = displayColor;
 
             foreach (CharacterSpriteLayer layer in layersList)
-                layer.TransitioningColor(targetColor, speedMultiplier);
+            {
+                if (immediate)
+                {
+                    layer.SetColor(targetColor);
+                }
+                else
+                    layer.TransitioningColor(targetColor, speedMultiplier);
+            }
 
             yield return null;
 
@@ -182,5 +190,17 @@ namespace CHARACTER
             co_flipping = null;
         }
 
+        public override void OnReceiveCastingExpression(int layer, string expression)
+        {
+            Sprite sprite = GetSprite(expression);
+
+            if(sprite == null)
+            {
+                Debug.LogError($"Sprite <{expression}> not found for character <{name}> in layer <{layer}>");
+                return;
+            }
+
+            TransitionSprite(sprite, layer);
+        }
     }
 }

@@ -17,15 +17,23 @@ public class TestCharacter : MonoBehaviour
         //StartCoroutine(TestCharActions());
         //StartCoroutine(TestPriority());
         //StartCoroutine(TestCharColor());
-        //StartCoroutine(TestLive2D());
-        StartCoroutine(TestModel3D());
+        StartCoroutine(TestLive2D());
+        //StartCoroutine(TestModel3D());
     }
 
-    private IEnumerator TestModel3D()
+    IEnumerator TestModel3D()
     {
         Character_Model3D celeste = CreateCharacter("Celeste") as Character_Model3D;
         //Character_Model3D celeste1 = CreateCharacter("Celeste1 as Celeste") as Character_Model3D;
         yield return celeste.Show();
+
+        yield return celeste.UnHighlight();
+        yield return new WaitForSeconds(1f);
+        yield return celeste.Highlight(0.1f);
+
+
+        yield return new WaitForSeconds(120f);
+
         yield return new WaitForSeconds(1f);
         yield return celeste.Hide();
         yield return new WaitForSeconds(1f);
@@ -33,7 +41,7 @@ public class TestCharacter : MonoBehaviour
         celeste.SetColor(Color.red);
         //celeste1.MoveToPosition(Vector2.zero, smooth: true);      
         //yield return celeste.MoveToPosition(new Vector2(1,1),smooth:true);
-        //celeste.SetMotion("Meow");
+        celeste.SetAnimation("Meow");
 
         yield return celeste.TransitionColor(Color.green);
         yield return celeste.UnHighlight();
@@ -43,6 +51,8 @@ public class TestCharacter : MonoBehaviour
         yield return celeste.Flip(0.5f);
         yield return celeste.FaceLeft(0.3f);
 
+        celeste.SetAnimation("WaveHand");
+
         yield return celeste.SetExpression("Sad", immediate:false, speedMultiplier:.5f);
         yield return new WaitForSeconds(5f);
 
@@ -51,6 +61,7 @@ public class TestCharacter : MonoBehaviour
         
         celeste.SetExpression("Smile", percent:60, immediate:false, speedMultiplier:.1f);
     }
+
     IEnumerator TestLive2D()
     {
         Character_Live2D koharu = CreateCharacter("Koharu") as Character_Live2D;
@@ -63,10 +74,17 @@ public class TestCharacter : MonoBehaviour
         rice.SetPosition(new Vector2(0.5f, 0.5f));
         mao.SetPosition(new Vector2(0.9f, 0.5f));
 
+        mao.Show();
+
+        yield return new WaitForSeconds(2f);
+        yield return mao.UnHighlight();
+        yield return new WaitForSeconds(10f);
+        mao.Highlight(0.1f);
+
+        yield return new WaitForSeconds(10f);
 
         koharu.Show();
         natori.Show();
-        mao.Show();
         rice.Show();
         //yield return rice.Flip(0.5f);
 

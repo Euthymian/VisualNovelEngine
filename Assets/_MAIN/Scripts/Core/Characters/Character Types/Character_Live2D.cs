@@ -67,13 +67,13 @@ namespace CHARACTER
             return -1;
         }
 
-        public override IEnumerator ShowingOrHiding(bool show)
+        public override IEnumerator ShowingOrHiding(bool show, float speedMultiplier = 1)
         {
             float targetOpacity = show ? 1f : 0f;
 
             while(cubismRenderController.Opacity != targetOpacity)
             {
-                cubismRenderController.Opacity = Mathf.MoveTowards(cubismRenderController.Opacity, targetOpacity, DEFAULT_TRANSITION_SPEED * Time.deltaTime);
+                cubismRenderController.Opacity = Mathf.MoveTowards(cubismRenderController.Opacity, targetOpacity, DEFAULT_TRANSITION_SPEED * Time.deltaTime * speedMultiplier);
                 yield return null;
             }
 
@@ -120,12 +120,29 @@ namespace CHARACTER
             }
         }
 
-        public override IEnumerator Highlighting(float speedMultiplier)
+        public override IEnumerator Highlighting(float speedMultiplier, bool immediate = false)
         {
-            if(!isTransitioningColor)
-                yield return TransitioningColorLive2D(speedMultiplier);
+            if (!isTransitioningColor)
+            {
+                if (immediate)
+                {
+                    ApplyImmediateColor(displayColor);
+                }
+                else
+                {
+                    yield return TransitioningColorLive2D(speedMultiplier);
+                }
+            }
 
             co_highlighting = null;
+        }
+
+        private void ApplyImmediateColor(Color color)
+        {
+            foreach (CubismRenderer cr in cubismRenderController.Renderers)
+            {
+                cr.Color = color;
+            }
         }
 
         public override IEnumerator Flipping(bool facingLeftNow, float speedMultiplier, bool immediate)
@@ -173,6 +190,11 @@ namespace CHARACTER
         public override void OnSort(int sortingIndex)
         {
             cubismRenderController.SortingOrder = sortingIndex * CHARACTER_SORTING_DEPTH_UNIT;
+        }
+
+        public override void OnReceiveCastingExpression(int layer, string expression)
+        {
+            SetExpression(expression);
         }
     }
 }

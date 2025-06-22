@@ -15,16 +15,35 @@ namespace DIALOGUE
         private const char AXIS_SEPERATOR = ':';
         private const char LAYERS_SEPERATOR = ',';
         private const char LAYER_EXPRESSION_SEPERATOR = ':';
+        private const string ENTER_KEYWORD = "enter ";
 
         public string speakerName;
         public string speakerCastName;
+        public string displayName => hasCastingName ? speakerCastName : speakerName;
         public Vector2 castPos;
         public List<(int layer, string expression)> CastExpressions { get; set; }
 
-        public string displayName => speakerCastName != string.Empty ? speakerCastName : speakerName;
+        public bool makeCharacterEnter = false;
+
+        public bool hasCastingName => speakerCastName != string.Empty;
+        public bool hasCastingPosition = false;
+        public bool hasCastingExpressions => CastExpressions != null && CastExpressions.Count > 0;
+
+        private string ProcessKeywords(string rawSpeaker)
+        {
+            if (rawSpeaker.StartsWith(ENTER_KEYWORD))
+            {
+                rawSpeaker = rawSpeaker.Substring(ENTER_KEYWORD.Length);
+                makeCharacterEnter = true;
+            }
+
+            return rawSpeaker;
+        }
 
         public DL_SPEAKER_DATA(string rawSpeaker)
         {
+            rawSpeaker = ProcessKeywords(rawSpeaker);
+
             MatchCollection matches = Regex.Matches(rawSpeaker, SPEAKER_DATA_REGEX_PATTERN);
 
             speakerCastName = "";
@@ -54,6 +73,8 @@ namespace DIALOGUE
                 }
                 else if (match.Value == POSITION_CAST_ID)
                 {
+                    hasCastingPosition = true;
+
                     startDataIndex = match.Index + POSITION_CAST_ID.Length;
                     endDataIndex = i + 1 == matches.Count ? rawSpeaker.Length - 1 : matches[i + 1].Index - 1;
                     string[] pos = rawSpeaker.Substring(startDataIndex, endDataIndex - startDataIndex + 1)
@@ -74,7 +95,14 @@ namespace DIALOGUE
                         .Select(x =>
                         {
                             var parts = x.Trim().Split(LAYER_EXPRESSION_SEPERATOR);
-                            return (int.Parse(parts[0]), parts[1]);
+
+                            // initially, when we cast expressions, we will specify layer and expression name
+                            // but, in fact, sprite characters only have one layer, so we can just return the expression name and default layer 0
+                            if (parts.Length == 2)
+                                return (int.Parse(parts[0]), parts[1]);
+                            else
+                                return (0, parts[0]);
+
                         }).ToList();
                 }
             }

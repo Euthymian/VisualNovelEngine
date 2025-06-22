@@ -17,9 +17,10 @@ speaker "This is a very long dialogue {c} that will be split {a} into multiple s
 
 
 ------------- SPEAKER CASTING DATA --------------
-Speaker name format: speakerName as anotherName at 1:1 [0:Anger, 1:Happy, ...]
+Speaker name format: [enter] speakerName as anotherName at 1:1 [0:Anger, 1:Happy, ...]  <in case character is a sprite character which has only 1 layer, specify the layer isnt necessary>
 -> The speaker name appears on screen with anotherName (if have one) at the specific position with expression on layer
 
+enter: make character visible on screen
 as: anotherName
 at: position 
 []: expression

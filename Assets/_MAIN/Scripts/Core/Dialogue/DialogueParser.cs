@@ -12,9 +12,9 @@ namespace DIALOGUE
     public class DialogueParser
     {
         //private const string commandRegexPattern = "\\w*[^\\s]\\(";
-        private const string COMMAND_REGEX_PATTERN = @"[\w\[\]]*[^\s]\("; // @ makes character string literal
+        private const string COMMAND_REGEX_PATTERN = @"[\w\[\]]*.[\w\[\]]*[^\s]\("; // @ makes character string literal
         // \w* looks for any word character (alphanumeric & underscore) 0 or more times
-        // but [^\\s] will only match if the next character is not a whitespace character
+        // but [^\s] will only match if the next character is not a whitespace character
         // \( looks for a literal '(' character
 
         public static DIALOGUE_LINE Parse(string rawLine)
@@ -98,7 +98,6 @@ namespace DIALOGUE
             {
                 speaker = rawLine;
             }
-
 
             return (speaker, dialogue, commands);
         }

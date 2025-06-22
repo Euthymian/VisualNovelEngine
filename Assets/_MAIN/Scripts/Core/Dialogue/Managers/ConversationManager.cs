@@ -1,3 +1,4 @@
+using CHARACTER;
 using COMMAND;
 using System;
 using System.Collections;
@@ -62,18 +63,52 @@ namespace DIALOGUE
                     yield return HandleCommandRun(line);
 
                 if (line.hasDialogue) // Only wait if there is a dialogue line to build, if only commands, skip this part
+                {
                     // wait for user prompt to continue
                     yield return WaitForUserInput();
+
+                    CommandManager.Instance.StopAllProcesses();
+                }   
             }
         }
 
         IEnumerator HandleDialogueRun(DIALOGUE_LINE line)
         {
-            if(line.hasSpeaker)
-                DialogueSystem.Instance.ShowSpeakerName(line.speakerData.displayName);
+            if (line.hasSpeaker)
+            {
+                HandleSpeakerLogic(line.speakerData);
+            }
 
             // current dialogue line finishes building here
             yield return BuildSegmentLines(line.dialogueData);
+        }
+
+        private void HandleSpeakerLogic(DL_SPEAKER_DATA speakerData)
+        {
+            bool characterMustBeCreated = speakerData.makeCharacterEnter || speakerData.hasCastingPosition || speakerData.hasCastingExpressions;
+
+            Character character = CharacterManager.Instance.GetCharacter(speakerData.speakerName, createIfDoentExist: characterMustBeCreated);
+
+            if (speakerData.makeCharacterEnter && !character.isVisible && !character.isShowing)
+                    character.Show();
+
+            DialogueSystem.Instance.ShowSpeakerName(speakerData.displayName);
+            DialogueSystem.Instance.ApplySpeakerDataToDialogueContainer(speakerData.speakerName);
+
+            if (speakerData.hasCastingPosition)
+            {
+                character.SetPosition(speakerData.castPos);
+                //character.MoveToPosition(speakerData.castPos);
+            }
+
+            if (speakerData.hasCastingExpressions)
+            {
+                foreach (var ce in speakerData.CastExpressions)
+                {
+                    character.OnReceiveCastingExpression(ce.layer, ce.expression);
+                }
+            }
+
         }
 
         IEnumerator BuildSegmentLines(DL_DIALOGUE_DATA dialogueData)
@@ -131,9 +166,18 @@ namespace DIALOGUE
 
             foreach(DL_COMMAND_DATA.Command command in commands)
             {
-                if(command.waitForCompletion)
+                if(command.waitForCompletion|| command.name.Contains("wait"))
                 {
-                    yield return CommandManager.Instance.Execute(command.name, command.args);
+                    CoroutineWrapper coroutineWrapper = CommandManager.Instance.Execute(command.name, command.args);
+                    while (!coroutineWrapper.IsDone)
+                    {
+                        if (userPrompted)
+                        {
+                            CommandManager.Instance.StopCurrentProcess();
+                            userPrompted = false;
+                        }
+                        yield return null; 
+                    }
                 }
                 else CommandManager.Instance.Execute(command.name, command.args);
             }
