@@ -20,9 +20,12 @@ namespace DIALOGUE
 
         public DIALOGUE_LINE(string speaker, string dialogue, string commands)
         {
-            this.speakerData = string.IsNullOrWhiteSpace(speaker) ? null : new DL_SPEAKER_DATA(speaker);
-            this.dialogueData = string.IsNullOrWhiteSpace(dialogue) ? null : new DL_DIALOGUE_DATA(dialogue);
-            this.commandsData = string.IsNullOrWhiteSpace(commands) ? null : new DL_COMMAND_DATA(commands); ;
+            speakerData = string.IsNullOrWhiteSpace(speaker) ? null : new DL_SPEAKER_DATA(speaker);
+            dialogueData = string.IsNullOrWhiteSpace(dialogue) ? null : new DL_DIALOGUE_DATA(dialogue);
+            commandsData = string.IsNullOrWhiteSpace(commands) ? null : new DL_COMMAND_DATA(commands); ;
+
+            if(commandsData != null && commandsData.hasWaitlineKeyword)
+                hasWaitlineKeyword = true;
         }
     }
 }

@@ -6,6 +6,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using CHARACTER;
+using JetBrains.Annotations;
 
 namespace COMMAND
 {
@@ -178,11 +179,22 @@ namespace COMMAND
             activeProcesses.Clear();
         }
 
-        private IEnumerator RunningProcess(CommandProcess cmd)
+        public void StopLatestProcesses(int numberOfLastestProcesses)
         {
-            yield return WaitingForProcessToComplete(cmd.command, cmd.args);
-            
-            KillProcess(cmd);
+            if (numberOfLastestProcesses > activeProcesses.Count)
+                return;
+
+            int finishIndex = activeProcesses.Count - numberOfLastestProcesses;
+            for (int i = activeProcesses.Count - 1;i >= finishIndex; i--)
+            {
+                CommandProcess cmd = activeProcesses[i];
+
+                if (cmd.runningProcess != null && !cmd.runningProcess.IsDone)
+                    cmd.runningProcess.Stop();
+                cmd.onTerminateAction?.Invoke();
+
+                activeProcesses.RemoveAt(i);
+            }
         }
 
         public void KillProcess(CommandProcess cmd)
@@ -193,6 +205,13 @@ namespace COMMAND
                 cmd.runningProcess.Stop();
 
             cmd.onTerminateAction?.Invoke();
+        }
+
+        private IEnumerator RunningProcess(CommandProcess cmd)
+        {
+            yield return WaitingForProcessToComplete(cmd.command, cmd.args);
+            
+            KillProcess(cmd);
         }
 
         private IEnumerator WaitingForProcessToComplete(Delegate command, string[] args)

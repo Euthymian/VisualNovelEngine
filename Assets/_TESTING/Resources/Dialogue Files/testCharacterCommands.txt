@@ -1,25 +1,29 @@
-wait(10), CreateCharacter("Guard1 as Generic" -e true -i true), wait(1), CreateCharacter(Raelin), CreateCharacter(KyoyaAkase)
-CreateCharacter(Celeste), CreateCharacter(Mao)
-Celeste.Move(0 0), [wait]Mao.Move(1 0)
-Raelin.Move(0.3 0), [wait]KyoyaAkase.Move(0.7 0)
+CreateCharacter("Guard1 as Generic" -e true -i true), CreateCharacter(Raelin), CreateCharacter(KyoyaAkase), CreateCharacter(Celeste), CreateCharacter(Mao)
 
 [wait]Show(Celeste Mao KyoyaAkase Raelin -i false -spd 0.1)
-wait(2)
 
+print("START move")
+[waitline]Celeste.Move(0 0 0.01), [wait]Mao.Move(1 0), Raelin.Move(0.3 0), [wait]KyoyaAkase.Move(0.7 0)
+print("END move")
+
+
+
+
+wait(2)
+Celeste.SetColor(-c Green -spd 0.01)
+Mao.SetColor(-c Blue -spd 0.01)
+Raelin.SetColor(-c Red -spd 0.01)
+
+/*
 [wait]KyoyaAkase.Unhighlight(-i true)
 wait(2)
 [wait]KyoyaAkase.Highlight(-i true)
 wait(2)
+*/
 
-
-//KyoyaAkase.SetSprite(-l 0 1 -spt p2 p2e7 -spd 1)
-
-//        ^
-// -------|
-
-
-KyoyaAkase.SetSprite(-l 0 -spt p2 -spd 0.2)
-[wait]KyoyaAkase.SetSprite(-l 1 -spt p2e7 -spd 0.2)
+print("START SetSprite")
+[waitline]KyoyaAkase.SetSprite(-l 0 -spt p2 -spd 1), KyoyaAkase.SetSprite(-l 1 -spt p2e7 -spd 0.01)
+print("END SetSprite")
 wait(2)
 
 /*

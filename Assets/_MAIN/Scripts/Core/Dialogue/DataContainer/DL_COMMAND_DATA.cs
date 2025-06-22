@@ -14,6 +14,7 @@ namespace DIALOGUE
         private const string WAITLINE_COMMAND_ID = "[waitline]";
 
         public List<Command> commands;
+        public bool hasWaitlineKeyword = false;
 
         public struct Command
         {
@@ -40,8 +41,14 @@ namespace DIALOGUE
 
                 if (command.name.ToLower().StartsWith(WAIT_COMMAND_ID))
                 {
-                    command.waitForCompletion = true;
+                    command.waitForCompletion = hasWaitlineKeyword ? false : true;
                     command.name = command.name.Substring(WAIT_COMMAND_ID.Length);
+                }
+                else if (command.name.StartsWith(WAITLINE_COMMAND_ID))
+                {
+                    hasWaitlineKeyword = true;
+                    command.waitForCompletion = false;
+                    command.name = command.name.Substring(WAITLINE_COMMAND_ID.Length);
                 }
                 else
                     command.waitForCompletion = false;

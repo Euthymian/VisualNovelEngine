@@ -3,6 +3,7 @@ using COMMAND;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace DIALOGUE
         public bool isRunning => process != null;
 
         private bool userPrompted = false;
+        private List<CoroutineWrapper> currentLineCommandList = new List<CoroutineWrapper>();
 
         public ConversationManager(TextArchitect textArchitect)
         {
@@ -164,22 +166,47 @@ namespace DIALOGUE
         {
             List<DL_COMMAND_DATA.Command> commands = line.commandsData.commands;
 
-            foreach(DL_COMMAND_DATA.Command command in commands)
+            if (!line.hasWaitlineKeyword)
             {
-                if(command.waitForCompletion|| command.name.Contains("wait"))
+                foreach (DL_COMMAND_DATA.Command command in commands)
+                {
+                    if (command.waitForCompletion || command.name.Contains("wait"))
+                    {
+                        CoroutineWrapper coroutineWrapper = CommandManager.Instance.Execute(command.name, command.args);
+                        while (!coroutineWrapper.IsDone)
+                        {
+                            if (userPrompted)
+                            {
+                                CommandManager.Instance.StopCurrentProcess();
+                                userPrompted = false;
+                            }
+                            yield return null;
+                        }
+                    }
+                    else CommandManager.Instance.Execute(command.name, command.args);
+                }
+            }
+            else
+            {
+                foreach(DL_COMMAND_DATA.Command command in commands)
                 {
                     CoroutineWrapper coroutineWrapper = CommandManager.Instance.Execute(command.name, command.args);
-                    while (!coroutineWrapper.IsDone)
-                    {
-                        if (userPrompted)
-                        {
-                            CommandManager.Instance.StopCurrentProcess();
-                            userPrompted = false;
-                        }
-                        yield return null; 
-                    }
+                    currentLineCommandList.Add(coroutineWrapper);
                 }
-                else CommandManager.Instance.Execute(command.name, command.args);
+
+                while(currentLineCommandList.Any(c => !c.IsDone))
+                {
+                    if (userPrompted)
+                    {
+                        int count = currentLineCommandList.Count(c => !c.IsDone);
+                        //List<CoroutineWrapper> undoneCoroutineWrappers = currentLineCommandList.Where(c => !c.IsDone).ToList();
+                        CommandManager.Instance.StopLatestProcesses(count);
+                        userPrompted = false;
+                    }
+                    yield return null;
+                }
+
+                currentLineCommandList.Clear();
             }
 
             yield return null;

@@ -37,6 +37,9 @@ There is a case where we only want to execute the following command after the pr
 -> John "Move left then right" [wait]MoveCharDemo(left), MoveCharDemo(right)
 [wait] keyword is added to the first command means wait the first command to finish before execute the second
 
+or [waitline]KyoyaAkase.SetSprite(-l 0 -spt p2 -spd 0.01), KyoyaAkase.SetSprite(-l 1 -spt p2e7 -spd 1)
+[waitline] keyword is added means wait for every command in the line to finish before executing the next line. following [wait] in line will be ignored
+
 
 
 ------------- CHARACTER TYPES --------------

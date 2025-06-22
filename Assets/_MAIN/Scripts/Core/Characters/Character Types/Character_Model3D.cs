@@ -45,10 +45,10 @@ namespace CHARACTER
         }
         private List<OldRenderer> oldRenderers = new List<OldRenderer>();
 
-        public override bool isVisible 
-        { 
-            get => isShowing || rootCanvasGroup.alpha > 0; 
-            set => rootCanvasGroup.alpha = value ? 1 : 0; 
+        public override bool isVisible
+        {
+            get => isShowing || rootCanvasGroup.alpha > 0;
+            set => rootCanvasGroup.alpha = value ? 1 : 0;
         }
 
         private Coroutine co_fadingOutOldRenderers = null;
@@ -156,7 +156,7 @@ namespace CHARACTER
 
                         float currentWeight = lashesController.GetBlendShapeWeight(blendShapeIndex);
 
-                        currentWeight = Mathf.MoveTowards(currentWeight, Mathf.Round(lashesBlendShape.weight * percent), EXPRESSION_TRANSITION_SPEED * speedMultiplier * Time.deltaTime); 
+                        currentWeight = Mathf.MoveTowards(currentWeight, Mathf.Round(lashesBlendShape.weight * percent), EXPRESSION_TRANSITION_SPEED * speedMultiplier * Time.deltaTime);
                         lashesController.SetBlendShapeWeight(blendShapeIndex, currentWeight);
                     }
 
@@ -224,15 +224,15 @@ namespace CHARACTER
 
         public override IEnumerator Highlighting(float speedMultiplier, bool immediate = false)
         {
-            if (!isTransitioningColor)
+            if(isTransitioningColor)
+                characterManager.StopCoroutine(co_transitioningColor);
+
+            if (immediate)
             {
-                if (immediate)
-                {
-                    ApplyImmediateColor(displayColor);
-                }
-                else
-                    yield return TransitionColorCoroutine(speedMultiplier);
+                ApplyImmediateColor(displayColor);
             }
+            else
+                yield return TransitionColorCoroutine(speedMultiplier);
 
             co_highlighting = null;
         }
@@ -275,9 +275,9 @@ namespace CHARACTER
 
             renderGroup = Object.Instantiate(renderGroup, renderGroup.transform.parent);
             renderGroup.name = string.Format(RENDER_GROUP_PREFAB_ID, configData.name);
-            for(int i=0;i<oldRenderers.Count; i++)
+            for (int i = 0; i < oldRenderers.Count; i++)
             {
-                oldRenderers[i].oldRenderGroup.transform.localPosition = Vector3.zero +  Vector3.right * CHARACTER_STACKING_DEPTH * i;
+                oldRenderers[i].oldRenderGroup.transform.localPosition = Vector3.zero + Vector3.right * CHARACTER_STACKING_DEPTH * i;
             }
             renderGroup.transform.localPosition = Vector3.zero + Vector3.right * CHARACTER_STACKING_DEPTH * oldRenderers.Count;
 
@@ -307,7 +307,7 @@ namespace CHARACTER
 
         private IEnumerator FadingOutOldRenderer()
         {
-            while(oldRenderers.Any(o => o.oldCanvasGroup.alpha > 0))
+            while (oldRenderers.Any(o => o.oldCanvasGroup.alpha > 0))
             {
                 float speed = Time.deltaTime * oldRenderersFadeOutSpeedMultiplier * DEFAULT_TRANSITION_SPEED;
                 foreach (OldRenderer or in oldRenderers)
@@ -342,11 +342,11 @@ namespace CHARACTER
                 modelContainer.localEulerAngles = facingAngle;
 
                 oldRenderersFadeOutSpeedMultiplier = speedMultiplier;
-                if(!isFadingOutOldRenderers)
+                if (!isFadingOutOldRenderers)
                     co_fadingOutOldRenderers = characterManager.StartCoroutine(FadingOutOldRenderer());
 
                 CanvasGroup newMainCanvasRendererCanvasGroup = mainCanvasRendererCanvasGroup;
-                while(newMainCanvasRendererCanvasGroup.alpha != 1)
+                while (newMainCanvasRendererCanvasGroup.alpha != 1)
                 {
                     float speed = Time.deltaTime * speedMultiplier * DEFAULT_TRANSITION_SPEED;
                     newMainCanvasRendererCanvasGroup.alpha = Mathf.MoveTowards(newMainCanvasRendererCanvasGroup.alpha, 1, speed);
@@ -355,7 +355,7 @@ namespace CHARACTER
 
             }
 
-            co_flipping = null; 
+            co_flipping = null;
         }
 
         public override void OnReceiveCastingExpression(int layer, string expression)

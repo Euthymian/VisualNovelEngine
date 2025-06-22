@@ -18,10 +18,10 @@ namespace CHARACTER
 
         private List<CubismRenderController> oldCubismRenderControllerList = new List<CubismRenderController>();
 
-        public override bool isVisible 
-        { 
+        public override bool isVisible
+        {
             get => isShowing || cubismRenderController.Opacity > 0;
-            set => cubismRenderController.Opacity = value ? 1 : 0; 
+            set => cubismRenderController.Opacity = value ? 1 : 0;
         }
 
         public Character_Live2D(string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(name, configData, prefab)
@@ -71,7 +71,7 @@ namespace CHARACTER
         {
             float targetOpacity = show ? 1f : 0f;
 
-            while(cubismRenderController.Opacity != targetOpacity)
+            while (cubismRenderController.Opacity != targetOpacity)
             {
                 cubismRenderController.Opacity = Mathf.MoveTowards(cubismRenderController.Opacity, targetOpacity, DEFAULT_TRANSITION_SPEED * Time.deltaTime * speedMultiplier);
                 yield return null;
@@ -86,7 +86,7 @@ namespace CHARACTER
             base.SetColor(color);
             color = displayColor;
 
-            foreach(CubismRenderer cr in cubismRenderController.Renderers)
+            foreach (CubismRenderer cr in cubismRenderController.Renderers)
             {
                 cr.Color = color;
             }
@@ -122,16 +122,16 @@ namespace CHARACTER
 
         public override IEnumerator Highlighting(float speedMultiplier, bool immediate = false)
         {
-            if (!isTransitioningColor)
+            if(isTransitioningColor)
+                characterManager.StopCoroutine(co_transitioningColor);
+
+            if (immediate)
             {
-                if (immediate)
-                {
-                    ApplyImmediateColor(displayColor);
-                }
-                else
-                {
-                    yield return TransitioningColorLive2D(speedMultiplier);
-                }
+                ApplyImmediateColor(displayColor);
+            }
+            else
+            {
+                yield return TransitioningColorLive2D(speedMultiplier);
             }
 
             co_highlighting = null;
@@ -151,10 +151,10 @@ namespace CHARACTER
             float xScale = newLive2dCharacter.transform.localScale.x;
             newLive2dCharacter.transform.localScale = new Vector3(facingLeftNow ? xScale : -xScale, newLive2dCharacter.transform.localScale.y, newLive2dCharacter.transform.localScale.z);
             cubismRenderController.Opacity = 0;
-            
+
             float transitionSpeed = DEFAULT_TRANSITION_SPEED * speedMultiplier * Time.deltaTime;
 
-            while(cubismRenderController.Opacity < 1 || oldCubismRenderControllerList.Any(r => r.Opacity < 0))
+            while (cubismRenderController.Opacity < 1 || oldCubismRenderControllerList.Any(r => r.Opacity < 0))
             {
                 cubismRenderController.Opacity = Mathf.MoveTowards(cubismRenderController.Opacity, 1f, transitionSpeed);
                 foreach (CubismRenderController oldController in oldCubismRenderControllerList)
