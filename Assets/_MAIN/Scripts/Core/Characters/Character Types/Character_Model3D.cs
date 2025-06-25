@@ -208,6 +208,8 @@ namespace CHARACTER
         public override void SetColor(Color color)
         {
             base.SetColor(color);
+            if(isTransitioningColor)
+                characterManager.StopCoroutine(co_transitioningColor);
 
             mainCanvasRenderer.color = color;
 

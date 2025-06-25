@@ -76,3 +76,8 @@ Current setup:
 ------------------ 3D MODEL CHARACTER SETUP --------------
 - Each 3d character will have its own canvas and camera to render a render texture which will be projected to main canvas 
 - The BlendShapes code is specific to 3D model from Ida Faber. 
+
+
+
+--------------- GRAPHICS --------------
+There are 3 graphics panels in the scene: Background, Foreground and Cinematics

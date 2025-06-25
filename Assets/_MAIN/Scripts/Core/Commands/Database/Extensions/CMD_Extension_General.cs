@@ -10,12 +10,18 @@ namespace COMMAND
         new public static void Extend(CommandDatabase cmdDatabase)
         {
             cmdDatabase.AddCommand("wait", new Func<string, IEnumerator>(Wait));
+            cmdDatabase.AddCommand("terminateallcommands", new Action(TerminateAllCommands));
         }
 
         private static IEnumerator Wait(string data)
         {
             if(float.TryParse(data, out float time))
                 yield return new WaitForSeconds(time);
+        }
+
+        public static void TerminateAllCommands()
+        {
+            CommandManager.Instance.StopAllProcesses();
         }
     }
 }

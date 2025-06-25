@@ -28,7 +28,11 @@ namespace CHARACTER
         public Character_Sprite(string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(name, configData, prefab)
         {
             Debug.Log("Character_Sprite constructor called with name: " + name);
-
+            if(root == null)
+            {
+                Debug.LogError("Root GameObject is null in Character_Sprite constructor.");
+                return;
+            }
             rootCanvasGroup = root.GetComponent<CanvasGroup>();
             rootCanvasGroup.alpha = showOnStart ? 1 : 0;
 

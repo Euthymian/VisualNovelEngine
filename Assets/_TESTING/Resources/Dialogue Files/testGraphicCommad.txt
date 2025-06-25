@@ -1,0 +1,35 @@
+wait(1)
+
+
+SetLayerMedia(background "Fantasy Landscape" -au true -spd 0.1 -b hurricane -i true)
+
+wait(2)
+
+
+SetLayerMedia(background Nebula)
+SetLayerMedia(background -l 1 SpaceshipInterior)
+
+/*
+ERRORS here
+CreateCharacter(Kyo -e true -i true)
+*/
+
+CreateCharacter(KyoyaAkase -e true -i true)
+KyoyaAkase "Hello"
+
+ClearLayerMedia(background 1)
+
+KyoyaAkase "Welcome to the space"
+
+ClearLayerMedia(background -b hypno)
+KyoyaAkase "And nothing"
+
+wait(1)
+
+
+SetLayerMedia(Cinematic "~Graphics/Gallery/flower")
+
+wait(1)
+
+KyoyaAkase "Clear cinematic layer"
+ClearLayerMedia(Cinematic -i true)

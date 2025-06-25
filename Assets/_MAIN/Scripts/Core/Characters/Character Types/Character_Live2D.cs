@@ -85,6 +85,8 @@ namespace CHARACTER
         {
             base.SetColor(color);
             color = displayColor;
+            if(isTransitioningColor)
+                characterManager.StopCoroutine(co_transitioningColor);
 
             foreach (CubismRenderer cr in cubismRenderController.Renderers)
             {

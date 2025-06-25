@@ -9,31 +9,34 @@ print("END move")
 
 
 
+
 wait(2)
 Celeste.SetColor(-c Green -spd 0.01)
 Mao.SetColor(-c Blue -spd 0.01)
 Raelin.SetColor(-c Red -spd 0.01)
+wait(2)
 
-/*
+print("terminat all here")
+TerminateAllCommands()
+
 [wait]KyoyaAkase.Unhighlight(-i true)
 wait(2)
 [wait]KyoyaAkase.Highlight(-i true)
 wait(2)
-*/
+
 
 print("START SetSprite")
 [waitline]KyoyaAkase.SetSprite(-l 0 -spt p2 -spd 1), KyoyaAkase.SetSprite(-l 1 -spt p2e7 -spd 0.01)
 print("END SetSprite")
 wait(2)
 
-/*
-KyoyaAkase.SetSprite(-l 0 -spt p1 -spd 0.2)
-[wait]KyoyaAkase.SetSprite(-l 1 -spt p1e3 -spd 0.2)
+
+[waitline]KyoyaAkase.SetSprite(-l 0 -spt p1 -spd 0.2), KyoyaAkase.SetSprite(-l 1 -spt p1e3 -spd 0.2)
 wait(2)
-*/
 
 
-/*
+
+
 [wait]Mao.Unhighlight(-spd 0.1)
 wait(2)
 [wait]Mao.Highlight(-spd 1)
@@ -43,7 +46,7 @@ wait(2)
 wait(2)
 [wait]Celeste.Highlight(-i true)
 wait(2)
-*/
+
 
 print("START UNHIGHLIGHT")
 [wait]UnhighlightCharacters(Raelin KyoyaAkase Guard1 Celeste Mao -spd 0.05)
@@ -53,7 +56,7 @@ print("START HIGHLIGHT")
 [wait]HighlightCharacters(Raelin KyoyaAkase Guard1 Celeste Mao -spd 0.05)
 print("END HIGHLIGHT")
 
-/*
+
 [wait]Guard1.Unhighlight()
 print("unhighlight 1")
 wait(1)
@@ -67,7 +70,7 @@ wait(1)
 Raelin.SetPriority(5), wait(2), KyoyaAkase.SetPriority(6), wait(2), Guard1.SetPriority(7)
 wait(2)
 SetCharactersPriority(Raelin KyoyaAkase)
-[wait]Raelin.SetColor(red)
+[wait]Raelin.SetColor(orange)
 [wait]Raelin.Unhighlight(), wait(1), [wait]Raelin.setColor(white)
 Raelin.Highlight(), [wait]KyoyaAkase.Unhighlight()
 
@@ -79,15 +82,15 @@ wait(1)
 Celeste.UnHighlight(), [wait]Mao.Unhighlight()
 
 wait(3)
-*/
 
-/*
+
+
 // We have 2 command types: 1 is global command; 2 is character command
 [wait]MoveCharacter(KyoyaAkase 0 0 2 true)
 [wait]KyoyaAkase.Move(1 1 2 true) 
 [wait]KyoyaAkase.Hide(-spd 0.1), [wait]KyoyaAkase.Show(-spd 0.1)
-[wait]KyoyaAkase.Move(0 0 2 true) 
-*/
+[wait]KyoyaAkase.Move(1 0 2 true) 
+
 
 
 /*
@@ -99,7 +102,7 @@ Kyo "Thanh la bro cua tao, tao khong cu no, m ga"
 
 
 Kyo "Hello, this is Kyoya Akase speaking."
-[wait]MoveCharacter(Raelin -x 0 -spd 0.75 -sm true)
+[wait]MoveCharacter(Raelin -x 1 -spd 0.75 -sm true)
 
 
 //But in case we dont want to specify the params, the MoveCharacter command can also be called but make sure that the order of the parameters is correct
