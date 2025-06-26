@@ -17,8 +17,6 @@ namespace COMMAND
         private static string[] PARAM_BLENDTEXTURE = new string[] { "-blendtex", "-b" };
         private static string[] PARAM_USEVIDEOAUDIO = new string[] { "-audio", "-au" };
 
-        private static string HOME_DIR_SYMBOL = "~";
-
         new public static void Extend(CommandDatabase database)
         {
             database.AddCommand("setlayermedia", new System.Func<string[], IEnumerator>(SetLayerMedia));
@@ -63,11 +61,11 @@ namespace COMMAND
 
             parameters.TryGetValue(PARAM_USEVIDEOAUDIO, out useAudio, defaultValue: false);
 
-            pathToGraphic = GetPathToGraphic(FilePaths.resources_bgImages, mediaName);
+            pathToGraphic = FilePaths.GetPathToResource(FilePaths.resources_bgImages, mediaName);
             graphicObject = Resources.Load<Texture>(pathToGraphic);
             if (graphicObject == null)
             {
-                pathToGraphic = GetPathToGraphic(FilePaths.resources_bgVideos, mediaName);
+                pathToGraphic = FilePaths.GetPathToResource(FilePaths.resources_bgVideos, mediaName);
                 graphicObject = Resources.Load<VideoClip>(pathToGraphic);
             }
             if (graphicObject == null)
@@ -77,7 +75,7 @@ namespace COMMAND
             }
 
             if (!immediate && !string.IsNullOrEmpty(blendTextureName))
-                blendTexture = Resources.Load<Texture>(GetPathToGraphic(FilePaths.resources_transitionEffects, blendTextureName));
+                blendTexture = Resources.Load<Texture>(FilePaths.GetPathToResource(FilePaths.resources_transitionEffects, blendTextureName));
 
             if (graphicObject is Texture)
                 yield return graphicLayer.SetTexture(graphicObject as Texture, transitionSpeed, blendTexture, pathToGraphic, immediate);
@@ -129,14 +127,6 @@ namespace COMMAND
                 
                 graphicLayer.Clear(transitionSpeed, blendTexture, immediate);
             }
-        }
-
-        private static string GetPathToGraphic(string defaultPath, string graphicName)
-        {
-            if (graphicName.StartsWith(HOME_DIR_SYMBOL))
-                return graphicName.Substring(HOME_DIR_SYMBOL.Length);
-
-            return defaultPath + graphicName;
         }
     }
 }

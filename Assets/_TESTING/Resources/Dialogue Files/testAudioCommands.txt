@@ -1,0 +1,29 @@
+wait(1)
+
+/*
+PlaySFX(thunder_strong_01 -p 0.4)
+wait(2)
+StopSFX(thunder_strong_01)
+Narrator "Thunder"
+
+PlayVoice(wakeup -v 0.7)
+Random girl "AAAA"
+*/
+
+PlayAmbience(RainyMood -cv 0.134)
+PlayMusic(Calm2)
+
+wait(2)
+
+/*
+StopMusic(Calm2)
+
+wait(2)
+StopAmbience(0)
+*/
+
+StopAmbience()
+
+wait(2)
+
+StopMusic()
