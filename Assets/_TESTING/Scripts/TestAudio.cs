@@ -45,5 +45,6 @@ public class TestAudio : MonoBehaviour
         yield return rae.Say("\"I love the rain, it makes me feel so calm and relaxed.\"");
         AudioManager.Instance.StopTrack(0);
         rae.Say("\"Oh, the rain stopped.\"");
+        AudioManager.Instance.StopTrack(1);
     }
 }

@@ -14,10 +14,13 @@ Dialogue segmentation: A way to split a single line dialogue into multiple segme
 
 speaker "This is a very long dialogue {c} that will be split {a} into multiple segments." 
 
+If DialogueBox is hidden, it will be shown automatically without call ShowDB() command if a characer starts speaking
+
 
 
 ------------- SPEAKER CASTING DATA --------------
-Speaker name format: [enter] speakerName as anotherName at 1:1 [0:Anger, 1:Happy, ...]  <in case character is a sprite character which has only 1 layer, specify the layer isnt necessary>
+Speaker name format: [enter] speakerName as anotherName at 1:1 [0:Anger, 1:Happy, ...]  
+<in case character is a sprite character which has only 1 layer, specify the layer isnt necessary>
 -> The speaker name appears on screen with anotherName (if have one) at the specific position with expression on layer
 
 enter: make character visible on screen
@@ -39,6 +42,26 @@ There is a case where we only want to execute the following command after the pr
 
 or [waitline]KyoyaAkase.SetSprite(-l 0 -spt p2 -spd 0.01), KyoyaAkase.SetSprite(-l 1 -spt p2e7 -spd 1)
 [waitline] keyword is added means wait for every command in the line to finish before executing the next line. following [wait] in line will be ignored
+
+Currently, for commmands which dont have [wait] ot [waitline] keyword and are subCommand (character subcommands), they arent be managed properly
+for example: raelin.setcolor(red -spd 0.001) will set raelin color to red at extremely slow speed, then we call another color related command such as 
+			[wait]raelin.setcolor(white) this is [wait] command which will be forced completed if we prompt. the new command should override the previous one,
+			but it doesnt. when we prompt, the current [wait*] command will be removed from the list and trigger onTerminate() event (which run force complete).
+			then, eventually, if we need to prompt to move to next dialogue line, we will call terminateAll() method, all commands in the list will be removed and 
+			trigger onTerminate() event. now, the raelin.setcolor(red -spd 0.001) will trigger onTerminate() event and force complete the color change to red.
+
+			To trigger this, try TestDialogueFiles with testCharacterCommands.txt file and spam click to force complete
+
+			-> Can avoid this problem by call terminateAll() or wait for a safe period of time before executing the next related command 
+			(while that period, not related command will be handled normally)
+
+			-> by seperate needWait and non needWait commands, we can avoid this problem (CoroutineWrapper.needWait). this is done by triggering onTerminate() event
+			only with needWait commands
+
+		
+WHEN FINALIZING CHARACTER COMMANDS, MAKE SURE NEW COMMAND WILL OVERRIDE THE PREVIOUS SAME TYPE COMMAND
+THIS CAN BE DONE BY STOP CURRENT COROUTINE AND START A NEW ONE (LIKE WHAT WE HAVE DONE WITH COLOR)
+
 
 
 
@@ -81,3 +104,9 @@ Current setup:
 
 --------------- GRAPHICS --------------
 There are 3 graphics panels in the scene: Background, Foreground and Cinematics
+
+
+
+
+------------------- AUDIO --------------
+What if we want to override volume of the same track

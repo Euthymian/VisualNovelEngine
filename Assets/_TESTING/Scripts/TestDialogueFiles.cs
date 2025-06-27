@@ -1,4 +1,5 @@
 using CHARACTER;
+using DIALOGUE;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,5 +62,13 @@ public class TestDialogueFiles : MonoBehaviour
         //}
 
         DIALOGUE.DialogueSystem.Instance.Say(lines);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.DownArrow))
+            DialogueSystem.Instance.dialogueContainer.Hide();
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+            DialogueSystem.Instance.dialogueContainer.Show();
     }
 }

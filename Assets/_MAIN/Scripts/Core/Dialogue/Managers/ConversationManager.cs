@@ -81,6 +81,9 @@ namespace DIALOGUE
                 HandleSpeakerLogic(line.speakerData);
             }
 
+            if(!DialogueSystem.Instance.dialogueContainer.isVisible)
+                yield return DialogueSystem.Instance.dialogueContainer.Show();
+
             // current dialogue line finishes building here
             yield return BuildSegmentLines(line.dialogueData);
         }
@@ -115,13 +118,14 @@ namespace DIALOGUE
 
         IEnumerator BuildSegmentLines(DL_DIALOGUE_DATA dialogueData)
         {
-            for(int i = 0; i < dialogueData.segments.Count; i++)
+            for(int i = 0; i < dialogueData.segmentList.Count; i++)
             {
-                DL_DIALOGUE_DATA.DIALOGUE_SEGMENT segment = dialogueData.segments[i];
+                DL_DIALOGUE_DATA.DIALOGUE_SEGMENT segment = dialogueData.segmentList[i];
 
                 yield return WaitForSegmentSignalToBeTrigger(segment);
 
                 yield return BuildDialogue(segment.dialogue, segment.append);
+                //Debug.Log($"build <{segment.dialogue}>complete");
             }
         }
 
@@ -173,6 +177,7 @@ namespace DIALOGUE
                     if (command.waitForCompletion || command.name.Contains("wait"))
                     {
                         CoroutineWrapper coroutineWrapper = CommandManager.Instance.Execute(command.name, command.args);
+                        coroutineWrapper.needWait = true;
                         while (!coroutineWrapper.IsDone)
                         {
                             if (userPrompted)
@@ -183,7 +188,8 @@ namespace DIALOGUE
                             yield return null;
                         }
                     }
-                    else CommandManager.Instance.Execute(command.name, command.args);
+                    // By default, coroutineWrapper.needWait of commands that dont have [wait] or [waitline] will be set to false
+                    else CommandManager.Instance.Execute(command.name, command.args); 
                 }
             }
             else
@@ -214,9 +220,13 @@ namespace DIALOGUE
 
         IEnumerator WaitForUserInput()
         {
-            while(!userPrompted)
+            DialogueSystem.Instance.dialogueContinuePrompt.Show();
+
+            while (!userPrompted)
                 yield return null;
 
+            DialogueSystem.Instance.dialogueContinuePrompt.Hide();
+            
             userPrompted = false; 
         }
     }

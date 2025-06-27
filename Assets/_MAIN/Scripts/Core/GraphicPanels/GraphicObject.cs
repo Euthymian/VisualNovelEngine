@@ -10,6 +10,7 @@ namespace GRAPHIC
     public class GraphicObject
     {
         private const string NAME_FORMAT = "Graphic - [{0}]";
+        private const string DEFAULT_UI_MATERIAL = "Default UI Material";
         private const string MATERIAL_PATH = "Materials/layerTransitionMaterial";
         private const string MATERIAL_FIELD_COLOR = "_Color";
         private const string MATERIAL_FIELD_MAINTEX = "_MainTex";
@@ -114,7 +115,7 @@ namespace GRAPHIC
         private Material GetTransitionMaterial()
         {
             Material mat = Resources.Load<Material>(MATERIAL_PATH);
-
+            
             if (mat != null)
                 return new Material(mat);
 
@@ -150,6 +151,14 @@ namespace GRAPHIC
             bool isBlending = blendingTexture != null;
             bool fadingIn = target > 0f;
 
+            // get the transition material at the start of fade, so we can use it for blending.
+            if (renderer.material.name == DEFAULT_UI_MATERIAL)
+            {
+                Texture tex = renderer.material.GetTexture(MATERIAL_FIELD_MAINTEX);
+                renderer.material = GetTransitionMaterial();
+                renderer.material.SetTexture(MATERIAL_FIELD_MAINTEX, tex);
+            }
+
             renderer.material.SetTexture(MATERIAL_FIELD_BLENDTEX, blendingTexture);
             renderer.material.SetFloat(MATERIAL_FIELD_ALPHA, isBlending ? 1 : fadingIn ? 0 : 1);
             renderer.material.SetFloat(MATERIAL_FIELD_BLEND, isBlending ? fadingIn ? 0 : 1 : 1);
@@ -173,7 +182,14 @@ namespace GRAPHIC
             if (target == 0)
                 Destroy();
             else
+            {
                 OnDestroyOthersAfterFadeIn();
+                // After fade in, set material to default material so the RawImage will be affected by canvas group alpha.
+                // This is needed becuase when fade out the whole main canvas by CanvasGroupController, every layer will be faded out smoothly,
+                // except graphic layers, which using custom material.
+                renderer.texture = renderer.material.GetTexture(MATERIAL_FIELD_MAINTEX);
+                renderer.material = null;
+            }
         }
 
         private void OnDestroyOthersAfterFadeIn()

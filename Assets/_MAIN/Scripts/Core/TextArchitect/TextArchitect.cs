@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,6 +8,7 @@ using UnityEngine;
 
 public class TextArchitect
 {
+    private const BuildMethod DEFAULT_BUILD_METHOD = BuildMethod.fade;
     private TextMeshProUGUI tmpro_ui;
     private TextMeshPro tmpro_world;
     public TMP_Text tmpro => tmpro_ui != null ? tmpro_ui : tmpro_world;
@@ -17,7 +19,7 @@ public class TextArchitect
     public string fullTargetText => preText + targetText;
 
     public enum BuildMethod { instant, typewriter, fade }
-    public BuildMethod buildMethod = BuildMethod.typewriter;
+    public BuildMethod buildMethod = DEFAULT_BUILD_METHOD;
     public Color textColor { get { return tmpro.color; } set { tmpro.color = value; } }
 
     private const float baseSpeed = 1;
@@ -214,6 +216,16 @@ public class TextArchitect
 
         TMP_TextInfo textInfo = tmpro.textInfo;
 
+        int lastVisibleCharacterIndex=textInfo.characterCount-1;
+        for(int i=textInfo.characterCount -1; i >= 0; i--)
+        {
+            if (textInfo.characterInfo[i].isVisible)
+            {
+                lastVisibleCharacterIndex = i;
+                break;
+            }
+        }
+
         Color32[] vertexColors = textInfo.meshInfo[textInfo.characterInfo[0].materialReferenceIndex].colors32;
 
         // By default, alpha is stored in byte, we cant grandually increase byte (decimal), it isnt gonna look good
@@ -246,8 +258,16 @@ public class TextArchitect
             {
                 if (maxRange < textInfo.characterCount)
                     maxRange++;
-                else if (alphas[maxRange - 1] >= 255 || lastCharIsInvisible)
+                //else if (alphas[maxRange - 1] >= 255 || lastCharIsInvisible)
+                //{
+
+                //    break;
+                //}
+                else if (alphas[lastVisibleCharacterIndex] >= 255)
+                {
+                    // If the last character is visible, we can stop
                     break;
+                }
             }
 
             yield return new WaitForEndOfFrame();

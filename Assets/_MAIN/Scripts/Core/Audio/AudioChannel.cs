@@ -85,8 +85,12 @@ public class AudioChannel
                 AudioTrack track = trackList[i];
 
                 float targetVolume = activeTrack == track ? track.cappedVolume : 0f;
+                if(targetVolume == 0)
+                    Debug.Log("decreasing volumes at track " + track.trackName);
+                else
+                    Debug.Log("increasing volumes at track " + track.trackName);
 
-                if(track.volume == targetVolume)
+                if (track.volume == targetVolume)
                     continue;
 
                 track.volume = Mathf.MoveTowards(track.volume, targetVolume, Time.deltaTime * AudioManager.TRACK_TRANSITION_DEFAULT_SPEED);

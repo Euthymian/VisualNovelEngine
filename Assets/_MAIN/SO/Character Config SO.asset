@@ -20,6 +20,8 @@ MonoBehaviour:
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
     dialogueFont: {fileID: 11400000, guid: e61345ab36d12fd4ab3954470292271a, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30
   - name: Raelin
     alias: rae
     characterType: 2
@@ -27,6 +29,8 @@ MonoBehaviour:
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
     dialogueFont: {fileID: 11400000, guid: e61345ab36d12fd4ab3954470292271a, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30
   - name: KyoyaAkase
     alias: kyo
     characterType: 1
@@ -34,6 +38,8 @@ MonoBehaviour:
     dialogueColor: {r: 0, g: 0.44042587, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
     dialogueFont: {fileID: 11400000, guid: e61345ab36d12fd4ab3954470292271a, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30
   - name: Generic
     alias: gen
     characterType: 2
@@ -41,6 +47,8 @@ MonoBehaviour:
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
     dialogueFont: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30
   - name: Mao
     alias: mao
     characterType: 3
@@ -48,6 +56,8 @@ MonoBehaviour:
     dialogueColor: {r: 1, g: 1, b: 1, a: 1}
     nameFont: {fileID: 11400000, guid: 1f9987afb925cfc46ad034ca97acfba8, type: 2}
     dialogueFont: {fileID: 11400000, guid: bc1aff5a11f4e29449e05565bfe84b3e, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30
   - name: Koharu
     alias: ko
     characterType: 3
@@ -55,6 +65,8 @@ MonoBehaviour:
     dialogueColor: {r: 0.9892618, g: 0.990566, b: 0.9017889, a: 1}
     nameFont: {fileID: 11400000, guid: a6a9963a494a04c47bfb712ccfd23da3, type: 2}
     dialogueFont: {fileID: 11400000, guid: 7dae9413b6eca944f84676b3355aa848, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30
   - name: Natori
     alias: na
     characterType: 3
@@ -62,6 +74,8 @@ MonoBehaviour:
     dialogueColor: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
     nameFont: {fileID: 11400000, guid: bbf6bc86227210a459a242ec3708763d, type: 2}
     dialogueFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30
   - name: Rice
     alias: ric
     characterType: 3
@@ -69,6 +83,8 @@ MonoBehaviour:
     dialogueColor: {r: 0.93126017, g: 1, b: 0.0990566, a: 1}
     nameFont: {fileID: 11400000, guid: e94f9ea549dac6348b79fb33e9451f34, type: 2}
     dialogueFont: {fileID: 11400000, guid: 6a888d69a87eec245b2ce096aa58c7b4, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30
   - name: Celeste
     alias: cel
     characterType: 4
@@ -76,3 +92,5 @@ MonoBehaviour:
     dialogueColor: {r: 1, g: 0.09803921, b: 0.43568227, a: 1}
     nameFont: {fileID: 11400000, guid: 2a0a41832e57a1240a307d451795ad2a, type: 2}
     dialogueFont: {fileID: 11400000, guid: 15e26ddfa07c7504b9f007c20597bb1d, type: 2}
+    nameFontSize: 40
+    dialogueFontSize: 30

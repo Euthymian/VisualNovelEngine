@@ -11,7 +11,7 @@ namespace DIALOGUE
     {
         private const string SEGMENT_IDENTIFIER_REGEX_PATTERN = @"\{[ca]\}|\{w[ca]\s\d*\.?\d*\}";
 
-        public List<DIALOGUE_SEGMENT> segments;
+        public List<DIALOGUE_SEGMENT> segmentList;
 
         public struct DIALOGUE_SEGMENT
         {
@@ -25,12 +25,12 @@ namespace DIALOGUE
 
         public DL_DIALOGUE_DATA(string rawDialogue)
         {
-            segments = RipSegments(rawDialogue);
+            segmentList = RipSegments(rawDialogue);
         }
 
         public List<DIALOGUE_SEGMENT> RipSegments(string rawDialogue)
         {
-            List<DIALOGUE_SEGMENT> segments = new List<DIALOGUE_SEGMENT>();
+            List<DIALOGUE_SEGMENT> segmentList = new List<DIALOGUE_SEGMENT>();
             MatchCollection matches = Regex.Matches(rawDialogue, SEGMENT_IDENTIFIER_REGEX_PATTERN);
 
             DIALOGUE_SEGMENT segment = new DIALOGUE_SEGMENT();
@@ -42,12 +42,12 @@ namespace DIALOGUE
                 segment.dialogue = rawDialogue;
             else
                 segment.dialogue = rawDialogue.Substring(0, matches[0].Index);
-            segments.Add(segment);
+            segmentList.Add(segment);
 
             int currentSignalIdentifierStartIndex = default;
 
             if (matches.Count == 0)
-                return segments;
+                return segmentList;
             else
                 currentSignalIdentifierStartIndex = matches[0].Index;
 
@@ -73,10 +73,10 @@ namespace DIALOGUE
                 int nextSignalIdentifierStartIndex = i + 1 < matches.Count ? matches[i + 1].Index : rawDialogue.Length;
                 segment.dialogue = rawDialogue.Substring(currentSignalIdentifierStartIndex + match.Length, nextSignalIdentifierStartIndex - (currentSignalIdentifierStartIndex + match.Length));
                 currentSignalIdentifierStartIndex = nextSignalIdentifierStartIndex;
-                segments.Add(segment);
+                segmentList.Add(segment);
             }
 
-            return segments;
+            return segmentList;
         }
     }
 }

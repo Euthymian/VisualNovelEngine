@@ -20,8 +20,13 @@ namespace DIALOGUE
         public ConversationManager conversationManager;
         public TextArchitect textArchitect;
 
+        [SerializeField] private CanvasGroup mainCanvasCG;
+        private CanvasGroupController canvasGroupController;
+
         public delegate void DialogueSystemEvent();
         public event DialogueSystemEvent onUserPrompt_SpeedUp;
+
+        public DialogueContinuePrompt dialogueContinuePrompt;
 
         public void OnUserPrompt_SpeedUp()
         {
@@ -44,8 +49,10 @@ namespace DIALOGUE
         {
             dialogueContainer.SetDialogueFont(configData.dialogueFont);
             dialogueContainer.SetDialogueColor(configData.dialogueColor);
+            dialogueContainer.SetDialogueFontSize(configData.dialogueFontSize * dialogueSystemConfigSO.dialogueFontScale);
             dialogueContainer.speakerNameContainer.SetNameFont(configData.nameFont);
             dialogueContainer.speakerNameContainer.SetNameColor(configData.nameColor);
+            dialogueContainer.speakerNameContainer.SetNameFontSize(configData.nameFontSize);
         }
 
         // Reason of making 2 ApplySpeakerDataToDialogueContainer methods is if we have direct reference to characterConfigData, we can use it directly
@@ -69,8 +76,6 @@ namespace DIALOGUE
                 Instance = this;
                 //DontDestroyOnLoad(gameObject);
                 Initialize();
-
-                conversationManager = new ConversationManager(textArchitect);
             }
             else
             {
@@ -84,7 +89,11 @@ namespace DIALOGUE
             if (initialized) return;
 
             initialized = true;
+            
             textArchitect = new TextArchitect(dialogueContainer.dialogueText);
+            conversationManager = new ConversationManager(textArchitect);
+            canvasGroupController = new CanvasGroupController(this, mainCanvasCG);
+            dialogueContainer.Initialize();
         }
 
         // Return Coroutine in Say method is good practice because anytime we want to add conversation, we dont need to manually check if
@@ -103,5 +112,11 @@ namespace DIALOGUE
         {
             return conversationManager.StartConversation(conversation);
         }
+
+        public Coroutine Show(float speedMultiplier = 1, bool immediate = false) => canvasGroupController.Show(speedMultiplier, immediate);
+        
+        public Coroutine Hide(float speedMultiplier = 1, bool immediate = false) => canvasGroupController.Hide(speedMultiplier, immediate);
+
+        public bool isVisible => canvasGroupController.isVisible;
     }
 }

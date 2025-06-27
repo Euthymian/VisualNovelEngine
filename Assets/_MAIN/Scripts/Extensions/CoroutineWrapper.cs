@@ -6,7 +6,7 @@ public class CoroutineWrapper
 {
     private MonoBehaviour owner;
     private Coroutine coroutine;
-    private Coroutine[] coroutines;
+    public bool needWait;
 
     public bool IsDone = false;
 
@@ -14,12 +14,7 @@ public class CoroutineWrapper
     {
         this.owner = owner;
         this.coroutine = coroutine;
-    }
-
-    public CoroutineWrapper(MonoBehaviour owner, Coroutine[] coroutines)
-    {
-        this.owner = owner;
-        this.coroutines = coroutines;
+        needWait = false;
     }
 
     public void Stop()

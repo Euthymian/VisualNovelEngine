@@ -15,3 +15,6 @@ MonoBehaviour:
   characterConfigSO: {fileID: 11400000, guid: bed55c6277018804d90d085b7aa12792, type: 2}
   defaultFont: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   defaultTextColor: {r: 1, g: 1, b: 1, a: 1}
+  defaultNameFontSize: 40
+  defaultDialogueFontSize: 30
+  dialogueFontScale: 1

@@ -14,11 +14,15 @@ wait(2)
 Celeste.SetColor(-c Green -spd 0.01)
 Mao.SetColor(-c Blue -spd 0.01)
 Raelin.SetColor(-c Red -spd 0.01)
-wait(2)
+wait(5)
 
-print("terminat all here")
-TerminateAllCommands()
+Raelin.setColor(-c magenta -spd 0.2)
 
+//print("terminat all here")
+//TerminateAllCommands()
+
+
+/*
 [wait]KyoyaAkase.Unhighlight(-i true)
 wait(2)
 [wait]KyoyaAkase.Highlight(-i true)
@@ -33,7 +37,7 @@ wait(2)
 
 [waitline]KyoyaAkase.SetSprite(-l 0 -spt p1 -spd 0.2), KyoyaAkase.SetSprite(-l 1 -spt p1e3 -spd 0.2)
 wait(2)
-
+*/
 
 
 

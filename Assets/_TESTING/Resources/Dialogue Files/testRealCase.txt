@@ -1,0 +1,32 @@
+wait(1)
+SetLayerMedia(background rain -b hurricane), PlayAmbience(RainyMood -cv 0.134)
+
+CreateCharacter("Rae as Raelin"), CreateCharacter("Kyo as KyoyaAkase")
+[wait]Show(Rae Kyo)
+
+Rae.Move(1.5), Kyo.Move(1.5)
+wait(3)
+Rae.Hide(), Kyo.Hide()
+wait(1)
+[wait]HideDB(-spd 0.05)
+
+StopAmbience()
+
+/*
+override ambience
+PlayAmbience(RainyMood -cv 0.4)
+*/
+
+SetLayerMedia(background 01_2), PlayMusic(Calm2)
+[waitline]Kyo.Move(-0.5), Rae.Move(-0.5)
+Rae.Show(), Kyo.Show()
+Rae.Move(0), Kyo.Move(0.3)
+
+Rae "This is great!"
+Kyo "Agreed!"
+
+[wait]HideUI(-spd 0.1)
+
+wait(1)
+
+ShowUI(-i true)

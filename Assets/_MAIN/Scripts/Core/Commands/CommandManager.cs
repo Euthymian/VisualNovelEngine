@@ -58,6 +58,22 @@ namespace COMMAND
             }
         }
 
+        public CommandDatabase CreateSubDatabase(string name)
+        {
+            name = name.ToLower();
+
+            if (subDatabases.TryGetValue(name, out CommandDatabase bd))
+            {
+                Debug.LogWarning($"Sub-database {name} already exists.");
+                return bd;
+            }
+
+            CommandDatabase newDb = new CommandDatabase();
+            subDatabases.Add(name, newDb);
+
+            return newDb;
+        }
+
         public CoroutineWrapper Execute(string commandName, params string[] args)
         {
             if (commandName.Contains(SUB_COMMAND_IDENTIFIER))
@@ -160,6 +176,51 @@ namespace COMMAND
             return cmd.runningProcess;
         }
 
+        private IEnumerator RunningProcess(CommandProcess cmd)
+        {
+            yield return WaitingForProcessToComplete(cmd.command, cmd.args);
+
+            if(cmd.runningProcess.needWait)
+                KillProcess(cmd);
+            else
+                KillProcessWithoutTerminationEvent(cmd);
+        }
+
+        private IEnumerator WaitingForProcessToComplete(Delegate command, string[] args)
+        {
+            if (command is Action)
+                command.DynamicInvoke();
+            else if (command is Action<string>)
+                command.DynamicInvoke(args.Length == 0 ? string.Empty : args[0]);
+            else if (command is Action<string[]>)
+                command.DynamicInvoke((object)args);
+
+            else if (command is Func<IEnumerator>)
+                yield return ((Func<IEnumerator>)command)();
+            else if (command is Func<string, IEnumerator>)
+                yield return ((Func<string, IEnumerator>)command)(args.Length == 0 ? string.Empty : args[0]);
+            else if (command is Func<string[], IEnumerator>)
+                yield return ((Func<string[], IEnumerator>)command).Invoke(args);
+        }
+
+        public void KillProcess(CommandProcess cmd)
+        {
+            activeProcesses.Remove(cmd);
+
+            if (cmd.runningProcess != null && !cmd.runningProcess.IsDone)
+                cmd.runningProcess.Stop();
+
+            cmd.onTerminateAction?.Invoke();
+        }
+
+        public void KillProcessWithoutTerminationEvent(CommandProcess cmd)
+        {
+            activeProcesses.Remove(cmd);
+
+            if (cmd.runningProcess != null && !cmd.runningProcess.IsDone)
+                cmd.runningProcess.Stop();
+        }
+
         public void StopCurrentProcess()
         {
             if (topProcess != null)
@@ -173,7 +234,8 @@ namespace COMMAND
                 if(cmd.runningProcess != null && !cmd.runningProcess.IsDone)
                     cmd.runningProcess.Stop();
 
-                cmd.onTerminateAction?.Invoke();
+                if(cmd.runningProcess.needWait)
+                    cmd.onTerminateAction?.Invoke();
             }
 
             activeProcesses.Clear();
@@ -197,40 +259,6 @@ namespace COMMAND
             }
         }
 
-        public void KillProcess(CommandProcess cmd)
-        {
-            activeProcesses.Remove(cmd);
-        
-            if(cmd.runningProcess != null && !cmd.runningProcess.IsDone)
-                cmd.runningProcess.Stop();
-
-            cmd.onTerminateAction?.Invoke();
-        }
-
-        private IEnumerator RunningProcess(CommandProcess cmd)
-        {
-            yield return WaitingForProcessToComplete(cmd.command, cmd.args);
-            
-            KillProcess(cmd);
-        }
-
-        private IEnumerator WaitingForProcessToComplete(Delegate command, string[] args)
-        {
-            if (command is Action) 
-                command.DynamicInvoke();
-            else if (command is Action<string>) 
-                command.DynamicInvoke(args.Length == 0 ? string.Empty : args[0]);
-            else if (command is Action<string[]>) 
-                command.DynamicInvoke((object)args);
-
-            else if (command is Func<IEnumerator>)
-                yield return ((Func<IEnumerator>)command)();
-            else if (command is Func<string, IEnumerator>)
-                yield return ((Func<string, IEnumerator>)command)(args.Length == 0 ? string.Empty : args[0]);
-            else if (command is Func<string[], IEnumerator>)
-                yield return ((Func<string[], IEnumerator>)command).Invoke(args);
-        }
-
         public void AddTerminationActionToCurrentProcess(UnityAction action)
         {
             if (topProcess == null)
@@ -238,22 +266,6 @@ namespace COMMAND
 
             topProcess.onTerminateAction = new UnityEvent();
             topProcess.onTerminateAction.AddListener(action);
-        }
-
-        public CommandDatabase CreateSubDatabase(string name)
-        {
-            name = name.ToLower();
-
-            if(subDatabases.TryGetValue(name, out CommandDatabase bd))
-            {
-                Debug.LogWarning($"Sub-database {name} already exists.");
-                return bd;
-            }
-
-            CommandDatabase newDb = new CommandDatabase();
-            subDatabases.Add(name, newDb);
-
-            return newDb;
         }
     }
 }

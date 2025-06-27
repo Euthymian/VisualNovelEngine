@@ -22,6 +22,9 @@ namespace CHARACTER
         public TMP_FontAsset nameFont;
         public TMP_FontAsset dialogueFont;
 
+        public float nameFontSize;
+        public float dialogueFontSize;
+
         public CharacterConfigData Copy()
         {
             CharacterConfigData copy = new CharacterConfigData();
@@ -30,6 +33,8 @@ namespace CHARACTER
             copy.characterType = characterType;
             copy.nameFont = nameFont;
             copy.dialogueFont = dialogueFont;
+            copy.nameFontSize = nameFontSize;
+            copy.dialogueFontSize = dialogueFontSize;
 
             // We cant directly copy the colors will reference original value when we do copy.nameColor = nameColor;
             // So we need to create a new color with the same values
@@ -53,6 +58,8 @@ namespace CHARACTER
                 defaultConfig.dialogueColor = defaultColor;
                 defaultConfig.nameFont = defaultFont;
                 defaultConfig.dialogueFont = defaultFont;
+                defaultConfig.nameFontSize = DialogueSystem.Instance.dialogueSystemConfigSO.defaultNameFontSize;
+                defaultConfig.dialogueFontSize = DialogueSystem.Instance.dialogueSystemConfigSO.defaultDialogueFontSize;
                 return defaultConfig;
             }
         }

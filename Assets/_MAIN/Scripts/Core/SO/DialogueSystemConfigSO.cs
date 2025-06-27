@@ -11,5 +11,9 @@ namespace DIALOGUE
 
         public TMP_FontAsset defaultFont;
         public Color defaultTextColor = Color.white;
+
+        public float defaultNameFontSize = 40;
+        public float defaultDialogueFontSize = 30f;
+        public float dialogueFontScale = 1;
     }
 }
