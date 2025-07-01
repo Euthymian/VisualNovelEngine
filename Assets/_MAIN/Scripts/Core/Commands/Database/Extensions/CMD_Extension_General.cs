@@ -42,6 +42,10 @@ namespace COMMAND
             parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, false);
             parameters.TryGetValue(PARAM_SPEED, out speedMultiplier, 1f);
 
+            CommandManager.Instance.AddTerminationActionToCurrentProcess(() =>
+            {
+                DialogueSystem.Instance.dialogueContainer.Show(speedMultiplier, immediate:true);
+            });
             yield return DialogueSystem.Instance.dialogueContainer.Show(speedMultiplier, immediate);
         }
         
@@ -55,6 +59,11 @@ namespace COMMAND
             parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, false);
             parameters.TryGetValue(PARAM_SPEED, out speedMultiplier, 1f);
 
+            CommandManager.Instance.AddTerminationActionToCurrentProcess(() =>
+            {
+                Debug.Log("terminate Hiding Dialogue Box");
+                DialogueSystem.Instance.dialogueContainer.Hide(speedMultiplier, immediate: true);
+            });
             yield return DialogueSystem.Instance.dialogueContainer.Hide(speedMultiplier, immediate);
         }
 
@@ -68,7 +77,11 @@ namespace COMMAND
             parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, false);
             parameters.TryGetValue(PARAM_SPEED, out speedMultiplier, 1f);
 
-            yield return DialogueSystem.Instance.Show(speedMultiplier, immediate);
+            CommandManager.Instance.AddTerminationActionToCurrentProcess(() =>
+            {
+                DialogueSystem.Instance.Show(speedMultiplier, immediate);
+            });
+            yield return DialogueSystem.Instance.Show(speedMultiplier, immediate: true);
         }
         
         private static IEnumerator HideDialogueSystem(string[] data)
@@ -81,7 +94,11 @@ namespace COMMAND
             parameters.TryGetValue(PARAM_IMMEDIATE, out immediate, false);
             parameters.TryGetValue(PARAM_SPEED, out speedMultiplier, 1f);
 
-            yield return DialogueSystem.Instance.Hide(speedMultiplier, immediate);
+            CommandManager.Instance.AddTerminationActionToCurrentProcess(() =>
+            {
+                DialogueSystem.Instance.Hide(speedMultiplier, immediate);
+            });
+            yield return DialogueSystem.Instance.Hide(speedMultiplier, immediate: true);
         }
     }
 }

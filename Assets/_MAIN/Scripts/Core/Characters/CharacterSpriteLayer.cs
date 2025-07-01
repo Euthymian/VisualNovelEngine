@@ -105,7 +105,7 @@ namespace CHARACTER
         private Coroutine TryStartIncrementingAlpha()
         {
             if (isIncrementingAlpha)
-                return co_incrementingAlpha;
+                characterManager.StopCoroutine(co_incrementingAlpha);
 
             co_incrementingAlpha = characterManager.StartCoroutine(IncrementingAlpha());
 
@@ -179,11 +179,13 @@ namespace CHARACTER
                 colorPercent += DEFAULT_TRANSITION_SPEED * speedMultiplier * Time.deltaTime;
 
                 renderer.color = Color.Lerp(oldColor, color, colorPercent);
-                foreach (Image item in oldImages)
+                for (int i = oldImages.Count - 1; i >= 0; i--)
                 {
-                    if (item == null)
-                        continue;
-                    item.color = renderer.color;
+                    Image image = oldImages[i];
+                    if (image != null)
+                        image.color = renderer.color;
+                    else
+                        oldImages.RemoveAt(i); 
                 }
 
                 yield return null;

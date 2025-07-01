@@ -22,7 +22,7 @@ Raelin.setColor(-c magenta -spd 0.2)
 //TerminateAllCommands()
 
 
-/*
+
 [wait]KyoyaAkase.Unhighlight(-i true)
 wait(2)
 [wait]KyoyaAkase.Highlight(-i true)
@@ -37,7 +37,7 @@ wait(2)
 
 [waitline]KyoyaAkase.SetSprite(-l 0 -spt p1 -spd 0.2), KyoyaAkase.SetSprite(-l 1 -spt p1e3 -spd 0.2)
 wait(2)
-*/
+
 
 
 

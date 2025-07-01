@@ -29,7 +29,13 @@ public class AudioChannel
     {
         if(TryGetTrack(clip.name, out AudioTrack existingTrack))
         {
-            if(!existingTrack.isPlaying)
+            if(existingTrack.loop != loop || existingTrack.cappedVolume != cappedVolume || existingTrack.source.pitch != pitch)
+            {
+                existingTrack.source.loop = loop;
+                existingTrack.cappedVolume = cappedVolume;
+                existingTrack.source.pitch = pitch;
+            }
+            if (!existingTrack.isPlaying)
                 existingTrack.Play();
 
             SetAsActiveTrack(existingTrack);
@@ -85,10 +91,6 @@ public class AudioChannel
                 AudioTrack track = trackList[i];
 
                 float targetVolume = activeTrack == track ? track.cappedVolume : 0f;
-                if(targetVolume == 0)
-                    Debug.Log("decreasing volumes at track " + track.trackName);
-                else
-                    Debug.Log("increasing volumes at track " + track.trackName);
 
                 if (track.volume == targetVolume)
                     continue;

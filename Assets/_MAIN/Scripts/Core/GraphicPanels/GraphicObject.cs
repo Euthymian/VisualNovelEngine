@@ -200,9 +200,10 @@ namespace GRAPHIC
         public void Destroy()
         {
             if (layer.currentGraphic != null && layer.currentGraphic.renderer == renderer)
-            {
                 layer.currentGraphic = null;
-            }
+
+            if(layer.oldGraphicObjectList.Contains(this))
+                layer.oldGraphicObjectList.Remove(this);
 
             Object.Destroy(renderer.gameObject);
         }

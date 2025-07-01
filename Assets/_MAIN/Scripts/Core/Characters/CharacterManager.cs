@@ -61,8 +61,15 @@ namespace CHARACTER
             }
         }
 
-        public CharacterConfigData GetCharacterConfigData(string characterName)
+        public CharacterConfigData GetCharacterConfigData(string characterName, bool getOriginal = false)
         {
+            if (!getOriginal)
+            {
+                Character character = GetCharacter(characterName);
+                if (character != null)
+                    return character.configData;
+            }
+            
             return DialogueSystem.Instance.dialogueSystemConfigSO.characterConfigSO.GetCharacterConfigData(characterName);
         }
 
@@ -80,7 +87,7 @@ namespace CHARACTER
 
             characterDictionary.Add(info.name.ToLower(), character);
 
-            if(showAfterCreated)
+            if (showAfterCreated)
                 character.Show();
 
             return character;
@@ -188,7 +195,7 @@ namespace CHARACTER
             int currentMaxPriority = remainCharacters.Count > 0 ? remainCharacters.Max(character => character.priority) : 0;
             for (int i = 0; i < selectedCharacters.Count; i++)
             {
-                selectedCharacters[i].SetPriority(currentMaxPriority + i + 1, autoSortCharacterOnUI:false);
+                selectedCharacters[i].SetPriority(currentMaxPriority + i + 1, autoSortCharacterOnUI: false);
             }
 
             List<Character> finalSortedCharacterList = remainCharacters.Concat(selectedCharacters).ToList();

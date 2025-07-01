@@ -107,12 +107,11 @@ namespace CHARACTER
 
         public virtual Coroutine Show(float speedMultiplier = 1)
         {
-            if(isShowing) return co_showing;
+            if(isShowing) 
+                characterManager.StopCoroutine(co_showing);
 
             if (isHiding)
-            {
                 characterManager.StopCoroutine(co_hiding);
-            }
 
             co_showing = characterManager.StartCoroutine(ShowingOrHiding(true, speedMultiplier));
             return co_showing;
@@ -120,12 +119,11 @@ namespace CHARACTER
 
         public virtual Coroutine Hide(float speedMultiplier = 1)
         {
-            if(isHiding) return co_hiding;
+            if(isHiding)
+                characterManager.StopCoroutine(co_hiding);
 
             if (isShowing)
-            {
                 characterManager.StopCoroutine(co_showing);
-            }
 
             co_hiding = characterManager.StartCoroutine(ShowingOrHiding(false, speedMultiplier));
             return co_hiding;
@@ -250,15 +248,7 @@ namespace CHARACTER
 
         public Coroutine Highlight(float speed = 1f, bool immediate = false)
         {
-            if (isHighlighting)
-            {
-                if(!immediate)
-                    return co_highlighting;
-                else
-                    characterManager.StopCoroutine(co_highlighting);
-            }
-
-            if (isUnHighlighting)
+            if (isHighlighting || isUnHighlighting)
                 characterManager.StopCoroutine(co_highlighting);
 
             highlighted = true;
@@ -268,15 +258,7 @@ namespace CHARACTER
 
         public Coroutine UnHighlight(float speed = 1f, bool immediate = false)
         {
-            if (isUnHighlighting)
-            {
-                if (!immediate)
-                    return co_highlighting;
-                else
-                    characterManager.StopCoroutine(co_highlighting);
-            }
-
-            if (isHighlighting)
+            if (isHighlighting || isUnHighlighting)
                 characterManager.StopCoroutine(co_highlighting);
 
             highlighted = false;

@@ -12,7 +12,7 @@ namespace DIALOGUE
     // Handles logic to run dialogue on screen 1 line a time
     public class ConversationManager
     {     
-        private TextArchitect textArchitect = null;
+        public TextArchitect textArchitect = null;
 
         private Coroutine process = null;
         public bool isRunning => process != null;
@@ -20,13 +20,17 @@ namespace DIALOGUE
         private bool userPrompted = false;
         private List<CoroutineWrapper> currentLineCommandList = new List<CoroutineWrapper>();
 
+        private TagManager tagManager;
+
         public ConversationManager(TextArchitect textArchitect)
         {
             this.textArchitect = textArchitect;
-            DialogueSystem.Instance.onUserPrompt_SpeedUp += DialogueSystem_onUserPrompt_SpeedUp;
+            DialogueSystem.Instance.onUserPrompt_Next += DialogueSystem_onUserPrompt_Next;
+        
+            tagManager = new TagManager();
         }
 
-        private void DialogueSystem_onUserPrompt_SpeedUp()
+        private void DialogueSystem_onUserPrompt_Next()
         {
             userPrompted = true;
         }
@@ -97,7 +101,7 @@ namespace DIALOGUE
             if (speakerData.makeCharacterEnter && !character.isVisible && !character.isShowing)
                     character.Show();
 
-            DialogueSystem.Instance.ShowSpeakerName(speakerData.displayName);
+            DialogueSystem.Instance.ShowSpeakerName(tagManager.Inject(speakerData.displayName));
             DialogueSystem.Instance.ApplySpeakerDataToDialogueContainer(speakerData.speakerName);
 
             if (speakerData.hasCastingPosition)
@@ -129,6 +133,7 @@ namespace DIALOGUE
             }
         }
 
+        public bool isWaitingForAutoTimer { get; private set; } = false;
         IEnumerator WaitForSegmentSignalToBeTrigger(DL_DIALOGUE_DATA.DIALOGUE_SEGMENT segment)
         {
             switch (segment.startSignal)
@@ -141,13 +146,17 @@ namespace DIALOGUE
                     break;
                 case DL_DIALOGUE_DATA.DIALOGUE_SEGMENT.StartSignal.WC:
                 case DL_DIALOGUE_DATA.DIALOGUE_SEGMENT.StartSignal.WA:
+                    isWaitingForAutoTimer = true;
                     yield return new WaitForSeconds(segment.signalDelay);
+                    isWaitingForAutoTimer = false;
                     break;
             }
         }
 
         IEnumerator BuildDialogue(string dialogue, bool append)
         {
+            dialogue = tagManager.Inject(dialogue);
+
             if (!append)
                 textArchitect.Build(dialogue);
             else

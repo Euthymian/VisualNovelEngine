@@ -12,7 +12,7 @@ namespace GRAPHIC
         public Transform panel;
 
         public GraphicObject currentGraphic = null;
-        private List<GraphicObject> oldGraphicObjectList = new List<GraphicObject>();
+        public List<GraphicObject> oldGraphicObjectList = new List<GraphicObject>();
 
         public Coroutine SetTexture(string filePath, float transitionSpeed = 1, Texture blendingTexture = null, bool immediate = false)
         {
@@ -73,7 +73,10 @@ namespace GRAPHIC
         public void ClearOldGraphics()
         {
             foreach (GraphicObject graphic in oldGraphicObjectList)
-                Object.Destroy(graphic.renderer.gameObject);
+            {
+                if(graphic.renderer != null)
+                    Object.Destroy(graphic.renderer.gameObject);
+            }
 
             oldGraphicObjectList.Clear();
         }

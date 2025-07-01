@@ -149,9 +149,6 @@ namespace COMMAND
                 case Character.CharacterType.Model3D:
                     db = subDatabases[DATABASE_CHARACTER_MODEL3D];
                     break;
-                default:
-                    Debug.LogError($"Character type {configData.characterType} is not supported.");
-                    return null;
             }
 
             command = db.GetCommand(commandName);

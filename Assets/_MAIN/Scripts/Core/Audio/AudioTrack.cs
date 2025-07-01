@@ -10,9 +10,9 @@ public class AudioTrack
 
     public string trackName { get; private set; }
     private AudioChannel channel;
-    private AudioSource source;
+    public AudioSource source;
     public bool loop => source.loop;
-    public float cappedVolume { get; private set; }
+    public float cappedVolume { get; set; }
     public bool isPlaying => source.isPlaying;
 
     public GameObject root => source.gameObject;

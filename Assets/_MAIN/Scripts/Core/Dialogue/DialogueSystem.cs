@@ -19,19 +19,28 @@ namespace DIALOGUE
         public DialogueContainer dialogueContainer = new DialogueContainer();
         public ConversationManager conversationManager;
         public TextArchitect textArchitect;
+        private AutoReader autoReader;
 
         [SerializeField] private CanvasGroup mainCanvasCG;
         private CanvasGroupController canvasGroupController;
 
         public delegate void DialogueSystemEvent();
-        public event DialogueSystemEvent onUserPrompt_SpeedUp;
+        public event DialogueSystemEvent onUserPrompt_Next;
 
         public DialogueContinuePrompt dialogueContinuePrompt;
 
-        public void OnUserPrompt_SpeedUp()
+        public void OnUserPrompt_Next()
         {
-            onUserPrompt_SpeedUp?.Invoke();
+            onUserPrompt_Next?.Invoke();
+
+            if (autoReader != null && autoReader.isOn)
+                autoReader.Disable(); // Disable auto reader when user prompt next, so that user can take control of the dialogue flow
         }
+        public void OnSystemPrompt_Next()
+        {
+            onUserPrompt_Next?.Invoke();
+        }
+
 
         public void ApplySpeakerDataToDialogueContainer(string speakerName)
         {
@@ -52,7 +61,7 @@ namespace DIALOGUE
             dialogueContainer.SetDialogueFontSize(configData.dialogueFontSize * dialogueSystemConfigSO.dialogueFontScale);
             dialogueContainer.speakerNameContainer.SetNameFont(configData.nameFont);
             dialogueContainer.speakerNameContainer.SetNameColor(configData.nameColor);
-            dialogueContainer.speakerNameContainer.SetNameFontSize(configData.nameFontSize);
+            dialogueContainer.speakerNameContainer.SetNameFontSize(configData.nameFontSize * dialogueSystemConfigSO.nameFontScale);
         }
 
         // Reason of making 2 ApplySpeakerDataToDialogueContainer methods is if we have direct reference to characterConfigData, we can use it directly
@@ -94,6 +103,9 @@ namespace DIALOGUE
             conversationManager = new ConversationManager(textArchitect);
             canvasGroupController = new CanvasGroupController(this, mainCanvasCG);
             dialogueContainer.Initialize();
+
+            if(TryGetComponent(out autoReader))
+                autoReader.Initialize(conversationManager);
         }
 
         // Return Coroutine in Say method is good practice because anytime we want to add conversation, we dont need to manually check if

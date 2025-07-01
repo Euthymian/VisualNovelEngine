@@ -107,6 +107,15 @@ There are 3 graphics panels in the scene: Background, Foreground and Cinematics
 
 
 
-
 ------------------- AUDIO --------------
-What if we want to override volume of the same track
+Call the same track with diff cappedVolume to change volume
+
+
+
+---------------- TAGS --------------
+Tags system enables dynamic dialogue system injection.
+
+Example: 
+	Narrator "And so begin the adventure of <mainChar>"
+	<mainChar> "I am ready!"
+<mainChar> is a tag which will be replaced with the name of the main character (which is set in the game settings)

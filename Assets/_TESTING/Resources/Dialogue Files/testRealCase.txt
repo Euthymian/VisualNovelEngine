@@ -1,8 +1,18 @@
 wait(1)
-SetLayerMedia(background rain -b hurricane), PlayAmbience(RainyMood -cv 0.134)
+SetLayerMedia(background rain -b hurricane), PlayAmbience(RainyMood -cv 0.4)
 
 CreateCharacter("Rae as Raelin"), CreateCharacter("Kyo as KyoyaAkase")
+
 [wait]Show(Rae Kyo)
+
+
+Kyo "Oh hi!{wa 1} Are you ..."
+Rae "Im Raelin, we have same math class."
+Kyo "Ahh! You were the girl who answer all the questions correctly!{wa 0.2} I am Kyoya Akase, but you can call me Kyo."
+Rae "Nice to meet you, Kyo!{wa 0.2} I was just passing by, but I saw you were alone here, so I thought I would say hi."
+Kyo "I think we should find a place to sit down, it is raining heavily outside."
+Rae "Yeah, I agree.{wa 0.2} I know a place nearby, it is a small cafe, but it is cozy and quiet."
+
 
 Rae.Move(1.5), Kyo.Move(1.5)
 wait(3)
@@ -10,12 +20,9 @@ Rae.Hide(), Kyo.Hide()
 wait(1)
 [wait]HideDB(-spd 0.05)
 
-StopAmbience()
+//StopAmbience()
 
-/*
-override ambience
-PlayAmbience(RainyMood -cv 0.4)
-*/
+PlayAmbience(RainyMood -cv 0.134)
 
 SetLayerMedia(background 01_2), PlayMusic(Calm2)
 [waitline]Kyo.Move(-0.5), Rae.Move(-0.5)
@@ -26,6 +33,7 @@ Rae "This is great!"
 Kyo "Agreed!"
 
 [wait]HideUI(-spd 0.1)
+PlayVoice(exclamation)
 
 wait(1)
 
