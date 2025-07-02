@@ -23,7 +23,7 @@ Speaker name format: [enter] speakerName as anotherName at 1:1 [0:Anger, 1:Happy
 <in case character is a sprite character which has only 1 layer, specify the layer isnt necessary>
 -> The speaker name appears on screen with anotherName (if have one) at the specific position with expression on layer
 
-enter: make character visible on screen
+[enter]: make character visible on screen
 as: anotherName
 at: position 
 []: expression
@@ -61,6 +61,14 @@ for example: raelin.setcolor(red -spd 0.001) will set raelin color to red at ext
 		
 WHEN FINALIZING CHARACTER COMMANDS, MAKE SURE NEW COMMAND WILL OVERRIDE THE PREVIOUS SAME TYPE COMMAND
 THIS CAN BE DONE BY STOP CURRENT COROUTINE AND START A NEW ONE (LIKE WHAT WE HAVE DONE WITH COLOR)
+
+
+
+------------------- LOGICAL LINE --------------
+Logical line may look the same as dialogue line, but it offers functionality as a function call
+
+Types:
+	- input "....." -> reveal input box and wait for player input
 
 
 

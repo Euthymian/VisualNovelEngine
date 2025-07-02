@@ -108,7 +108,8 @@ namespace DIALOGUE
                     Disable();
             }
 
-            statusText.text = STATUS_TEXT_AUTO;
+            if(isOn)
+                statusText.text = STATUS_TEXT_AUTO;
         }
 
         public void Toggle_Skip()
@@ -126,7 +127,8 @@ namespace DIALOGUE
                     Disable();
             }
 
-            statusText.text = STATUS_TEXT_SKIP;
+            if (isOn)
+                statusText.text = STATUS_TEXT_SKIP;
         }
     }
 }

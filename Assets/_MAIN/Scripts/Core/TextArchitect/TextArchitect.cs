@@ -253,12 +253,12 @@ public class TextArchitect
 
             tmpro.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
             
-            bool lastCharIsInvisible = !textInfo.characterInfo[maxRange-1].isVisible;  // space is invisiable character, visible doesnt mean its color
-            if (alphas[maxRange-1] > alphaThreshold || lastCharIsInvisible)
+            bool lastCharOfCurrentRangeIsInvisible = !textInfo.characterInfo[maxRange-1].isVisible;  // space is invisiable character, visible doesnt mean its color
+            if (alphas[maxRange-1] > alphaThreshold || lastCharOfCurrentRangeIsInvisible)
             {
                 if (maxRange < textInfo.characterCount)
                     maxRange++;
-                //else if (alphas[maxRange - 1] >= 255 || lastCharIsInvisible)
+                //else if (alphas[maxRange - 1] >= 255 || lastCharOfCurrentRangeIsInvisible)
                 //{
 
                 //    break;

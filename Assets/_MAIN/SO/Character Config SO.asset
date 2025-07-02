@@ -90,7 +90,7 @@ MonoBehaviour:
     characterType: 4
     nameColor: {r: 0.990566, g: 0.34109113, b: 0.7307763, a: 1}
     dialogueColor: {r: 1, g: 0.09803921, b: 0.43568227, a: 1}
-    nameFont: {fileID: 11400000, guid: 2a0a41832e57a1240a307d451795ad2a, type: 2}
+    nameFont: {fileID: 11400000, guid: fe007923094e533429c0f7279e2a857c, type: 2}
     dialogueFont: {fileID: 11400000, guid: 15e26ddfa07c7504b9f007c20597bb1d, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30

@@ -1,5 +1,6 @@
 using CHARACTER;
 using COMMAND;
+using DIALOGUE.LogicalLines;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace DIALOGUE
 {
     // Handles logic to run dialogue on screen 1 line a time
     public class ConversationManager
-    {     
+    {
         public TextArchitect textArchitect = null;
 
         private Coroutine process = null;
@@ -21,13 +22,15 @@ namespace DIALOGUE
         private List<CoroutineWrapper> currentLineCommandList = new List<CoroutineWrapper>();
 
         private TagManager tagManager;
+        private LogicalLineManager logicalLineManager;
 
         public ConversationManager(TextArchitect textArchitect)
         {
             this.textArchitect = textArchitect;
             DialogueSystem.Instance.onUserPrompt_Next += DialogueSystem_onUserPrompt_Next;
-        
+
             tagManager = new TagManager();
+            logicalLineManager = new LogicalLineManager();
         }
 
         private void DialogueSystem_onUserPrompt_Next()
@@ -62,19 +65,26 @@ namespace DIALOGUE
                 DIALOGUE_LINE line = DialogueParser.Parse(conversation[i]);
                 //Debug.Log(line.dialogueData);
 
-                if (line.hasDialogue)
-                    yield return HandleDialogueRun(line);
-
-                if (line.hasCommands)
-                    yield return HandleCommandRun(line);
-
-                if (line.hasDialogue) // Only wait if there is a dialogue line to build, if only commands, skip this part
+                if (logicalLineManager.TryGetLogic(line, out Coroutine logic))
                 {
-                    // wait for user prompt to continue
-                    yield return WaitForUserInput();
+                    yield return logic;
+                }
+                else
+                {
+                    if (line.hasDialogue)
+                        yield return HandleDialogueRun(line);
 
-                    CommandManager.Instance.StopAllProcesses();
-                }   
+                    if (line.hasCommands)
+                        yield return HandleCommandRun(line);
+
+                    if (line.hasDialogue) // Only wait if there is a dialogue line to build, if only commands, skip this part
+                    {
+                        // wait for user prompt to continue
+                        yield return WaitForUserInput();
+
+                        CommandManager.Instance.StopAllProcesses();
+                    }
+                }
             }
         }
 
@@ -85,7 +95,7 @@ namespace DIALOGUE
                 HandleSpeakerLogic(line.speakerData);
             }
 
-            if(!DialogueSystem.Instance.dialogueContainer.isVisible)
+            if (!DialogueSystem.Instance.dialogueContainer.isVisible)
                 yield return DialogueSystem.Instance.dialogueContainer.Show();
 
             // current dialogue line finishes building here
@@ -99,7 +109,7 @@ namespace DIALOGUE
             Character character = CharacterManager.Instance.GetCharacter(speakerData.speakerName, createIfDoentExist: characterMustBeCreated);
 
             if (speakerData.makeCharacterEnter && !character.isVisible && !character.isShowing)
-                    character.Show();
+                character.Show();
 
             DialogueSystem.Instance.ShowSpeakerName(tagManager.Inject(speakerData.displayName));
             DialogueSystem.Instance.ApplySpeakerDataToDialogueContainer(speakerData.speakerName);
@@ -122,7 +132,7 @@ namespace DIALOGUE
 
         IEnumerator BuildSegmentLines(DL_DIALOGUE_DATA dialogueData)
         {
-            for(int i = 0; i < dialogueData.segmentList.Count; i++)
+            for (int i = 0; i < dialogueData.segmentList.Count; i++)
             {
                 DL_DIALOGUE_DATA.DIALOGUE_SEGMENT segment = dialogueData.segmentList[i];
 
@@ -166,7 +176,7 @@ namespace DIALOGUE
             {
                 if (userPrompted)
                 {
-                    if(!textArchitect.hurryUp) textArchitect.hurryUp = true;
+                    if (!textArchitect.hurryUp) textArchitect.hurryUp = true;
                     else textArchitect.ForceComplete();
 
                     userPrompted = false;
@@ -198,18 +208,18 @@ namespace DIALOGUE
                         }
                     }
                     // By default, coroutineWrapper.needWait of commands that dont have [wait] or [waitline] will be set to false
-                    else CommandManager.Instance.Execute(command.name, command.args); 
+                    else CommandManager.Instance.Execute(command.name, command.args);
                 }
             }
             else
             {
-                foreach(DL_COMMAND_DATA.Command command in commands)
+                foreach (DL_COMMAND_DATA.Command command in commands)
                 {
                     CoroutineWrapper coroutineWrapper = CommandManager.Instance.Execute(command.name, command.args);
                     currentLineCommandList.Add(coroutineWrapper);
                 }
 
-                while(currentLineCommandList.Any(c => !c.IsDone))
+                while (currentLineCommandList.Any(c => !c.IsDone))
                 {
                     if (userPrompted)
                     {
@@ -235,8 +245,8 @@ namespace DIALOGUE
                 yield return null;
 
             DialogueSystem.Instance.dialogueContinuePrompt.Hide();
-            
-            userPrompted = false; 
+
+            userPrompted = false;
         }
     }
 }

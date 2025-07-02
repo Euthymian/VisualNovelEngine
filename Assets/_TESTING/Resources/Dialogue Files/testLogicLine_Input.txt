@@ -1,0 +1,3 @@
+Narrator "Finally we are awake. This is just start of the journey. {wc 1} What is your name?"
+input "My name is ..."
+Narrator "Nice to meet you, <input>."

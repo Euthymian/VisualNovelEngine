@@ -8,6 +8,8 @@ namespace DIALOGUE
 {
     public class DL_SPEAKER_DATA
     {
+        public string rawData { get; private set; } = string.Empty;
+
         private const string NAME_CAST_ID = " as ";
         private const string POSITION_CAST_ID = " at ";
         private const string EXPRESSION_CAST_ID = @" [";
@@ -42,6 +44,8 @@ namespace DIALOGUE
 
         public DL_SPEAKER_DATA(string rawSpeaker)
         {
+            rawData = rawSpeaker;
+
             rawSpeaker = ProcessKeywords(rawSpeaker);
 
             MatchCollection matches = Regex.Matches(rawSpeaker, SPEAKER_DATA_REGEX_PATTERN);

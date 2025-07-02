@@ -9,6 +9,8 @@ namespace DIALOGUE
 {
     public class DL_DIALOGUE_DATA
     {
+        public string rawData { get; private set; } = string.Empty;
+
         private const string SEGMENT_IDENTIFIER_REGEX_PATTERN = @"\{[ca]\}|\{w[ca]\s\d*\.?\d*\}";
 
         public List<DIALOGUE_SEGMENT> segmentList;
@@ -25,6 +27,7 @@ namespace DIALOGUE
 
         public DL_DIALOGUE_DATA(string rawDialogue)
         {
+            rawData = rawDialogue;
             segmentList = RipSegments(rawDialogue);
         }
 

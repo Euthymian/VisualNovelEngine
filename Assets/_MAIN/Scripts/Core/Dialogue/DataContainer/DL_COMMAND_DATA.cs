@@ -7,6 +7,8 @@ namespace DIALOGUE
 {
     public class DL_COMMAND_DATA
     {
+        public string rawData { get; private set; } = string.Empty;
+
         private const char COMMAND_SEPARATOR = ',';
         private const char ARGUMENTS_SEPARATOR = ' ';
         private const char ARGUMENTS_CONTAINER = '(';
@@ -25,6 +27,7 @@ namespace DIALOGUE
 
         public DL_COMMAND_DATA(string rawCommands)
         {
+            rawData = rawCommands;
             commands = RipCommands(rawCommands);
         }
 
