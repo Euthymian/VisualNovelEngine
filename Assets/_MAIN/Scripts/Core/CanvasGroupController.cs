@@ -24,6 +24,12 @@ public class CanvasGroupController
         this.rootCanvasGroup = rootCanvasGroup;
     }
 
+    public float alpha
+    {
+        get => rootCanvasGroup.alpha;
+        set => rootCanvasGroup.alpha = value;
+    }
+
     public Coroutine Show(float speedMultiplier = 1, bool immediate = false)
     {
         if (isShowing)
@@ -83,5 +89,11 @@ public class CanvasGroupController
 
         co_hiding = null;
         co_showing = null;
+    }
+
+    public void SetInteractableState(bool active)
+    {
+        rootCanvasGroup.interactable = active;
+        rootCanvasGroup.blocksRaycasts = active;
     }
 }

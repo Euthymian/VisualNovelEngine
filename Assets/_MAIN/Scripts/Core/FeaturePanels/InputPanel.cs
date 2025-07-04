@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,8 +29,8 @@ public class InputPanel : MonoBehaviour
     {
         cgc = new CanvasGroupController(this, canvasGroup);
 
-        canvasGroup.alpha = 0f;
-        SetCanvasState(false);
+        cgc.alpha = 0f;
+        cgc.SetInteractableState(false);
 
         inputField.onValueChanged.AddListener(OnInputValueChanged);
         acceptButton.onClick.AddListener(OnAcceptInput);
@@ -40,7 +41,7 @@ public class InputPanel : MonoBehaviour
     {
         titleText.text = title;
         inputField.text = string.Empty;
-        SetCanvasState(true);
+        cgc.SetInteractableState(true);
         cgc.Show();
         isWaitingOnUserInput = true;
     }
@@ -48,7 +49,7 @@ public class InputPanel : MonoBehaviour
     public void Hide()
     {
         cgc.Hide();
-        SetCanvasState(false);
+        cgc.SetInteractableState(false);
         isWaitingOnUserInput = false;
     }
 
@@ -59,12 +60,6 @@ public class InputPanel : MonoBehaviour
 
         lastInput = inputField.text;
         Hide();
-    }
-
-    private void SetCanvasState(bool active)
-    {
-        canvasGroup.interactable = active;
-        canvasGroup.blocksRaycasts = active;
     }
 
     public void OnInputValueChanged(string c)

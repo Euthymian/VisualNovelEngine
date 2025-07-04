@@ -68,7 +68,35 @@ THIS CAN BE DONE BY STOP CURRENT COROUTINE AND START A NEW ONE (LIKE WHAT WE HAV
 Logical line may look the same as dialogue line, but it offers functionality as a function call
 
 Types:
-	- input "....." -> reveal input box and wait for player input
+	- INPUT LINE 
+		Format: input "<Title>" 
+		-> reveal input box and wait for player input
+
+	- CHOICE LINE
+		Format: 
+			choice "<Question>"
+			  {
+					-Choice1
+						line1
+						line2
+						line3
+						choice "Sub Choice"
+						{
+							-SubChoice1
+								line1
+								line2
+							-SubChoice2
+								line1
+								line2
+						}
+					-Choice2
+						line1
+						line2
+			  }
+		-> This is format of choice line. When player selects a choice, instead of continuing the main dialogue, new dialogue will be push to the queue (line1 line2 line3) 
+		and once all lines are done, the main dialogue will continue
+
+		-> The system allows nested choices, so you can have a choice inside a choice.
 
 
 

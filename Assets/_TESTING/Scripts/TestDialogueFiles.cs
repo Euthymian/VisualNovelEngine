@@ -41,9 +41,9 @@ public class TestDialogueFiles : MonoBehaviour
         //    Debug.Log($"Get dialogue data from");
         //    if (parsedLine.dialogueData != null)
         //    {
-        //        for (int i = 0; i < parsedLine.dialogueData.segments.Count; i++)
+        //        for (int i = 0; i < parsedLine.dialogueData.segmentList.Count; i++)
         //        {
-        //            Debug.Log($"Segment {i}: <{parsedLine.dialogueData.segments[i].startSignal}:{parsedLine.dialogueData.segments[i].signalDelay}> -- <{parsedLine.dialogueData.segments[i].dialogue}> ");
+        //            Debug.Log($"Segment {i}: <{parsedLine.dialogueData.segmentList[i].startSignal}:{parsedLine.dialogueData.segmentList[i].signalDelay}> -- <{parsedLine.dialogueData.segmentList[i].dialogue}> ");
         //        }
         //    }
         //    else Debug.Log("No dialogue data found in this line.");

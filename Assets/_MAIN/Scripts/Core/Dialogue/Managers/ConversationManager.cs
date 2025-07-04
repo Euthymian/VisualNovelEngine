@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace DIALOGUE
 {
@@ -24,6 +25,10 @@ namespace DIALOGUE
         private TagManager tagManager;
         private LogicalLineManager logicalLineManager;
 
+        public Conversation conversation => (conversationQueue.IsEmpty() ? null : conversationQueue.top);
+        public int conversationProgress => (conversationQueue.IsEmpty() ? -1 : conversationQueue.top.GetProgress());
+        private ConversationQueue conversationQueue;
+
         public ConversationManager(TextArchitect textArchitect)
         {
             this.textArchitect = textArchitect;
@@ -31,18 +36,25 @@ namespace DIALOGUE
 
             tagManager = new TagManager();
             logicalLineManager = new LogicalLineManager();
+
+            conversationQueue = new ConversationQueue();
         }
+
+        public void Enqueue(Conversation conversation) => conversationQueue.Enqueue(conversation);
+        public void EnqueuePriority(Conversation conversation) => conversationQueue.EnqueuePriority(conversation);
 
         private void DialogueSystem_onUserPrompt_Next()
         {
             userPrompted = true;
         }
 
-        public Coroutine StartConversation(List<string> conversation)
+        public Coroutine StartConversation(Conversation conversation)
         {
             StopConversation();
 
-            process = DialogueSystem.Instance.StartCoroutine(RunningConversation(conversation));
+            Enqueue(conversation);
+
+            process = DialogueSystem.Instance.StartCoroutine(RunningConversation());
 
             return process;
         }
@@ -56,13 +68,29 @@ namespace DIALOGUE
             process = null;
         }
 
-        IEnumerator RunningConversation(List<string> conversation)
+        IEnumerator RunningConversation()
         {
-            for (int i = 0; i < conversation.Count; i++)
+            while (!conversationQueue.IsEmpty())
             {
-                if (string.IsNullOrEmpty(conversation[i])) continue;
+                // Cache a reference to conversationQueue.top because the top may change during the process (add new priority conversation to the queue)
+                Conversation currentConversation = conversation;
 
-                DIALOGUE_LINE line = DialogueParser.Parse(conversation[i]);
+                if (currentConversation.HasReachedEnd())
+                {
+                    conversationQueue.Dequeue();
+                    continue;
+                }
+
+                //Debug.Log($"Processing \n{conversation.GetRawLines()}\n at line {conversation.GetProgress()}\nQueue has {conversationQueue.conversationQueue.Count} conversations");
+                string rawLine = currentConversation.CurrentLine();
+
+                if (string.IsNullOrEmpty(rawLine))
+                {
+                    TryAdvanceConversation(currentConversation);
+                    continue;
+                }
+
+                DIALOGUE_LINE line = DialogueParser.Parse(rawLine);
                 //Debug.Log(line.dialogueData);
 
                 if (logicalLineManager.TryGetLogic(line, out Coroutine logic))
@@ -85,7 +113,80 @@ namespace DIALOGUE
                         CommandManager.Instance.StopAllProcesses();
                     }
                 }
+
+                TryAdvanceConversation(currentConversation);
             }
+
+            process = null;
+        }
+
+        private void TryAdvanceConversation(Conversation conversation)
+        {
+            conversation.IncrementProgress();
+            //Debug.Log($"Try incrementing conversation {conversation.GetRawLines()}");
+            //Debug.Log($"Top queue before dequeue: {conversationQueue.top.GetRawLines()}");
+
+            /*
+            Reason for this logic:
+
+            conversation.IncrementProgress();
+            if (conversation.HasReachedEnd())
+            {
+                conversationQueue.Dequeue();
+            }
+
+            When reached to the end of current top conversation, before prompt to call TryAdvanceConversation(currentConversation), 
+            we add new priority conversation to the queue.
+            Then prompt so TryAdvanceConversation(currentConversation) will IncrementProgress() of old top queue (before add new priority conversation).
+            Then check if the old top queue has reached end, if so, dequeue. But the conversation we are dequeuing is new priority conversation, not the old top queue.
+            -> after dequeue, the old top queue is still there, but current process is now out of range
+            -> That why this logic will help prevent the issue.
+
+            There is another case that trigger bug:
+            
+            char1 "hey"
+            choice "1+1=?"
+            {
+                -1
+                char1 "so stupid"
+                -2
+                char1 "is it needed to be answer?"
+            } <- file end here
+
+            when conversationManager extracts the choice, it waits until player makes choice. after the choice is made, the progress will move to } then 
+            EnqueuePriority() then TryAdvanceConversation(currentConversation) will be called and it will trigger the bug becuase } is end of the file.
+            */
+
+
+
+            //if (conversation.HasReachedEnd())
+            //{
+            //    Conversation tempTopQueue = conversationQueue.top;
+            //    bool popTopTemporarily = false;
+            //    if (conversation != tempTopQueue)
+            //    {
+            //        popTopTemporarily = true;
+            //        conversationQueue.Dequeue();
+            //    }
+
+            //    conversationQueue.Dequeue();
+
+            //    if (popTopTemporarily)
+            //    {
+            //        conversationQueue.EnqueuePriority(tempTopQueue);
+            //    }
+            //}
+
+
+            // the approach works fine but we need to EnqueuePriority again -> may cause performance issue if the queue is large
+            // -> instead, we do nothing then check in the conversation loop if the current top has reached end, remove and continue (line 78 -> 82)
+            if (conversation != conversationQueue.top)
+                return;
+
+            if (conversation.HasReachedEnd())
+                conversationQueue.Dequeue();
+
+            //Debug.Log($"Top queue after dequeue: {conversationQueue.top.GetRawLines()}");
         }
 
         IEnumerator HandleDialogueRun(DIALOGUE_LINE line)
