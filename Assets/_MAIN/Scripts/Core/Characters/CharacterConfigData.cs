@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using DIALOGUE;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,6 +26,9 @@ namespace CHARACTER
         public float nameFontSize;
         public float dialogueFontSize;
 
+        [SerializedDictionary("Path / ID", "Sprite")]
+        public SerializedDictionary<string, Sprite> sprites = new SerializedDictionary<string, Sprite>();
+
         public CharacterConfigData Copy()
         {
             CharacterConfigData copy = new CharacterConfigData();
@@ -35,6 +39,7 @@ namespace CHARACTER
             copy.dialogueFont = dialogueFont;
             copy.nameFontSize = nameFontSize;
             copy.dialogueFontSize = dialogueFontSize;
+            copy.sprites = new SerializedDictionary<string, Sprite>(sprites); 
 
             // We cant directly copy the colors will reference original value when we do copy.nameColor = nameColor;
             // So we need to create a new color with the same values

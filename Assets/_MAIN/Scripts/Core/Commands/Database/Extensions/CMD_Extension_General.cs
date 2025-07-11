@@ -64,7 +64,6 @@ namespace COMMAND
 
             CommandManager.Instance.AddTerminationActionToCurrentProcess(() =>
             {
-                Debug.Log("terminate Hiding Dialogue Box");
                 DialogueSystem.Instance.dialogueContainer.Hide(speedMultiplier, immediate: true);
             });
             yield return DialogueSystem.Instance.dialogueContainer.Hide(speedMultiplier, immediate);

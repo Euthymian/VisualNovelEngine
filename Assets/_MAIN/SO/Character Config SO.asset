@@ -22,6 +22,18 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: e61345ab36d12fd4ab3954470292271a, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList:
+      - Key: female student 2 - blush
+        Value: {fileID: 21300000, guid: fb8ffcc53d5fdf7478c76d005391bef2, type: 3}
+      - Key: female student 2 - happy
+        Value: {fileID: 21300000, guid: df280f1f06751d94eab80822a9a78e3d, type: 3}
+      - Key: female student 2 - sad
+        Value: {fileID: 21300000, guid: a87d3431b34b5024e84ff21358b4fbd6, type: 3}
+      - Key: female student 2 - surprised
+        Value: {fileID: 21300000, guid: c76866b235f5a6d439dc6ef13d8e4ee4, type: 3}
+      - Key: female student 2 - upset
+        Value: {fileID: 21300000, guid: 32dd9e88cd28cb145bbd0a11e0fa4e4b, type: 3}
   - name: Raelin
     alias: rae
     characterType: 2
@@ -31,6 +43,56 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: e61345ab36d12fd4ab3954470292271a, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList:
+      - Key: A2
+        Value: {fileID: 371039983, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Stern
+        Value: {fileID: 1930344441, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A1
+        Value: {fileID: -539901293, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Blush
+        Value: {fileID: -231494423, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Default
+        Value: {fileID: -861763730, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Embarrassed
+        Value: {fileID: -12134526, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Guilty
+        Value: {fileID: 1799884572, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Happy
+        Value: {fileID: -831843799, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Laugh
+        Value: {fileID: 752875108, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Scared
+        Value: {fileID: 1148731873, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Scold
+        Value: {fileID: 877658820, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: A_Shock
+        Value: {fileID: -819501888, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B1
+        Value: {fileID: 2143271235, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B2
+        Value: {fileID: -984643779, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Blush
+        Value: {fileID: 455040721, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Default
+        Value: {fileID: 1731016576, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Embarrassed
+        Value: {fileID: -899087398, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Guilty
+        Value: {fileID: -1818594040, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Happy
+        Value: {fileID: 2079976379, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Laugh
+        Value: {fileID: -810301392, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Scared
+        Value: {fileID: 2089198746, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Scold
+        Value: {fileID: 1533307292, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Shock
+        Value: {fileID: -1330446141, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: B_Stern
+        Value: {fileID: -1720575887, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
   - name: KyoyaAkase
     alias: kyo
     characterType: 1
@@ -40,6 +102,48 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: e61345ab36d12fd4ab3954470292271a, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList:
+      - Key: pose1\p1
+        Value: {fileID: 21300000, guid: a5adba44ffb59814693793b7e0b32bc2, type: 3}
+      - Key: pose1\p1e0
+        Value: {fileID: 21300000, guid: cf9c389cd08132045a4e48ccea0b9b47, type: 3}
+      - Key: pose1\p1e1
+        Value: {fileID: 21300000, guid: 823a968d4f6c84a4bab5a7327b4e07d6, type: 3}
+      - Key: pose1\p1e2
+        Value: {fileID: 21300000, guid: e763fdaf72a54434dbbbdfbc58b1e974, type: 3}
+      - Key: pose1\p1e3
+        Value: {fileID: 21300000, guid: ba6353d77cfcbd048bf279a5e548d1fe, type: 3}
+      - Key: pose1\p1e4
+        Value: {fileID: 21300000, guid: a768ad268c38bb54da4c7474d05b7696, type: 3}
+      - Key: pose1\p1e5
+        Value: {fileID: 21300000, guid: 052fac5e36e37bc40acc7bc533514e9c, type: 3}
+      - Key: pose1\p1e6
+        Value: {fileID: 21300000, guid: 5b316e3094ec98d41ab9cc31628d69ac, type: 3}
+      - Key: pose1\p1e7
+        Value: {fileID: 21300000, guid: 0781143ce51b0654b9f0a3f9ca54de58, type: 3}
+      - Key: pose1\p1e8
+        Value: {fileID: 21300000, guid: 94e9b2a721ecfc54b865cde9d4649d32, type: 3}
+      - Key: pose2\p2
+        Value: {fileID: 21300000, guid: 9afa84f7557aa59469f3b6caa0b0e93a, type: 3}
+      - Key: pose2\p2e0
+        Value: {fileID: 21300000, guid: ea80ba56d3e37904bb2380c2d841001b, type: 3}
+      - Key: pose2\p2e1
+        Value: {fileID: 21300000, guid: 0330c090ce6b4ed458237b54c30a918b, type: 3}
+      - Key: pose2\p2e2
+        Value: {fileID: 21300000, guid: 537e657ab45e64246b26e0cc8c313b8d, type: 3}
+      - Key: pose2\p2e3
+        Value: {fileID: 21300000, guid: c1b440415398964468476b66fec1b7d3, type: 3}
+      - Key: pose2\p2e4
+        Value: {fileID: 21300000, guid: e159ed270822f9740af0e9c0ab58f96b, type: 3}
+      - Key: pose2\p2e5
+        Value: {fileID: 21300000, guid: 1488f544b3c976440abd18967a58d063, type: 3}
+      - Key: pose2\p2e6
+        Value: {fileID: 21300000, guid: 4fa2355467e608e4a94c0229dac219b8, type: 3}
+      - Key: pose2\p2e7
+        Value: {fileID: 21300000, guid: dbb725eb0b9b75a4c8df2b6c6486eca8, type: 3}
+      - Key: pose2\p2e8
+        Value: {fileID: 21300000, guid: 3a082771a3dff7d49a4f474774483bf0, type: 3}
   - name: Generic
     alias: gen
     characterType: 2
@@ -49,6 +153,16 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList:
+      - Key: Guard
+        Value: {fileID: -1957405950, guid: 6c007007286b401479daf6bba1200421, type: 3}
+      - Key: Child
+        Value: {fileID: 1080889024, guid: 6c007007286b401479daf6bba1200421, type: 3}
+      - Key: Dad
+        Value: {fileID: -964242304, guid: 6c007007286b401479daf6bba1200421, type: 3}
+      - Key: Monk
+        Value: {fileID: 868266631, guid: 6c007007286b401479daf6bba1200421, type: 3}
   - name: Mao
     alias: mao
     characterType: 3
@@ -58,6 +172,8 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: bc1aff5a11f4e29449e05565bfe84b3e, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList: []
   - name: Koharu
     alias: ko
     characterType: 3
@@ -67,6 +183,8 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 7dae9413b6eca944f84676b3355aa848, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList: []
   - name: Natori
     alias: na
     characterType: 3
@@ -76,6 +194,8 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList: []
   - name: Rice
     alias: ric
     characterType: 3
@@ -85,6 +205,8 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 6a888d69a87eec245b2ce096aa58c7b4, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList: []
   - name: Celeste
     alias: cel
     characterType: 4
@@ -94,6 +216,8 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 15e26ddfa07c7504b9f007c20597bb1d, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList: []
   - name: <mainChar>
     alias: mc
     characterType: 0
@@ -103,3 +227,5 @@ MonoBehaviour:
     dialogueFont: {fileID: 11400000, guid: 7df1fa4082eb7264096d29fa1043d546, type: 2}
     nameFontSize: 40
     dialogueFontSize: 30
+    sprites:
+      _serializedList: []

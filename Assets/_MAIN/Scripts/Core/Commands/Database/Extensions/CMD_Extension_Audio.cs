@@ -91,9 +91,11 @@ namespace COMMAND
             CommandParameters parameters = ConvertDataToParameters(data);
 
             parameters.TryGetValue<string>(PARAM_MUSIC, out filePath);
-            parameters.TryGetValue<int>(PARAM_CHANNEL, out channel);
+            filePath = FilePaths.GetPathToResource(FilePaths.resources_music, filePath);
 
-            PlayTrack(FilePaths.GetPathToResource(FilePaths.resources_music, filePath), channel, parameters);
+            parameters.TryGetValue<int>(PARAM_CHANNEL, out channel, 1);
+
+            PlayTrack(filePath, channel, parameters);
         }
 
         private static void PlayAmbience(string[] data)
@@ -104,9 +106,11 @@ namespace COMMAND
             CommandParameters parameters = ConvertDataToParameters(data);
 
             parameters.TryGetValue<string>(PARAM_AMBIENCE, out filePath);
+            filePath = FilePaths.GetPathToResource(FilePaths.resources_ambience, filePath);
+
             parameters.TryGetValue<int>(PARAM_CHANNEL, out channel, 0);
 
-            PlayTrack(FilePaths.GetPathToResource(FilePaths.resources_ambience, filePath), channel, parameters);
+            PlayTrack(filePath, channel, parameters);
         }
 
         private static void PlayTrack(string filePath, int channel, CommandParameters parameters)

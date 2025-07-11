@@ -37,6 +37,7 @@ namespace CHARACTER
             rootCanvasGroup.alpha = showOnStart ? 1 : 0;
 
             spritesFolderPath = rootAssetFolder + "/Images";
+            //Characters/<Character_Name>/Images
             //Debug.Log($"{name} folder path: {spritesFolderPath}");
 
             GetLayers();
@@ -70,6 +71,13 @@ namespace CHARACTER
 
         public Sprite GetSprite(string spriteName)
         {
+            spriteName = spriteName.ToLower();
+            if (configData.sprites.Count > 0)
+            {
+                if(configData.sprites.TryGetValue(spriteName, out Sprite sprite))
+                    return sprite;
+            }
+
             if (configData.characterType == CharacterType.SpriteSheet)
             {
                 string[] spriteSheetData = spriteName.Split(SPRITESHEET_SPRITE_SEPERATOR, StringSplitOptions.RemoveEmptyEntries);

@@ -10,7 +10,7 @@ namespace CHARACTER
     {
         public CharacterConfigData[] characterConfigDatas;
 
-        public CharacterConfigData GetCharacterConfigData(string characterName)
+        public CharacterConfigData GetCharacterConfigData(string characterName, bool safe = true)
         {
             characterName = characterName.ToLower();
             foreach (var characterConfigData in characterConfigDatas)
@@ -27,7 +27,9 @@ namespace CHARACTER
                     When we make changes to SO in Unity Editor, the changes will stay even if we close the Editor, because we editted to SO original data
                     -> Return a copy that preserving the original data
                     */
-                    return characterConfigData.Copy();
+
+                    //If safe, return copy, else return the real config (any changes on the return later will affect the original data)
+                    return safe ? characterConfigData.Copy() : characterConfigData; 
                 }
             }
 
