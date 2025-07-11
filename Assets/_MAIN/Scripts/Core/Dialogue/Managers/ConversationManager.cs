@@ -22,7 +22,6 @@ namespace DIALOGUE
         private bool userPrompted = false;
         private List<CoroutineWrapper> currentLineCommandList = new List<CoroutineWrapper>();
 
-        private TagManager tagManager;
         private LogicalLineManager logicalLineManager;
 
         public Conversation conversation => (conversationQueue.IsEmpty() ? null : conversationQueue.top);
@@ -34,7 +33,6 @@ namespace DIALOGUE
             this.textArchitect = textArchitect;
             DialogueSystem.Instance.onUserPrompt_Next += DialogueSystem_onUserPrompt_Next;
 
-            tagManager = new TagManager();
             logicalLineManager = new LogicalLineManager();
 
             conversationQueue = new ConversationQueue();
@@ -52,6 +50,7 @@ namespace DIALOGUE
         {
             StopConversation();
 
+            conversationQueue.Clear();
             Enqueue(conversation);
 
             process = DialogueSystem.Instance.StartCoroutine(RunningConversation());
@@ -109,7 +108,7 @@ namespace DIALOGUE
                     {
                         // wait for user prompt to continue
                         yield return WaitForUserInput();
-
+                        
                         CommandManager.Instance.StopAllProcesses();
                     }
                 }
@@ -212,7 +211,8 @@ namespace DIALOGUE
             if (speakerData.makeCharacterEnter && !character.isVisible && !character.isShowing)
                 character.Show();
 
-            DialogueSystem.Instance.ShowSpeakerName(tagManager.Inject(speakerData.displayName));
+            DialogueSystem.Instance.ShowSpeakerName(TagManager.Inject(speakerData.displayName));
+            DialogueSystem.Instance.dialogueContainer.dialogueText.text = string.Empty; // Clear the previous dialogue text before apply
             DialogueSystem.Instance.ApplySpeakerDataToDialogueContainer(speakerData.speakerName);
 
             if (speakerData.hasCastingPosition)
@@ -266,7 +266,7 @@ namespace DIALOGUE
 
         IEnumerator BuildDialogue(string dialogue, bool append)
         {
-            dialogue = tagManager.Inject(dialogue);
+            dialogue = TagManager.Inject(dialogue);
 
             if (!append)
                 textArchitect.Build(dialogue);

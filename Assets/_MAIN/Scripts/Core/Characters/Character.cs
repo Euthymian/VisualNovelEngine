@@ -164,6 +164,9 @@ namespace CHARACTER
             if(root == null)
                 return;
 
+            if (isMoving)
+                characterManager.StopCoroutine(co_moving);
+
             (Vector2 minAnchorTarget, Vector2 maxAnchorTarget) = ConvertUITargetPositionToRelativeCharacterAnchorTargets(pos);
 
             root.anchorMin = minAnchorTarget;

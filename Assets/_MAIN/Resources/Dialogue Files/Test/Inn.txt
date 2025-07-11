@@ -1,0 +1,6 @@
+SetLayerMedia(background "BG Inn_night"), PlayMusic(Calm2)
+[wait] Celeste.Move(0.5 -spd 1)
+Celeste.Show()
+
+[wait]ShowDB()
+Celeste "Welcome to the inn! It's a cozy place to relax after a long day."

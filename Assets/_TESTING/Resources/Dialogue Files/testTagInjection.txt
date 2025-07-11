@@ -1,4 +1,4 @@
-Narrator "And this is start of <mainChar> journey."
+Narrator "And this is start of <mainChar> journey. We have $string0 with us today"
 <mainChar> "I can't believe I am finally here. This is the beginning of my adventure!"
 Celeste "The first thing you need to do is leveling up, you are at <playerLevel> which too weak!"
 <mainChar> "hehe, it is <time>, perfect for a good sleep."

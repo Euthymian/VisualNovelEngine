@@ -78,8 +78,10 @@ public class AudioChannel
 
     private void TryStartVolumeLeveling()
     {
-        if(!isVolumeLeveling)
-            co_volumeLeveling = AudioManager.Instance.StartCoroutine(VolumeLeveling());
+        if(isVolumeLeveling)
+            AudioManager.Instance.StopCoroutine(co_volumeLeveling);
+
+        co_volumeLeveling = AudioManager.Instance.StartCoroutine(VolumeLeveling());
     }
 
     private IEnumerator VolumeLeveling()

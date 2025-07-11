@@ -1,0 +1,6 @@
+SetLayerMedia(background -m 5), PlayMusic(Calm2)
+[wait] Celeste.Move(0.5 -spd 1)
+Celeste.Show()
+
+[wait]ShowDB()
+Celeste "Welcome aboard the space ship! It's a marvel of technology, isn't it?"

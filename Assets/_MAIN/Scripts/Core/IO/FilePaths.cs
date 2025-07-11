@@ -23,6 +23,8 @@ public class FilePaths
     public static readonly string resources_voices = $"{resources_audio}Voices/";
     public static readonly string resources_music = $"{resources_audio}Music/";
     public static readonly string resources_ambience = $"{resources_audio}Ambience/";
+    
+    public static readonly string resources_dialogue = $"Dialogue Files/";
 
     public static string GetPathToResource(string defaultPath, string resourceName)
     {

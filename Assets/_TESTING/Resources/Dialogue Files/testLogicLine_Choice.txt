@@ -1,5 +1,7 @@
-enter Celeste "So, tell me, do you like dogs or cats?"
+SetLayerMedia(background rain -b hurricane), PlayAmbience(RainyMood -cv 0.4)
 
+enter Celeste "So, tell me, do you like dogs or cats?"
+$myHealth = 49
 choice "What Pet Do You Prefer?"
 {
 	-Dogs
@@ -12,13 +14,51 @@ choice "What Pet Do You Prefer?"
 		Celeste "Yes, I have a tabby named Luna. She's very playful!"
 	-Dragons
 		Celeste "Dragons? Wow, that's a unique choice! They are majestic creatures."
-		<mainChar> "I know, right? {wc 1} Do you have any?"
+		<mainChar> "I know, right? {wc 0.3} Do you have any?"
 		Celeste "Sadly, no. But I dream of having one someday!"
 		<mainChar> "Hey, im starving. I need food. I can order something for you too. What do you want Celeste"
 		choice "Order Food"
 		{
 			-Pizza
 				Celeste "Pizza sounds delicious! I love a good Margherita pizza."
+				if ($myHealth < 50)
+				{
+					<mainChar> "Pizza is great, but I think you should watch your health. Is it a good choice?"
+					Celeste "Nah. I'd win"
+					choice "Are you sure?"
+					{
+						-Yes
+							Celeste "Yes, I'm sure! I can handle it."
+							$myHealth -= 100
+						-No
+							Celeste "I appreciate your concern, but I know what I'm doing."
+							$myHealth += 5
+					}
+				}
+
+				Narrator "Celeste takes a bite of the pizza, savoring the taste. However, she seems to be a bit concerned about her health after eating it."
+
+				if ($myHealth < 0)
+				{
+					Celeste "I regret. I shouldnt eat it"
+					choice "Do you want to fix this?"
+					{
+						-Yes
+							choice "What will you do?"
+							{
+								-Practice
+									Celeste "Im gonna go to the gym tmr. Do you want to go with me <mainChar>? My health point is only $myHealth. It cant be worse"
+								-Another slide
+									Celeste "I will eat more. I cant stop here"
+							}
+						-No
+							Celeste "But you know, I cant be worse, right? I am beautiful already."
+					}
+				}
+				else
+				{
+					Celeste "Thanks god, If I eat that slide, I cant get this body"
+				}
 			-Burger
 				Celeste "A burger would be great! I love a classic cheeseburger."
 			-Salad
@@ -29,3 +69,21 @@ choice "What Pet Do You Prefer?"
 }
 
 Narrator "Celeste smiles warmly, enjoying the conversation about pets. She seems to appreciate your interest in her preferences."
+
+choice "Where should we go now?"
+{
+	-Inn
+		Celeste "The inn is a great place to rest and gather our thoughts. Let's head there."
+		<mainChar> "Sounds good, I could use some rest."
+		load(Test/Inn -enqueue true)
+	-Space Ship
+		Celeste "The space ship is ready for our next adventure. Let's explore the stars!"
+		<mainChar> "I can't wait to see what's out there."
+		load(Test/SpaceShip -enqueue false)
+}
+
+HideDB()
+Celeste.Move(1.5 -spd 1)
+ClearLayerMedia(background)
+StopAmbience()
+wait(3)

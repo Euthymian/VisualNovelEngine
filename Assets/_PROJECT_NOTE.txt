@@ -2,6 +2,9 @@
 <CharacterName> "<Dialogue>" <Commands>
 if <CharacterName> isnt specified, it will be replaced with the name of the character that is currently speaking.
 
+// -> Single line comment
+/**/ -> Multi lines comment
+
 
 
 ------------- DIALOGUE SEGMENTATION --------------
@@ -101,6 +104,51 @@ Types:
 
 
 
+------------- VARIABLES --------------
+We can define variables in the dialogue file, then use them in logical line such as $money = 100
+
+There are 2 types of variable: Internal and External
+	- Internal variable: Defined in the dialogue file, stored in VariableStore and only used in the dialogue file
+	- External variable: Reference to actual variable in the game
+		-> By doing this, we can change variable value within dialogue file and it will be reflected in the game
+
+VariableStore is container of variable databases. Variables share same kind of data belong to a database. Default database will store variables which not explicitly assigned to a database
+Example: 
+	Int.characterCount: Int = database; characterCount = variable name
+	String.characterName: String = database; characterName = variable name
+	wow: Default database; wow = variable name
+
+
+
+
+------------- OPERATOR LINE --------------
+To declare variables and perform operations in dialogue file
+$money = 100
+$money += 50
+if ($money > 100) 
+{
+	$money -= 50
+}
+$variable = "Heading to $Destination"
+
+
+
+
+------------- CONDITION LINE --------------
+Execute if else statement in dialogue file
+if ($money > 100)
+{
+	lines
+}
+else if ($onsale && $athome)
+{
+	lines
+}
+This line cant have another parentheisises inside condition
+
+
+
+
 ------------- CHARACTER TYPES --------------
 Text character: Only for render text on screen, it can store some varibles but no art assets -> A large crowd 
 Sprite (sheet) character: A traditional 2d character with sprite
@@ -145,6 +193,7 @@ There are 3 graphics panels in the scene: Background, Foreground and Cinematics
 
 ------------------- AUDIO --------------
 Call the same track with diff cappedVolume to change volume
+New track at the same layer will override the previous 
 
 
 
@@ -155,3 +204,7 @@ Example:
 	Narrator "And so begin the adventure of <mainChar>"
 	<mainChar> "I am ready!"
 <mainChar> is a tag which will be replaced with the name of the main character (which is set in the game settings)
+
+
+
+

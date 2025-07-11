@@ -34,13 +34,8 @@ public class CanvasGroupController
     {
         if (isShowing)
         {
-            if(!immediate)
-                return co_showing;
-            else
-            {
-                DialogueSystem.Instance.StopCoroutine(co_showing);
-                co_showing = null;
-            }
+            DialogueSystem.Instance.StopCoroutine(co_showing);
+            co_showing = null;
         }
         else if (isHiding)
         {
@@ -56,13 +51,8 @@ public class CanvasGroupController
     {
         if (isHiding)
         {
-            if (!immediate)
-                return co_hiding;
-            else 
-            {
-                DialogueSystem.Instance.StopCoroutine(co_hiding);
-                co_hiding = null;
-            }
+            DialogueSystem.Instance.StopCoroutine(co_hiding);
+            co_hiding = null;
         }
         else if (isShowing)
         {
@@ -78,7 +68,7 @@ public class CanvasGroupController
     {
         CanvasGroup cg = rootCanvasGroup;
 
-        if(immediate)
+        if (immediate)
             cg.alpha = alpha;
 
         while (cg.alpha != alpha)

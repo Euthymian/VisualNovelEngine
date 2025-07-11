@@ -128,7 +128,7 @@ namespace GRAPHIC
                 panelManager.StopCoroutine(co_fadingOut);
 
             if (co_fadingIn != null)
-                return co_fadingIn;
+                panelManager.StopCoroutine(co_fadingIn);
 
             co_fadingIn = panelManager.StartCoroutine(Fading(1f, speed, blendingTexture));
             return co_fadingIn;
@@ -140,10 +140,10 @@ namespace GRAPHIC
                 panelManager.StopCoroutine(co_fadingIn);
 
             if (co_fadingOut != null)
-                return co_fadingIn;
+                panelManager.StopCoroutine(co_fadingOut);
 
-            co_fadingIn = panelManager.StartCoroutine(Fading(0f, speed, blendingTexture));
-            return co_fadingIn;
+            co_fadingOut = panelManager.StartCoroutine(Fading(0f, speed, blendingTexture));
+            return co_fadingOut;
         }
 
         private IEnumerator Fading(float target, float speed, Texture blendingTexture = null)

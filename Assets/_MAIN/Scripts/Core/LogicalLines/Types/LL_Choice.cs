@@ -4,20 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+using static DIALOGUE.LogicalLines.LogicalLineUtils.Encapsulation;
+
 namespace DIALOGUE.LogicalLines
 {
     public class LL_Choice : ILogicalLine
     {
         public string keyword => "choice";
-        private const char ENCAPSULATION_START = '{';
-        private const char ENCAPSULATION_END = '}';
         private const char CHOICE_IDENTIFIER = '-';
-
-        private struct RawChoiceData
-        {
-            public List<string> lines;
-            public int endIndex;
-        }
 
         private struct Choice
         {
@@ -25,40 +19,6 @@ namespace DIALOGUE.LogicalLines
             public List<string> resultLines;
         }
 
-        private RawChoiceData RipChoiceData()
-        {
-            Conversation currentConversation = DialogueSystem.Instance.conversationManager.conversation;
-            int currentProgress = DialogueSystem.Instance.conversationManager.conversationProgress;
-            int encapsulationLevel = 0;
-            RawChoiceData data = new RawChoiceData { lines = new List<string>(), endIndex = 0 };
-
-            for (int i = currentProgress; i < currentConversation.Count; i++)
-            {
-                string line = currentConversation.GetLines()[i];
-                data.lines.Add(line);
-
-                if (IsEncapslationStart(line))
-                {
-                    encapsulationLevel++;
-                    continue;
-                }
-
-                if (IsEncapslationEnd(line))
-                {
-                    encapsulationLevel--;
-                    if (encapsulationLevel == 0)
-                    {
-                        data.endIndex = i;
-                        break;
-                    }
-                }
-            }
-
-            return data;
-        }
-
-        private bool IsEncapslationStart(string line) => line.Trim().StartsWith(ENCAPSULATION_START);
-        private bool IsEncapslationEnd(string line) => line.Trim().StartsWith(ENCAPSULATION_END);
         private bool IsChoiceStart(string line) => line.Trim().StartsWith(CHOICE_IDENTIFIER);
 
         private void AddLineToResults(string line, ref Choice choice, ref int encapsulationLevel)
@@ -76,7 +36,7 @@ namespace DIALOGUE.LogicalLines
             if (IsEncapslationEnd(line))
             {
                 encapsulationLevel--;
-                if (encapsulationLevel == 0)
+                if (encapsulationLevel > 0)
                     choice.resultLines.Add(line);
                 return;
             }
@@ -84,7 +44,7 @@ namespace DIALOGUE.LogicalLines
             choice.resultLines.Add(line);
         }
 
-        private List<Choice> GetChoiceFromData(RawChoiceData rawChoiceData)
+        private List<Choice> GetChoiceFromData(EncapsulatedData rawChoiceData)
         {
             List<Choice> choices = new List<Choice>();
             int encapsulationLevel = 0;
@@ -119,11 +79,15 @@ namespace DIALOGUE.LogicalLines
 
         public IEnumerator Execute(DIALOGUE_LINE line)
         {
-            RawChoiceData rawChoiceData = RipChoiceData();
+            Conversation currentConversation = DialogueSystem.Instance.conversationManager.conversation;
+            int currentProgress = DialogueSystem.Instance.conversationManager.conversationProgress;
 
-            List<Choice> choiceList = GetChoiceFromData(rawChoiceData);
+            EncapsulatedData data = RipEncapsulationData(currentConversation, currentProgress, ripHeaderAndEncapsulators: true); // We want to rip header which containing choice title
+
+            List<Choice> choiceList = GetChoiceFromData(data);
 
             string title = line.dialogueData.rawData;
+            //string title = data.lines[0].Trim(); 
             string[] choiceTitles = choiceList.Select(c => c.title).ToArray();
 
             ChoicePanel.Instance.Show(title, choiceTitles);
@@ -134,7 +98,7 @@ namespace DIALOGUE.LogicalLines
             Choice selectedChoice = choiceList[ChoicePanel.Instance.lastDecision.answerIndex];
 
             Conversation conversationFromChoice = new Conversation(selectedChoice.resultLines);
-            DialogueSystem.Instance.conversationManager.conversation.SetProgress(rawChoiceData.endIndex); //+1?
+            DialogueSystem.Instance.conversationManager.conversation.SetProgress(data.endIndex); //+1?
             DialogueSystem.Instance.conversationManager.EnqueuePriority(conversationFromChoice);
         }
 

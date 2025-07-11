@@ -91,7 +91,7 @@ namespace COMMAND
             CommandParameters parameters = ConvertDataToParameters(data);
 
             parameters.TryGetValue<string>(PARAM_MUSIC, out filePath);
-            parameters.TryGetValue<int>(PARAM_CHANNEL, out channel, 1);
+            parameters.TryGetValue<int>(PARAM_CHANNEL, out channel);
 
             PlayTrack(FilePaths.GetPathToResource(FilePaths.resources_music, filePath), channel, parameters);
         }

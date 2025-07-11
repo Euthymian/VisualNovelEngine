@@ -1,0 +1,40 @@
+﻿/*
+$money = 10
+
+Arisu "Cuop day"
+
+$money *= 20
+
+narrator "You have $money money left"
+*/
+
+/*
+$light = true
+
+Arisu "Tat den de cho ba ngu"
+
+$light = !$light
+
+narrator "Den la $light"
+*/
+
+
+input "Your name?"
+
+$name = "<input> The Might" 
+
+narrator "Your name is $name"
+
+$name += "From The Past"
+
+narrator "Your name is now $name"
+
+
+/*
+$money = 100.576
+$money *= 20 + 10 * 56 + 39
+*/
+
+
+
+

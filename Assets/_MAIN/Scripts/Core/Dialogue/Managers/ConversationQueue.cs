@@ -7,8 +7,11 @@ namespace DIALOGUE
     public class ConversationQueue
     {
         private Queue<Conversation> conversationQueue = new Queue<Conversation>();
+        
         public Conversation top => conversationQueue.Peek();
+        
         public void Enqueue(Conversation conversation) => conversationQueue.Enqueue(conversation);
+
         public void EnqueuePriority(Conversation conversation)
         {
             Queue<Conversation> tempQueue = new Queue<Conversation>();
@@ -19,11 +22,14 @@ namespace DIALOGUE
 
             conversationQueue = tempQueue;
         }
+
         public void Dequeue()
         {
             if (conversationQueue.Count > 0)
                 conversationQueue.Dequeue();
         }
+
+        public void Clear() => conversationQueue.Clear();
 
         public bool IsEmpty() => conversationQueue.Count == 0;
     }
