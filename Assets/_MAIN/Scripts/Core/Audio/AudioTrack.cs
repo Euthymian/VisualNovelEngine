@@ -9,10 +9,16 @@ public class AudioTrack
     private const string TRACK_NAME_FORMAT = "Track - [{0}]";
 
     public string trackName { get; private set; }
+    public string path { get; private set; }
     private AudioChannel channel;
     public AudioSource source;
     public bool loop => source.loop;
     public float cappedVolume { get; set; }
+    public float pitch
+    {
+        get => source.pitch;
+        set => source.pitch = value;
+    }
     public bool isPlaying => source.isPlaying;
 
     public GameObject root => source.gameObject;
@@ -23,7 +29,7 @@ public class AudioTrack
         set => source.volume = value;
     }
 
-    public AudioTrack(AudioClip clip, bool loop, float startVolume, float cappedVolume, float pitch, AudioChannel channel, AudioMixerGroup mixer)
+    public AudioTrack(AudioClip clip, bool loop, float startVolume, float cappedVolume, float pitch, AudioChannel channel, AudioMixerGroup mixer, string path)
     {
         trackName = clip.name;
         this.channel = channel;
@@ -36,6 +42,7 @@ public class AudioTrack
         source.pitch = pitch;
 
         source.outputAudioMixerGroup = mixer;
+        this.path = path;
     }
 
     private AudioSource CreateSource()

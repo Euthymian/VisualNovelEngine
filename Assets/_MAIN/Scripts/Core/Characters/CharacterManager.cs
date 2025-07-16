@@ -39,6 +39,7 @@ namespace CHARACTER
         public string characterPrefabPathFormat => $"{characterRootPathFormat}/{characterPrefabNameFormat}";
 
         public Dictionary<string, Character> characterDictionary = new Dictionary<string, Character>();
+        public List<Character> allCharacters => characterDictionary.Values.ToList();
 
         [SerializeField] private RectTransform characterPanel;
         [SerializeField] private RectTransform characterPanel_Live2D;

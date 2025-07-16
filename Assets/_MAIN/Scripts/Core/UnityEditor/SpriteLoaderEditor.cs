@@ -100,7 +100,7 @@ public class SpriteLoaderEditor : EditorWindow
 
                         foreach (Sprite spriteFromSheet in spritesFromTexture)
                         {
-                            string keyName = spriteFromSheet.name;
+                            string keyName = spriteFromSheet.name.ToLower(); // No folder name, only sprite name
                             config.sprites[keyName] = spriteFromSheet;
                         }
                     }
@@ -115,9 +115,13 @@ public class SpriteLoaderEditor : EditorWindow
                     Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
                     if (sprite != null)
                     {
-                        string keyName = path.Replace(rootFolderPath, "").Replace(".png", "").ToLower();
-                        string fullKeyName = keyName.Substring(1).Replace('\\','/'); // Removing the starting "/"
-                        config.sprites[fullKeyName] = sprite;
+                        //string keyName = path.Replace(rootFolderPath, "").Replace(".png", "").ToLower();
+                        //// Should we change this so as SpriteSheet type, only get the name of the sprite without the folder structure?
+                        //string fullKeyName = keyName.Substring(1).Replace('\\','/'); // Removing the starting "/"
+                        //config.sprites[fullKeyName] = sprite;
+
+                        string keyName = sprite.name.ToLower(); 
+                        config.sprites[keyName] = sprite;
                     }
                 }
             }

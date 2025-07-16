@@ -27,6 +27,9 @@ namespace DIALOGUE
         public delegate void DialogueSystemEvent();
         public event DialogueSystemEvent onUserPrompt_Next;
 
+        //everytime dialogue is cleared (have a new line), this event will be invoked
+        public event DialogueSystemEvent onClear;
+
         public DialogueContinuePrompt dialogueContinuePrompt;
 
         public void OnUserPrompt_Next()
@@ -36,11 +39,34 @@ namespace DIALOGUE
             if (autoReader != null && autoReader.isOn)
                 autoReader.Disable(); // Disable auto reader when user prompt next, so that user can take control of the dialogue flow
         }
+
         public void OnSystemPrompt_Next()
         {
             onUserPrompt_Next?.Invoke();
         }
 
+        public void OnSystemPrompt_Clear()
+        {
+            onClear?.Invoke();
+        }
+
+        public void OnStartViewingHistory()
+        {
+            dialogueContinuePrompt.Hide();
+
+            conversationManager.allowUserPrompt = false;
+
+            autoReader.allowToggle = false;
+            if(autoReader.isOn)
+                autoReader.Disable();
+        }
+
+        public void OnStopViewingHistory()
+        {
+            dialogueContinuePrompt.Show();
+            autoReader.allowToggle = true;
+            conversationManager.allowUserPrompt = true;
+        }
 
         public void ApplySpeakerDataToDialogueContainer(string speakerName)
         {
@@ -72,7 +98,10 @@ namespace DIALOGUE
             if(speakerName.ToLower() != "narrator")
                 dialogueContainer.speakerNameContainer.Show(speakerName);
             else
+            {
                 dialogueContainer.speakerNameContainer.Hide();
+                dialogueContainer.speakerNameContainer.nameText.text = "";
+            }
         }
 
 

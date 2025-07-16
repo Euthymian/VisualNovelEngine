@@ -34,12 +34,12 @@ public class TextArchitect
     private Coroutine buildProcess = null;
     public bool isBuilding => buildProcess != null;
 
-    public TextArchitect(TextMeshProUGUI tmpro_ui)
+    public TextArchitect(TextMeshProUGUI tmpro_ui, BuildMethod buildMethod = DEFAULT_BUILD_METHOD)
     {
         this.tmpro_ui = tmpro_ui;
     }
 
-    public TextArchitect(TextMeshPro tmpro_world)
+    public TextArchitect(TextMeshPro tmpro_world, BuildMethod buildMethod = DEFAULT_BUILD_METHOD)
     {
         this.tmpro_world = tmpro_world;
     }
@@ -185,6 +185,7 @@ public class TextArchitect
         switch(buildMethod)
         {
             case BuildMethod.typewriter:
+                tmpro.ForceMeshUpdate();
                 tmpro.maxVisibleCharacters = tmpro.textInfo.characterCount;
                 break;
             case BuildMethod.fade:
@@ -279,5 +280,16 @@ public class TextArchitect
         if(!isBuilding) return;
         tmpro.StopCoroutine(buildProcess);
         buildProcess = null;
+    }
+
+    public void SetText(string text)
+    {
+        preText = "";
+        targetText = text;
+
+        Stop();
+
+        tmpro.text = targetText;
+        ForceComplete();
     }
 }

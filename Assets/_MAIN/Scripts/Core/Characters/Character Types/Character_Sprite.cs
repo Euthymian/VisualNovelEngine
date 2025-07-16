@@ -71,13 +71,14 @@ namespace CHARACTER
 
         public Sprite GetSprite(string spriteName)
         {
-            spriteName = spriteName.ToLower();
             if (configData.sprites.Count > 0)
             {
-                if(configData.sprites.TryGetValue(spriteName, out Sprite sprite))
+                string lowerSpriteName = spriteName.ToLower();
+                if (configData.sprites.TryGetValue(lowerSpriteName, out Sprite sprite))
                     return sprite;
             }
 
+            Debug.Log("Load from resources: " + spriteName);
             if (configData.characterType == CharacterType.SpriteSheet)
             {
                 string[] spriteSheetData = spriteName.Split(SPRITESHEET_SPRITE_SEPERATOR, StringSplitOptions.RemoveEmptyEntries);

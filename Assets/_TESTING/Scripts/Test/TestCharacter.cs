@@ -198,11 +198,11 @@ public class TestCharacter : MonoBehaviour
         yield return kyo.Say("\"OK, but ...{wc 2} Whos ask?\"");
 
         rae.Highlight();
-        rae.Animate("Hop");
+        rae.SetMotion("Hop");
         rae.TransitionSprite(rae.GetSprite("Raelin-A_Shock"), layer: 1);
         yield return rae.Say("\"....\"");
         rae.TransitionSprite(rae.GetSprite("Raelin-A_Scared"), layer: 1);
-        rae.Animate("Shiver", true);
+        rae.SetMotion("Shiver", true);
         yield return rae.Say("\"Aaaaaaa.....\"");
     }
 

@@ -25,6 +25,8 @@ namespace DIALOGUE
 
         [SerializeField] private TextMeshProUGUI statusText;
 
+        [HideInInspector] public bool allowToggle = true;
+
         public void Initialize(ConversationManager conversationManager)
         {
             this.conversationManager = conversationManager;
@@ -95,6 +97,9 @@ namespace DIALOGUE
 
         public void Toggle_Auto()
         {
+            if (!allowToggle)
+                return;
+
             bool prevSkip = skip;
             skip = false;
 
@@ -114,6 +119,9 @@ namespace DIALOGUE
 
         public void Toggle_Skip()
         {
+            if (!allowToggle)
+                return;
+
             bool prevSkip = skip;
             skip = true;
 

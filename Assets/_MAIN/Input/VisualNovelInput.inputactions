@@ -13,6 +13,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "HistoryBack",
+                    "type": "Button",
+                    "id": "f0d2916f-6118-49c2-9c84-9af34e429a9a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HistoryForward",
+                    "type": "Button",
+                    "id": "84ae2d34-5d4d-4611-b612-c2f93872e690",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HistoryLogs",
+                    "type": "Button",
+                    "id": "95287087-75da-43e5-84c5-c837b88bc200",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -35,6 +62,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dda83f81-70ba-45da-8732-c9e4f1ff99c2",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HistoryBack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e264b095-71f3-4f15-8e82-fd2dc583b9d6",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HistoryForward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "10640e3d-87de-4564-9d7a-3cb383aeb0ec",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HistoryLogs",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

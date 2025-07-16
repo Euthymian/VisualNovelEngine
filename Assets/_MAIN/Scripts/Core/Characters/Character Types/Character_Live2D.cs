@@ -14,7 +14,10 @@ namespace CHARACTER
 
         private CubismRenderController cubismRenderController;
         private CubismExpressionController cubismExpressionController;
-        private Animator motionAnimator;
+        private Animator modelAnimator;
+
+        public string activeExpression { get; private set; }
+        public string activeMotion { get; private set; }
 
         private List<CubismRenderController> oldCubismRenderControllerList = new List<CubismRenderController>();
 
@@ -28,31 +31,34 @@ namespace CHARACTER
         {
             Debug.Log("Character_Live2D constructor called with name: " + name);
 
-            motionAnimator = animator.transform.GetChild(0).GetComponentInChildren<Animator>();
+            modelAnimator = animator.transform.GetChild(0).GetComponentInChildren<Animator>();
             /*
             GetComponentInChildren<Animator>() will also find the component on the parent containing the children
             -> if we get the motionAnimator by
                     motionAnimator = animator.GetComponentInChildren<Animator>();
             it will return the animator on the parent, not the one on the child.
             */
-            cubismExpressionController = motionAnimator.GetComponent<CubismExpressionController>();
-            cubismRenderController = motionAnimator.GetComponent<CubismRenderController>();
+            cubismExpressionController = modelAnimator.GetComponent<CubismExpressionController>();
+            cubismRenderController = modelAnimator.GetComponent<CubismRenderController>();
             cubismRenderController.Opacity = showOnStart ? 1 : 0;
         }
 
         public void SetAnimation(string animationName)
         {
-            motionAnimator.Play(animationName);
+            modelAnimator.Play(animationName);
+            activeMotion = animationName;
         }
 
         public void SetExpression(int expressionIndex)
         {
             cubismExpressionController.CurrentExpressionIndex = expressionIndex;
+            activeExpression = expressionIndex.ToString();
         }
 
         public void SetExpression(string expressionName)
         {
             cubismExpressionController.CurrentExpressionIndex = GetExpressionIndexByName(expressionName);
+            activeExpression = expressionName;
         }
 
         private int GetExpressionIndexByName(string expressionName)
@@ -184,7 +190,7 @@ namespace CHARACTER
             newLive2dCharacter.name = name;
             cubismExpressionController = newLive2dCharacter.GetComponent<CubismExpressionController>();
             cubismRenderController = newLive2dCharacter.GetComponent<CubismRenderController>();
-            motionAnimator = newLive2dCharacter.GetComponent<Animator>();
+            modelAnimator = newLive2dCharacter.GetComponent<Animator>();
 
             return newLive2dCharacter;
         }

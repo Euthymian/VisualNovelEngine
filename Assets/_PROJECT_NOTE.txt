@@ -159,6 +159,11 @@ Live 2d character: With animation
 
 --------------- SPRITE CHARACTER SETUP --------------
 - Watch video https://www.youtube.com/watch?v=RcCM4pm5sbA&list=PLGSox0FgA5B58Ki4t4VqAPDycEpmkBd0i&index=17
+- Sprite and SpriteSheet characters are similar, but SpriteSheet character has a sprite sheet which contains multiple sprites
+
+- There are 2 ways to GetSprite: from SO and from Resources
+	- When choose to load from SO, CASE INSENSITIVE is applied  <-- This is easier 
+	- When choose to load from Resources, CASE SENSITIVE is applied
 
 
 
@@ -208,3 +213,9 @@ Example:
 
 
 
+---------------- HISTORY --------------
+- Sprite lookup:
+	Currently, when load sprite to SO by tool, if character is Sprite, the key will be path, else if character is SpriteSheet, the key will be name of the sprite sheet
+	-> Not consistent
+
+- Not finished model3d saved json data

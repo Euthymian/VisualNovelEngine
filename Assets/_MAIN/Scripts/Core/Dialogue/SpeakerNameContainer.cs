@@ -12,7 +12,7 @@ namespace DIALOGUE
     public class SpeakerNameContainer
     {
         [SerializeField] private GameObject root;
-        [SerializeField] private TextMeshProUGUI nameText;
+        [field:SerializeField] public TextMeshProUGUI nameText { get; private set; } // This property is editable in the inspector but privately assignable
 
         public void SetNameColor(Color color) => nameText.color = color;
         public void SetNameFont(TMP_FontAsset font) => nameText.font = font;

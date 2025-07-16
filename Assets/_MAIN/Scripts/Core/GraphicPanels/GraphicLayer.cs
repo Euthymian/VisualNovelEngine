@@ -63,7 +63,7 @@ namespace GRAPHIC
                 oldGraphicObjectList.Add(currentGraphic);
             currentGraphic = newGraphic;
 
-            if(!immediate)
+            if (!immediate)
                 return currentGraphic.FadeIn(transitionSpeed, blendingTexture);
 
             ClearOldGraphics();
@@ -74,7 +74,7 @@ namespace GRAPHIC
         {
             foreach (GraphicObject graphic in oldGraphicObjectList)
             {
-                if(graphic.renderer != null)
+                if (graphic.renderer != null)
                     Object.Destroy(graphic.renderer.gameObject);
             }
 

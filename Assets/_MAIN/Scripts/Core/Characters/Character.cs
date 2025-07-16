@@ -9,6 +9,9 @@ namespace CHARACTER
 
     // Base class for all characters which all types of characters will inherit from
 
+    // Convention: For animations that apply to all character types, we called them MOTION
+                // For animations that apply to only specific character type, we called them ANIMATION
+
     public abstract class Character 
     {
         public enum CharacterType
@@ -22,7 +25,7 @@ namespace CHARACTER
 
         protected const float UNHIGHLIGHTED_DARKEN_STRENGTH = 0.1f;
         public const bool DEFAULT_ORIENTATION_IS_LEFT = true;
-        protected const string ANIMATION_TRIGGER_TRIGGER_REFRESH_ID = "Refresh";
+        public const string ANIMATION_TRIGGER_TRIGGER_REFRESH_ID = "Refresh";
 
         protected bool showOnStart = false; 
         public string name = "";
@@ -59,6 +62,7 @@ namespace CHARACTER
 
         protected Coroutine co_moving;
         public bool isMoving => co_moving != null;
+        public Vector2 targetPos { get; private set; }
 
         public int priority { get; protected set; }
 
@@ -167,6 +171,8 @@ namespace CHARACTER
             if (isMoving)
                 characterManager.StopCoroutine(co_moving);
 
+            targetPos = pos; 
+
             (Vector2 minAnchorTarget, Vector2 maxAnchorTarget) = ConvertUITargetPositionToRelativeCharacterAnchorTargets(pos);
 
             root.anchorMin = minAnchorTarget;
@@ -180,6 +186,8 @@ namespace CHARACTER
 
             if (isMoving)
                 characterManager.StopCoroutine(co_moving);
+
+            targetPos = pos;
 
             co_moving = characterManager.StartCoroutine(MovingToPos(pos, speed, smooth));
             return co_moving;
@@ -322,12 +330,12 @@ namespace CHARACTER
             return;
         }
 
-        public void Animate(string animation)
+        public void SetMotion(string animation)
         {
             animator.SetTrigger(animation);
         }
 
-        public void Animate(string animation, bool state)
+        public void SetMotion(string animation, bool state)
         {
             animator.SetBool(animation, state);
             animator.SetTrigger(ANIMATION_TRIGGER_TRIGGER_REFRESH_ID);

@@ -1,3 +1,4 @@
+using HISTORY;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,10 @@ public class PlayerInputManager : MonoBehaviour
 
     private void InitializeActions()
     {
-        actions.Add((playerInput.actions["Next"], PromptSpeedUpNext));
+        actions.Add((playerInput.actions["Next"], OnNext));
+        actions.Add((playerInput.actions["HistoryBack"], OnHistoryBack));
+        actions.Add((playerInput.actions["HistoryForward"], OnHistoryForward));
+        actions.Add((playerInput.actions["HistoryLogs"], OnHistoryLogToggle));
     }
 
     private void OnEnable()
@@ -37,8 +41,32 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    public void PromptSpeedUpNext(InputAction.CallbackContext c)
+    public void OnNext(InputAction.CallbackContext c)
     {
         DIALOGUE.DialogueSystem.Instance.OnUserPrompt_Next();
+    }
+
+    public void OnHistoryBack(InputAction.CallbackContext c)
+    {
+        HistoryManager.Instance.GoBack();
+    }
+
+    public void OnHistoryForward(InputAction.CallbackContext c)
+    {
+        HistoryManager.Instance.GoForward();
+    }
+
+    public void OnHistoryLogToggle(InputAction.CallbackContext c)
+    {
+        HistoryLogManager logManager = HistoryManager.Instance.historyLogManager;
+
+        if (logManager.isOpen)
+        {
+            logManager.Close();
+        }
+        else
+        {
+            logManager.Open();
+        }
     }
 }

@@ -18,7 +18,8 @@ namespace CHARACTER
 
         GameObject renderGroup;
         private Camera modelCamera;
-        private Transform modelContainer, model;
+        private Transform modelContainer; 
+        public Transform model { get; private set; } 
         private Animator modelAnimator;
         private SkinnedMeshRenderer eyesController;
         private SkinnedMeshRenderer headController;

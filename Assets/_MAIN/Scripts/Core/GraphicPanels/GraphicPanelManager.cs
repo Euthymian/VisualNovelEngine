@@ -14,7 +14,7 @@ namespace GRAPHIC
             Instance = this;
         }
 
-        [SerializeField] private GraphicPanel[] allPanels;
+        [field:SerializeField] public GraphicPanel[] allPanels { get; private set; }
 
         public GraphicPanel GetPanel(string panelName)
         {

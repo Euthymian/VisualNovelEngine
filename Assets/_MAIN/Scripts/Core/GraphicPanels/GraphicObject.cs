@@ -24,6 +24,7 @@ namespace GRAPHIC
         public RawImage renderer;
 
         public bool isVideo { get { return videoPlayer != null; } }
+        public bool useAudio => audioSource != null ? !audioSource.mute : false;
         public VideoPlayer videoPlayer = null;
         public AudioSource audioSource = null;
 

@@ -45,54 +45,56 @@ MonoBehaviour:
     dialogueFontSize: 30
     sprites:
       _serializedList:
-      - Key: A2
+      - Key: a2
         Value: {fileID: 371039983, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Stern
+      - Key: a_stern
         Value: {fileID: 1930344441, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A1
+      - Key: a1
         Value: {fileID: -539901293, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Blush
+      - Key: a_blush
         Value: {fileID: -231494423, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Default
+      - Key: a_default
         Value: {fileID: -861763730, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Embarrassed
+      - Key: a_embarrassed
         Value: {fileID: -12134526, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Guilty
+      - Key: a_guilty
         Value: {fileID: 1799884572, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Happy
+      - Key: a_happy
         Value: {fileID: -831843799, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Laugh
+      - Key: a_laugh
         Value: {fileID: 752875108, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Scared
+      - Key: a_scared
         Value: {fileID: 1148731873, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Scold
+      - Key: a_scold
         Value: {fileID: 877658820, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: A_Shock
+      - Key: a_shock
         Value: {fileID: -819501888, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B1
+      - Key: b1
         Value: {fileID: 2143271235, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B2
+      - Key: b2
         Value: {fileID: -984643779, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Blush
+      - Key: b_blush
         Value: {fileID: 455040721, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Default
+      - Key: b_default
         Value: {fileID: 1731016576, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Embarrassed
+      - Key: b_embarrassed
         Value: {fileID: -899087398, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Guilty
+      - Key: b_guilty
         Value: {fileID: -1818594040, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Happy
+      - Key: b_happy
         Value: {fileID: 2079976379, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Laugh
+      - Key: b_laugh
         Value: {fileID: -810301392, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Scared
+      - Key: b_scared
         Value: {fileID: 2089198746, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Scold
+      - Key: b_scold
         Value: {fileID: 1533307292, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Shock
+      - Key: b_shock
         Value: {fileID: -1330446141, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
-      - Key: B_Stern
+      - Key: b_stern
         Value: {fileID: -1720575887, guid: 418997cd131ebf84fac6b738543fe03f, type: 3}
+      - Key: a1_inall
+        Value: {fileID: -539901293, guid: 8afcb7cb602c048418774b322a79e5b8, type: 3}
   - name: KyoyaAkase
     alias: kyo
     characterType: 1
@@ -104,45 +106,45 @@ MonoBehaviour:
     dialogueFontSize: 30
     sprites:
       _serializedList:
-      - Key: pose1\p1
+      - Key: p1
         Value: {fileID: 21300000, guid: a5adba44ffb59814693793b7e0b32bc2, type: 3}
-      - Key: pose1\p1e0
+      - Key: p1e0
         Value: {fileID: 21300000, guid: cf9c389cd08132045a4e48ccea0b9b47, type: 3}
-      - Key: pose1\p1e1
+      - Key: p1e1
         Value: {fileID: 21300000, guid: 823a968d4f6c84a4bab5a7327b4e07d6, type: 3}
-      - Key: pose1\p1e2
+      - Key: p1e2
         Value: {fileID: 21300000, guid: e763fdaf72a54434dbbbdfbc58b1e974, type: 3}
-      - Key: pose1\p1e3
+      - Key: p1e3
         Value: {fileID: 21300000, guid: ba6353d77cfcbd048bf279a5e548d1fe, type: 3}
-      - Key: pose1\p1e4
+      - Key: p1e4
         Value: {fileID: 21300000, guid: a768ad268c38bb54da4c7474d05b7696, type: 3}
-      - Key: pose1\p1e5
+      - Key: p1e5
         Value: {fileID: 21300000, guid: 052fac5e36e37bc40acc7bc533514e9c, type: 3}
-      - Key: pose1\p1e6
+      - Key: p1e6
         Value: {fileID: 21300000, guid: 5b316e3094ec98d41ab9cc31628d69ac, type: 3}
-      - Key: pose1\p1e7
+      - Key: p1e7
         Value: {fileID: 21300000, guid: 0781143ce51b0654b9f0a3f9ca54de58, type: 3}
-      - Key: pose1\p1e8
+      - Key: p1e8
         Value: {fileID: 21300000, guid: 94e9b2a721ecfc54b865cde9d4649d32, type: 3}
-      - Key: pose2\p2
+      - Key: p2
         Value: {fileID: 21300000, guid: 9afa84f7557aa59469f3b6caa0b0e93a, type: 3}
-      - Key: pose2\p2e0
+      - Key: p2e0
         Value: {fileID: 21300000, guid: ea80ba56d3e37904bb2380c2d841001b, type: 3}
-      - Key: pose2\p2e1
+      - Key: p2e1
         Value: {fileID: 21300000, guid: 0330c090ce6b4ed458237b54c30a918b, type: 3}
-      - Key: pose2\p2e2
+      - Key: p2e2
         Value: {fileID: 21300000, guid: 537e657ab45e64246b26e0cc8c313b8d, type: 3}
-      - Key: pose2\p2e3
+      - Key: p2e3
         Value: {fileID: 21300000, guid: c1b440415398964468476b66fec1b7d3, type: 3}
-      - Key: pose2\p2e4
+      - Key: p2e4
         Value: {fileID: 21300000, guid: e159ed270822f9740af0e9c0ab58f96b, type: 3}
-      - Key: pose2\p2e5
+      - Key: p2e5
         Value: {fileID: 21300000, guid: 1488f544b3c976440abd18967a58d063, type: 3}
-      - Key: pose2\p2e6
+      - Key: p2e6
         Value: {fileID: 21300000, guid: 4fa2355467e608e4a94c0229dac219b8, type: 3}
-      - Key: pose2\p2e7
+      - Key: p2e7
         Value: {fileID: 21300000, guid: dbb725eb0b9b75a4c8df2b6c6486eca8, type: 3}
-      - Key: pose2\p2e8
+      - Key: p2e8
         Value: {fileID: 21300000, guid: 3a082771a3dff7d49a4f474774483bf0, type: 3}
   - name: Generic
     alias: gen
@@ -155,13 +157,13 @@ MonoBehaviour:
     dialogueFontSize: 30
     sprites:
       _serializedList:
-      - Key: Guard
+      - Key: guard
         Value: {fileID: -1957405950, guid: 6c007007286b401479daf6bba1200421, type: 3}
-      - Key: Child
+      - Key: child
         Value: {fileID: 1080889024, guid: 6c007007286b401479daf6bba1200421, type: 3}
-      - Key: Dad
+      - Key: dad
         Value: {fileID: -964242304, guid: 6c007007286b401479daf6bba1200421, type: 3}
-      - Key: Monk
+      - Key: monk
         Value: {fileID: 868266631, guid: 6c007007286b401479daf6bba1200421, type: 3}
   - name: Mao
     alias: mao

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Playing and managing tracks
-public class AudioChannel 
+public class AudioChannel
 {
     private const string TRACK_CONTAINER_NAME_FORMAT = "Channel - [{0}]";
 
@@ -27,9 +27,9 @@ public class AudioChannel
 
     public AudioTrack PlayTrack(AudioClip clip, bool loop, float startVolume, float cappedVolume, float pitch, string filePath)
     {
-        if(TryGetTrack(clip.name, out AudioTrack existingTrack))
+        if (TryGetTrack(clip.name, out AudioTrack existingTrack))
         {
-            if(existingTrack.loop != loop || existingTrack.cappedVolume != cappedVolume || existingTrack.source.pitch != pitch)
+            if (existingTrack.loop != loop || existingTrack.cappedVolume != cappedVolume || existingTrack.source.pitch != pitch)
             {
                 existingTrack.source.loop = loop;
                 existingTrack.cappedVolume = cappedVolume;
@@ -43,8 +43,8 @@ public class AudioChannel
             return existingTrack;
         }
 
-        AudioTrack track = new AudioTrack(clip, loop, startVolume, cappedVolume, pitch, this, AudioManager.Instance.musicMixer);
-        track.Play();   
+        AudioTrack track = new AudioTrack(clip, loop, startVolume, cappedVolume, pitch, this, AudioManager.Instance.musicMixer, filePath);
+        track.Play();
 
         SetAsActiveTrack(track);
 
@@ -69,16 +69,16 @@ public class AudioChannel
 
     private void SetAsActiveTrack(AudioTrack track)
     {
-        if(!trackList.Contains(track))
+        if (!trackList.Contains(track))
             trackList.Add(track);
         activeTrack = track;
 
-        TryStartVolumeLeveling();   
+        TryStartVolumeLeveling();
     }
 
     private void TryStartVolumeLeveling()
     {
-        if(isVolumeLeveling)
+        if (isVolumeLeveling)
             AudioManager.Instance.StopCoroutine(co_volumeLeveling);
 
         co_volumeLeveling = AudioManager.Instance.StartCoroutine(VolumeLeveling());
@@ -88,7 +88,7 @@ public class AudioChannel
     {
         while ((activeTrack != null && (trackList.Count > 1 || activeTrack.volume != activeTrack.cappedVolume)) || (activeTrack == null && trackList.Count > 0))
         {
-            for(int i = trackList.Count -1; i>= 0; i--)
+            for (int i = trackList.Count - 1; i >= 0; i--)
             {
                 AudioTrack track = trackList[i];
 
@@ -99,7 +99,7 @@ public class AudioChannel
 
                 track.volume = Mathf.MoveTowards(track.volume, targetVolume, Time.deltaTime * AudioManager.TRACK_TRANSITION_DEFAULT_SPEED);
 
-                if(track != activeTrack && track.volume == 0)
+                if (track != activeTrack && track.volume == 0)
                     DestroyTrack(track);
             }
 
@@ -111,19 +111,26 @@ public class AudioChannel
 
     private void DestroyTrack(AudioTrack track)
     {
-        if(trackList.Contains(track))
+        if (trackList.Contains(track))
             trackList.Remove(track);
 
         Object.Destroy(track.root);
     }
 
-    public void StopTrack()
+    public void StopTrack(bool immediate = false)
     {
         if (activeTrack == null)
             return;
 
-        activeTrack = null;
-
-        TryStartVolumeLeveling();
+        if (immediate)
+        {
+            DestroyTrack(activeTrack);
+            activeTrack = null;
+        }
+        else
+        {
+            activeTrack = null;
+            TryStartVolumeLeveling();
+        }
     }
 }

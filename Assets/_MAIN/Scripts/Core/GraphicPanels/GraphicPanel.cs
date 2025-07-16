@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,7 +12,9 @@ namespace GRAPHIC
     {
         public string panelName;
         public GameObject rootPanel;
-        public List<GraphicLayer> layers = new List<GraphicLayer>();
+        public List<GraphicLayer> layers { get; private set; } = new List<GraphicLayer>();
+
+        public bool isClear => layers == null || layers.Count == 0 || layers.All(l => l.currentGraphic == null);
 
         public GraphicLayer GetLayer(int layerDepth, bool createIfDoesNotExist)
         {
@@ -59,7 +62,7 @@ namespace GRAPHIC
         {
             foreach (GraphicLayer layer in layers)
                 layer.Clear(transitionSpeed, blendTexure, immediate);
-            layers.Clear();
+            //layers.Clear();
         }
     }
 }

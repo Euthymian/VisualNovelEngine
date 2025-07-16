@@ -18,3 +18,4 @@ MonoBehaviour:
   defaultNameFontSize: 40
   defaultDialogueFontSize: 30
   dialogueFontScale: 1
+  nameFontScale: 1

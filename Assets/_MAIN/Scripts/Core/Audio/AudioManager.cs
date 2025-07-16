@@ -138,7 +138,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private AudioChannel TryGetChannel(int channelIndex, bool createIfNotExist)
+    public AudioChannel TryGetChannel(int channelIndex, bool createIfNotExist)
     {
         if (channelList.TryGetValue(channelIndex, out AudioChannel channel))
         {
