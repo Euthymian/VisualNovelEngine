@@ -43,6 +43,7 @@ namespace DIALOGUE
 
         public void Enqueue(Conversation conversation) => conversationQueue.Enqueue(conversation);
         public void EnqueuePriority(Conversation conversation) => conversationQueue.EnqueuePriority(conversation);
+        public Conversation[] GetConversationQueue() => conversationQueue.GetConversationQueue();
 
         private void DialogueSystem_onUserPrompt_Next()
         {
@@ -84,6 +85,7 @@ namespace DIALOGUE
                 }
 
                 //Debug.Log($"Processing \n{conversation.GetRawLines()}\n at line {conversation.GetProgress()}\nQueue has {conversationQueue.conversationQueue.Count} conversations");
+                int l = currentConversation.GetProgress();
                 string rawLine = currentConversation.CurrentLine();
 
                 if (string.IsNullOrEmpty(rawLine))

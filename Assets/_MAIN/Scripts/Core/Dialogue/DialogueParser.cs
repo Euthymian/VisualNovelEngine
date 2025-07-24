@@ -24,6 +24,7 @@ namespace DIALOGUE
             (string speaker, string dialogue, string commands) = RipContent(rawLine);
 
             //Debug.Log($"Speaker: <{speaker}>\nDialogue: <{dialogue}>\nCommands: <{commands}>");
+            commands = TagManager.Inject(commands);
 
             return new DIALOGUE_LINE(rawLine, speaker, dialogue, commands);
         }

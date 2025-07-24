@@ -29,10 +29,10 @@ namespace DIALOGUE.LogicalLines
             public static bool IsEncapslationStart(string line) => line.Trim().StartsWith(ENCAPSULATION_START);
             public static bool IsEncapslationEnd(string line) => line.Trim().StartsWith(ENCAPSULATION_END); 
             
-            public static EncapsulatedData RipEncapsulationData(Conversation conversation, int startIndex, bool ripHeaderAndEncapsulators = false)
+            public static EncapsulatedData RipEncapsulationData(Conversation conversation, int startIndex, bool ripHeaderAndEncapsulators = false, int parentStartingIndex = 0)
             {
                 int encapsulationLevel = 0;
-                EncapsulatedData data = new EncapsulatedData { lines = new List<string>(), startIndex = startIndex, endIndex = 0 };
+                EncapsulatedData data = new EncapsulatedData { lines = new List<string>(), startIndex = startIndex + parentStartingIndex, endIndex = 0 };
                 bool firstLine = true;
 
                 for (int i = startIndex; i < conversation.Count; i++)
@@ -56,7 +56,7 @@ namespace DIALOGUE.LogicalLines
                         encapsulationLevel--;
                         if (encapsulationLevel == 0)
                         {
-                            data.endIndex = i;
+                            data.endIndex = i + parentStartingIndex;
                             break;
                         }
                     }

@@ -66,10 +66,10 @@ namespace CHARACTER
 
         public int priority { get; protected set; }
 
-        public Character(string name, CharacterConfigData configData, GameObject prefab = null)
+        public Character(string name, string displayName, CharacterConfigData configData, GameObject prefab = null)
         {
             this.name = name;
-            displayName = name;
+            this.displayName = displayName;
             this.configData = configData;
 
             if(prefab != null)
@@ -102,10 +102,14 @@ namespace CHARACTER
                 GameObject ob = Object.Instantiate(prefab, parentPanel);
                 // after instantiating the prefab, by default, the name of the object will be the prefab name with "(Clone)" suffix.
                 // We set the name of the object to the character prefab name so it is more readable and easier to find in the hierarchy.
-                ob.name = characterManager.FormatCharacterPath(characterManager.characterPrefabNameFormat, name);
+                ob.name = characterManager.FormatCharacterPath(characterManager.characterPrefabNameFormat, name);;
                 ob.SetActive(true);
                 root = ob.GetComponent<RectTransform>();
                 animator = ob.GetComponentInChildren<Animator>();
+            }
+            else
+            {
+                Debug.LogWarning($"Character {name} has no prefab assigned. Make sure to assign a prefab to the character.");
             }
         }
 

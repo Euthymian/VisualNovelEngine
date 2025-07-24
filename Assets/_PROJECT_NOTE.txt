@@ -118,6 +118,8 @@ Example:
 	String.characterName: String = database; characterName = variable name
 	wow: Default database; wow = variable name
 
+Anytime the game is loaded, every links of external variables will be reloaded because lambda is temporary and will be lost when the game is closed.
+
 
 
 
@@ -130,6 +132,8 @@ if ($money > 100)
 	$money -= 50
 }
 $variable = "Heading to $Destination"
+
+AFTER ANY CALCULATIONS, DATATYPE FOR NUMERIC VARIABLES WILL BE CONVERTED TO DOUBLE
 
 
 
@@ -219,3 +223,21 @@ Example:
 	-> Not consistent
 
 - Not finished model3d saved json data
+
+- In current conversation, LeftArrow and RightArrow keys will control move backward and forward in the conversation history.
+
+- CharacterData doesnt save character pos yet
+
+
+
+
+----------------- SAVE FILES --------------
+- Standalone values: Values from saveFile class, these are configurations for a specific save file
+- Current Screen Config: History State
+- History logs at particular time
+- Runtime variables: Variables which are defined in the dialogue file
+- Story Progress: Conversation progress. We dont only save the path to dialogue file and current progress becuase if the progress is in the middle of a choice, 
+	when we reload, the system doesnt know that we are in a choice -> it will ignore the choice and run the next lines no matter they are the choice or not
+	-> Save the whole conversation then use queue to manage
+- Preview Screenshot
+- Other Data

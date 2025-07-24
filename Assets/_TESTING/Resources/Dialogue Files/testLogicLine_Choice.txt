@@ -1,17 +1,18 @@
 SetLayerMedia(background rain -b hurricane), PlayAmbience(RainyMood -cv 0.4)
 
+input "What is your name"
+
+//$VN.mainCharName = <input>
+SetPlayerName(<input>)
+
 enter Celeste "So, tell me, do you like dogs or cats?"
-$myHealth = 49
+$Celeste.health = 49
 choice "What Pet Do You Prefer?"
 {
 	-Dogs
 		Celeste "Ah, dogs are wonderful companions! Loyal and loving."
 		<mainChar> "I agree, they are great friends. {wc 1} Do you have any?"
 		Celeste "Yes, I have a golden retriever named Max. He's the best!"
-	-Cats
-		Celeste "Cats are so independent and graceful. I love their personalities."
-		<mainChar> "I see, they can be quite charming. {wc 1} Do you have any?"
-		Celeste "Yes, I have a tabby named Luna. She's very playful!"
 	-Dragons
 		Celeste "Dragons? Wow, that's a unique choice! They are majestic creatures."
 		<mainChar> "I know, right? {wc 0.3} Do you have any?"
@@ -21,7 +22,7 @@ choice "What Pet Do You Prefer?"
 		{
 			-Pizza
 				Celeste "Pizza sounds delicious! I love a good Margherita pizza."
-				if ($myHealth < 50)
+				if ($Celeste.health < 50)
 				{
 					<mainChar> "Pizza is great, but I think you should watch your health. Is it a good choice?"
 					Celeste "Nah. I'd win"
@@ -29,17 +30,18 @@ choice "What Pet Do You Prefer?"
 					{
 						-Yes
 							Celeste "Yes, I'm sure! I can handle it."
-							$myHealth -= 100
+							$Celeste.health -= 100
 						-No
 							Celeste "I appreciate your concern, but I know what I'm doing."
-							$myHealth += 5
+							$Celeste.health += 5
 					}
 				}
 
 				Narrator "Celeste takes a bite of the pizza, savoring the taste. However, she seems to be a bit concerned about her health after eating it."
 
-				if ($myHealth < 0)
+				if ($Celeste.health < 0)
 				{
+					$Celeste.choice = false
 					Celeste "I regret. I shouldnt eat it"
 					choice "Do you want to fix this?"
 					{
@@ -47,18 +49,32 @@ choice "What Pet Do You Prefer?"
 							choice "What will you do?"
 							{
 								-Practice
-									Celeste "Im gonna go to the gym tmr. Do you want to go with me <mainChar>? My health point is only $myHealth. It cant be worse"
+									$Celeste.choice = true
+									Celeste "Im gonna go to the gym tmr. Do you want to go with me <mainChar>? My health point is only $Celeste.health. It cant be worse"
 								-Another slide
 									Celeste "I will eat more. I cant stop here"
 							}
 						-No
 							Celeste "But you know, I cant be worse, right? I am beautiful already."
 					}
+
+					<mainChar> "Doesnt matter how you look, you are still great for me" 
+					if ($Celeste.choice)
+					{
+						Celeste "Thank you <mainChar>, but i need to change"
+					}
+					else
+					{
+						Celeste "I am the greatest without effort"
+					}
+					<mainChar> "Haha, I got you!"
 				}
 				else
 				{
 					Celeste "Thanks god, If I eat that slide, I cant get this body"
 				}
+
+				Celeste "OK, done eating. I have to leave now"
 			-Burger
 				Celeste "A burger would be great! I love a classic cheeseburger."
 			-Salad
@@ -66,6 +82,13 @@ choice "What Pet Do You Prefer?"
 			-Sushi
 				Celeste "Sushi is my favorite! I could eat it every day."
 		}
+
+		<mainChar> "Are you happy now?"
+		Celeste "So much fun my dear <mainChar>"
+	-Cats
+		Celeste "Cats are so independent and graceful. I love their personalities."
+		<mainChar> "I see, they can be quite charming. {wc 1} Do you have any?"
+		Celeste "Yes, I have a tabby named Luna. She's very playful!"
 }
 
 Narrator "Celeste smiles warmly, enjoying the conversation about pets. She seems to appreciate your interest in her preferences."

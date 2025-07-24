@@ -59,7 +59,7 @@ public class VariableStore
         public override void Set(object value) => setter((T)value);
     }
 
-    private static Dictionary<string, Database> databases = new Dictionary<string, Database>() { { DEFAULT_DATABASE_NAME, new Database(DEFAULT_DATABASE_NAME) } };
+    public static Dictionary<string, Database> databases = new Dictionary<string, Database>() { { DEFAULT_DATABASE_NAME, new Database(DEFAULT_DATABASE_NAME) } };
     private static Database defaultDatabase => databases[DEFAULT_DATABASE_NAME];
 
     public static bool CreateDatabase(string name)

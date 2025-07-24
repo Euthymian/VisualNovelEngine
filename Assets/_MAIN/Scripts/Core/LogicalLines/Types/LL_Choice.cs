@@ -17,6 +17,8 @@ namespace DIALOGUE.LogicalLines
         {
             public string title;
             public List<string> resultLines;
+            public int startIndex;
+            public int endIndex;
         }
 
         private bool IsChoiceStart(string line) => line.Trim().StartsWith(CHOICE_IDENTIFIER);
@@ -52,17 +54,24 @@ namespace DIALOGUE.LogicalLines
             Choice choice = new Choice { title = "", resultLines = new List<string>() };
 
             bool isFirstChoice = true;
-            foreach (string line in rawChoiceData.lines.Skip(1)) //Skip 1 is because first line is title line of the choice
+            int choiceIndex = 0, i = 0;
+            //foreach (string line in rawChoiceData.lines.Skip(1)) //Skip 1 is because first line is title line of the choice
+            for (i = 1; i < rawChoiceData.lines.Count; i++)
             {
+                var line = rawChoiceData.lines[i];
                 if (IsChoiceStart(line) && encapsulationLevel == 1)
                 {
                     if (!isFirstChoice)
                     {
+                        choice.startIndex = rawChoiceData.startIndex + choiceIndex + 1;
+                        choice.endIndex = rawChoiceData.startIndex + i - 1;
                         choices.Add(choice);
                         choice = new Choice { title = "", resultLines = new List<string>() };
                     }
 
                     isFirstChoice = false;
+
+                    choiceIndex = i;
 
                     choice.title = line.Trim().Substring(1); // Remove the leading '-' 
                     continue;
@@ -72,7 +81,11 @@ namespace DIALOGUE.LogicalLines
             }
 
             if (!choices.Contains(choice))
+            {
+                choice.startIndex = rawChoiceData.startIndex + choiceIndex + 1;
+                choice.endIndex = rawChoiceData.startIndex + i - 2; // when i reached the }, it iterated one more time -> -2
                 choices.Add(choice);
+            }
 
             return choices;
         }
@@ -82,7 +95,7 @@ namespace DIALOGUE.LogicalLines
             Conversation currentConversation = DialogueSystem.Instance.conversationManager.conversation;
             int currentProgress = DialogueSystem.Instance.conversationManager.conversationProgress;
 
-            EncapsulatedData data = RipEncapsulationData(currentConversation, currentProgress, ripHeaderAndEncapsulators: true); // We want to rip header which containing choice title
+            EncapsulatedData data = RipEncapsulationData(currentConversation, currentProgress, ripHeaderAndEncapsulators: true, parentStartingIndex: currentConversation.fileStartIndex); // We want to rip header which containing choice title
 
             List<Choice> choiceList = GetChoiceFromData(data);
 
@@ -92,13 +105,13 @@ namespace DIALOGUE.LogicalLines
 
             ChoicePanel.Instance.Show(title, choiceTitles);
 
-            while(ChoicePanel.Instance.isWaitingOnUserChoice)
+            while (ChoicePanel.Instance.isWaitingOnUserChoice)
                 yield return null;
-            
+
             Choice selectedChoice = choiceList[ChoicePanel.Instance.lastDecision.answerIndex];
 
-            Conversation conversationFromChoice = new Conversation(selectedChoice.resultLines);
-            DialogueSystem.Instance.conversationManager.conversation.SetProgress(data.endIndex); //+1?
+            Conversation conversationFromChoice = new Conversation(selectedChoice.resultLines, file:currentConversation.file, fileStartIndex:selectedChoice.startIndex, fileEndIndex: selectedChoice.endIndex);
+            DialogueSystem.Instance.conversationManager.conversation.SetProgress(data.endIndex - currentConversation.fileStartIndex); 
             DialogueSystem.Instance.conversationManager.EnqueuePriority(conversationFromChoice);
         }
 

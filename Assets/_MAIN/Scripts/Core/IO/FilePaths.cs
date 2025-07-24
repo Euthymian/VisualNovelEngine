@@ -12,6 +12,8 @@ public class FilePaths
     // in Build, Application.dataPath will be the path where data is stored
     public static readonly string root = $"{Application.dataPath}/gameData/";
 
+    public static readonly string gameSaves = $"{runtimePath}SaveFiles/";
+
     //Resources paths
     public static readonly string resources_font = "Fonts/";
 
@@ -34,5 +36,17 @@ public class FilePaths
             return resourceName.Substring(HOME_DIR_SYMBOL.Length);
 
         return defaultPath + resourceName;
+    }
+
+    public static string runtimePath
+    {
+        get
+        {
+            #if UNITY_EDITOR
+                return "Assets/appData/";
+            #else
+                return Application.persistentDataPath + "/appData/";
+            #endif
+        }
     }
 }

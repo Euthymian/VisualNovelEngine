@@ -2,7 +2,10 @@ using CHARACTER;
 using DIALOGUE;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
+using VISUALNOVEL;
 
 public class TestDialogueFiles : MonoBehaviour
 {
@@ -15,10 +18,16 @@ public class TestDialogueFiles : MonoBehaviour
 
     void StartConversation()
     {
-        //Character_Sprite raelin = CharacterManager.Instance.CreateCharacter("Raelin") as Character_Sprite;
-        //Character_Sprite kyo = CharacterManager.Instance.CreateCharacter("KyoyaAkase") as Character_Sprite;
-        //List<string> lines = FileManager.ReadTextAsset("Dialogue Files/test1", false);
-        List<string> lines = FileManager.ReadTextAsset(textAsset, false);
+        string fullPath = AssetDatabase.GetAssetPath(textAsset);
+        int resourceIndex = fullPath.IndexOf("Resources/");
+        string relativePath = fullPath.Substring(resourceIndex + "Resources/".Length);
+        string filePath = Path.ChangeExtension(relativePath, null);
+
+        VNManager.Instance.LoadFile(filePath);
+
+        #region OldTest
+        //List<string> lines = FileManager.ReadTextAsset(textAsset);
+        ////List<string> lines = FileManager.ReadTextAsset("Dialogue Files/test1", false);
 
         //foreach (string line in lines)
         //{
@@ -61,7 +70,8 @@ public class TestDialogueFiles : MonoBehaviour
         //    else Debug.Log("No commands data found in this line.");
         //}
 
-        DIALOGUE.DialogueSystem.Instance.Say(lines);
+        //DIALOGUE.DialogueSystem.Instance.Say(lines);
+        #endregion
     }
 
     private void Update()

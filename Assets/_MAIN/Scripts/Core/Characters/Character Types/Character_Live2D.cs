@@ -27,7 +27,7 @@ namespace CHARACTER
             set => cubismRenderController.Opacity = value ? 1 : 0;
         }
 
-        public Character_Live2D(string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(name, configData, prefab)
+        public Character_Live2D(string castingName, string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(castingName, name, configData, prefab)
         {
             Debug.Log("Character_Live2D constructor called with name: " + name);
 

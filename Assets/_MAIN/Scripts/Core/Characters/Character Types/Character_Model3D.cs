@@ -18,7 +18,7 @@ namespace CHARACTER
 
         GameObject renderGroup;
         private Camera modelCamera;
-        private Transform modelContainer; 
+        public Transform modelContainer; 
         public Transform model { get; private set; } 
         private Animator modelAnimator;
         private SkinnedMeshRenderer eyesController;
@@ -56,7 +56,7 @@ namespace CHARACTER
         private bool isFadingOutOldRenderers => co_fadingOutOldRenderers != null;
         private float oldRenderersFadeOutSpeedMultiplier = DEFAULT_TRANSITION_SPEED;
 
-        public Character_Model3D(string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(name, configData, prefab)
+        public Character_Model3D(string castingName, string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(castingName, name, configData, prefab)
         {
             Debug.Log("Character_Model3D constructor called with name: " + name);
 

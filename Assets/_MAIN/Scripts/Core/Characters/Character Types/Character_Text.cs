@@ -6,7 +6,7 @@ namespace CHARACTER
 {
     public class Character_Text : Character
     {
-        public Character_Text(string name, CharacterConfigData configData) : base(name, configData)
+        public Character_Text(string castingName, string name, CharacterConfigData configData) : base(castingName, name, configData)
         {
             Debug.Log("Character_Text constructor called with name: " + name);
         }

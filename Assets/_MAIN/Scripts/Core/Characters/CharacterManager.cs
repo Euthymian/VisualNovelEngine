@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
 namespace CHARACTER
@@ -76,13 +77,17 @@ namespace CHARACTER
 
         public Character CreateCharacter(string characterName, bool showAfterCreated = false)
         {
-            if (characterDictionary.ContainsKey(characterName.ToLower()))
+            string[] nameData = characterName.Split(CHARACTER_CAST_ID, StringSplitOptions.RemoveEmptyEntries);
+            string name = nameData[0];
+            string castingName = nameData.Length > 1 ? nameData[1].Trim() : name;
+
+            if (characterDictionary.ContainsKey(name.ToLower()))
             {
-                Debug.LogWarning($"Character {characterName} already exists.");
-                return null;
+                Debug.Log($"Character {characterName} already exists.");
+                return characterDictionary[name.ToLower()];
             }
 
-            CHARACTER_INFO info = GetCharacterInfo(characterName);
+            CHARACTER_INFO info = GetCharacterInfo(name, castingName);
 
             Character character = CreateCharacterFromCHARACTER_INFO(info);
 
@@ -94,14 +99,12 @@ namespace CHARACTER
             return character;
         }
 
-        private CHARACTER_INFO GetCharacterInfo(string characterName)
+        private CHARACTER_INFO GetCharacterInfo(string name, string castingName)
         {
-            CHARACTER_INFO res = new CHARACTER_INFO();
+            CHARACTER_INFO res = new CHARACTER_INFO();;
 
-            string[] nameData = characterName.Split(CHARACTER_CAST_ID, StringSplitOptions.RemoveEmptyEntries);
-
-            res.name = nameData[0];
-            res.castingName = nameData.Length > 1 ? nameData[1].Trim() : res.name;
+            res.name = name;
+            res.castingName = castingName;
 
             // If characterName is "Guard as Generic", then res.name will be "Guard" and res.castingName will be "Generic"
 
@@ -132,17 +135,17 @@ namespace CHARACTER
                     return null;
 
                 case Character.CharacterType.Text:
-                    return new Character_Text(info.name, configData);
+                    return new Character_Text(info.castingName, info.name, configData);
 
                 case Character.CharacterType.Sprite:
                 case Character.CharacterType.SpriteSheet:
-                    return new Character_Sprite(info.name, configData, info.prefab, info.rootCharacterFolderPath);
+                    return new Character_Sprite(info.castingName, info.name, configData, info.prefab, info.rootCharacterFolderPath);
 
                 case Character.CharacterType.Live2D:
-                    return new Character_Live2D(info.name, configData, info.prefab, info.rootCharacterFolderPath);
+                    return new Character_Live2D(info.castingName, info.name, configData, info.prefab, info.rootCharacterFolderPath);
 
                 case Character.CharacterType.Model3D:
-                    return new Character_Model3D(info.name, configData, info.prefab, info.rootCharacterFolderPath);
+                    return new Character_Model3D(info.castingName, info.name, configData, info.prefab, info.rootCharacterFolderPath);
             }
         }
 

@@ -23,25 +23,25 @@ namespace DIALOGUE.LogicalLines
             Conversation currentConversation = DialogueSystem.Instance.conversationManager.conversation;
             int currentProgress = DialogueSystem.Instance.conversationManager.conversationProgress;
 
-            EncapsulatedData ifData = RipEncapsulationData(currentConversation, currentProgress, ripHeaderAndEncapsulators: false);
+            EncapsulatedData ifData = RipEncapsulationData(currentConversation, currentProgress, ripHeaderAndEncapsulators: false, parentStartingIndex: currentConversation.fileStartIndex);
             EncapsulatedData elseData = new EncapsulatedData();
 
-            if(ifData.endIndex + 1 < currentConversation.Count)
+            int nextPossibleElseIndex = ifData.endIndex + 1 - currentConversation.fileStartIndex;
+            if (nextPossibleElseIndex < currentConversation.Count)
             {
-                string nextLine = currentConversation.GetLines()[ifData.endIndex + 1].Trim();
+                string nextLine = currentConversation.GetLines()[nextPossibleElseIndex].Trim();
                 if(nextLine.StartsWith(ELSE))
                 {
-                    elseData = RipEncapsulationData(currentConversation, ifData.endIndex + 1, ripHeaderAndEncapsulators: false);
-                    ifData.endIndex = elseData.endIndex;
+                    elseData = RipEncapsulationData(currentConversation, nextPossibleElseIndex, ripHeaderAndEncapsulators: false, parentStartingIndex: currentConversation.fileStartIndex);
                 }
             }
 
-            currentConversation.SetProgress(ifData.endIndex);
+            currentConversation.SetProgress(elseData.isNull ? currentProgress + ifData.endIndex - ifData.startIndex : currentProgress + elseData.endIndex - ifData.startIndex);
 
             EncapsulatedData selectedData = conditionResult ? ifData : elseData;
             if(!selectedData.isNull && selectedData.lines.Count > 0)
             {
-                Conversation newConversation = new Conversation(selectedData.lines);
+                Conversation newConversation = new Conversation(selectedData.lines, file: currentConversation.file, fileStartIndex: selectedData.startIndex, fileEndIndex: selectedData.endIndex);
                 DialogueSystem.Instance.conversationManager.EnqueuePriority(newConversation);
             }
 

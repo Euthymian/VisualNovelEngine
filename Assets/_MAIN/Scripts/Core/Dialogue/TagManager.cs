@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Text.RegularExpressions;
 using System;
 using System.Linq;
+using VISUALNOVEL;
 
 namespace DIALOGUE
 {
@@ -11,7 +12,7 @@ namespace DIALOGUE
     {
         private static readonly Dictionary<string, Func<string>> tags = new Dictionary<string, Func<string>>()
         {
-            {"<mainChar>", () => "Avira" },
+            { "<mainChar>", () => VNGameSave.activeFile.playerName },
             { "<time>", () => DateTime.Now.ToString("hh:mm tt") },
             { "<playerLevel>", () => "15" },
             { "<tempVal1>", () => "42" },

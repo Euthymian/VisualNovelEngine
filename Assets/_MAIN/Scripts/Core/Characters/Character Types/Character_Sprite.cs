@@ -25,7 +25,7 @@ namespace CHARACTER
 
         private string spritesFolderPath = "";
 
-        public Character_Sprite(string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(name, configData, prefab)
+        public Character_Sprite(string castingName, string name, CharacterConfigData configData, GameObject prefab, string rootAssetFolder) : base(castingName, name, configData, prefab)
         {
             Debug.Log("Character_Sprite constructor called with name: " + name);
             if(root == null)

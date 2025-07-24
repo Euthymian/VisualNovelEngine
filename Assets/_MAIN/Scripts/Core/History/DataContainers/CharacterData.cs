@@ -153,8 +153,8 @@ namespace HISTORY
 
                         Character_Model3D mc = character as Character_Model3D;
 
-                        model3DData.pos = mc.model.position;
-                        model3DData.rotation = mc.model.rotation;
+                        model3DData.pos = mc.modelContainer.position;
+                        model3DData.rotation = mc.modelContainer.rotation;
 
                         charData.dataJSON = JsonUtility.ToJson(model3DData);
                         break;
@@ -173,7 +173,11 @@ namespace HISTORY
 
             foreach (var characterData in data)
             {
-                Character character = CharacterManager.Instance.GetCharacter(characterData.characterName, createIfDoentExist: true);
+                string nameForCreation = characterData.characterName;
+                if (characterData.displayName != characterData.characterName)
+                    nameForCreation = $"{characterData.displayName} as {characterData.characterName}";
+
+                Character character = CharacterManager.Instance.GetCharacter(nameForCreation, createIfDoentExist: true);
 
                 character.displayName = characterData.displayName;
 
@@ -237,8 +241,8 @@ namespace HISTORY
                         Model3DData model3DData = JsonUtility.FromJson<Model3DData>(characterData.dataJSON);
                         Character_Model3D mc = character as Character_Model3D;
 
-                        mc.model.position = model3DData.pos;
-                        mc.model.rotation = model3DData.rotation;
+                        mc.modelContainer.position = model3DData.pos;
+                        mc.modelContainer.rotation = model3DData.rotation;
                         
                         break;
                 }
