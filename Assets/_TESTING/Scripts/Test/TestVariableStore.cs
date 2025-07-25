@@ -32,7 +32,7 @@ namespace TESTING
             VariableStore.CreateVariable("d_links.string", ex_string, () => ex_string, (v) => ex_string = v);
             VariableStore.CreateVariable("d_links.bool", ex_bool, () => ex_bool, (v) => ex_bool = v);
 
-            VariableStore.PrintAllDatabases();
+            //VariableStore.PrintAllDatabases();
 
             VariableStore.PrintAllVariables();
         }

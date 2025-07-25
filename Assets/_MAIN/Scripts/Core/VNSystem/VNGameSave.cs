@@ -1,5 +1,6 @@
 using DIALOGUE;
 using HISTORY;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,9 @@ namespace VISUALNOVEL
         public static VNGameSave activeFile = null;
 
         public const string FILE_TYPE = ".vns";
-        public const string SCREENSHOT_TYPE = ".jpg";
+        public const string SCREENSHOT_TYPE = ".png";
         public const bool ENCRYPT = true;
+        public const float SCREENSHOT_DEFAULT_DOWNSCALE = 0.25f;
 
         public string filePath => $"{FilePaths.gameSaves}{slotNumber}{FILE_TYPE}";
         public string screenshotPath => $"{FilePaths.gameSaves}{slotNumber}{SCREENSHOT_TYPE}";
@@ -22,6 +24,7 @@ namespace VISUALNOVEL
         public int slotNumber = 1;
 
         public string playerName;
+        public string timeStamp; 
 
         // Use Json for conversations is becuase we dont know what kind of conversation we will have
         public string[] activeConversations;
@@ -35,6 +38,9 @@ namespace VISUALNOVEL
             historyLogs = HistoryManager.Instance.historyStateList.ToArray();
             activeConversations = GetConversationData();
             variableData = GetVariableData();
+            timeStamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+            ScreenshotMaster.CaptureScreenshot(VNManager.Instance.mainCamera, Screen.width, Screen.height, SCREENSHOT_DEFAULT_DOWNSCALE, screenshotPath);
 
             string saveJSON = JsonUtility.ToJson(this);
 

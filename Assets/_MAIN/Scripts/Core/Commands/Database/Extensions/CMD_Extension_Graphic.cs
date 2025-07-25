@@ -78,9 +78,19 @@ namespace COMMAND
                 blendTexture = Resources.Load<Texture>(FilePaths.GetPathToResource(FilePaths.resources_transitionEffects, blendTextureName));
 
             if (graphicObject is Texture)
+            {
+                if(!immediate)
+                    CommandManager.Instance.AddTerminationActionToCurrentProcess(() => { graphicLayer.SetTexture(graphicObject as Texture, filePath: pathToGraphic, immediate: true); });
+
                 yield return graphicLayer.SetTexture(graphicObject as Texture, transitionSpeed, blendTexture, pathToGraphic, immediate);
+            }
             else
+            {
+                if (!immediate)
+                    CommandManager.Instance.AddTerminationActionToCurrentProcess(() => { graphicLayer.SetVideo(graphicObject as VideoClip, filePath: pathToGraphic, immediate: true); });
+
                 yield return graphicLayer.SetVideo(graphicObject as VideoClip, transitionSpeed, useAudio, blendTexture, pathToGraphic, immediate);
+            }
 
         }
 
