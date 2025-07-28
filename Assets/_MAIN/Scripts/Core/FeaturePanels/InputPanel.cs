@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -55,11 +54,23 @@ public class InputPanel : MonoBehaviour
 
     public void OnAcceptInput()
     {
-        if(inputField.text == string.Empty)
+        if (inputField.text == string.Empty)
             return;
 
-        lastInput = inputField.text;
-        Hide();
+        // Censor the input if needed
+        string inputText = inputField.text;
+        if (CensorManager.Censor(ref inputText))
+        {
+            UIConfirmationMenu.Instance.Show(
+                "Bro, what did you just type?", 
+                new UIConfirmationMenu.ConfirmationButton("Again", () => inputField.text = "")
+            );
+        }
+        else
+        {
+            lastInput = inputField.text;
+            Hide();
+        }
     }
 
     public void OnInputValueChanged(string c)

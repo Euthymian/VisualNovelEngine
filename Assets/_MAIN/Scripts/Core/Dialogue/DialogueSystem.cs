@@ -19,7 +19,7 @@ namespace DIALOGUE
         public DialogueContainer dialogueContainer = new DialogueContainer();
         public ConversationManager conversationManager { get; private set; }
         public TextArchitect textArchitect;
-        private AutoReader autoReader;
+        public AutoReader autoReader { get; private set; }
 
         [SerializeField] private CanvasGroup mainCanvasCG;
         private CanvasGroupController canvasGroupController;
@@ -133,7 +133,9 @@ namespace DIALOGUE
             canvasGroupController = new CanvasGroupController(this, mainCanvasCG);
             dialogueContainer.Initialize();
 
-            if(TryGetComponent(out autoReader))
+            autoReader = GetComponent<AutoReader>();
+            //if (TryGetComponent(out autoReader))  // This is when autoReader is field, not property
+            if (autoReader != null)
                 autoReader.Initialize(conversationManager);
         }
 

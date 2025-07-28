@@ -34,16 +34,16 @@ public class CanvasGroupController
     {
         if (isShowing)
         {
-            DialogueSystem.Instance.StopCoroutine(co_showing);
+            owner.StopCoroutine(co_showing);
             co_showing = null;
         }
         else if (isHiding)
         {
-            DialogueSystem.Instance.StopCoroutine(co_hiding);
+            owner.StopCoroutine(co_hiding);
             co_hiding = null;
         }
 
-        co_showing = DialogueSystem.Instance.StartCoroutine(Fading(1f, speedMultiplier, immediate));
+        co_showing = owner.StartCoroutine(Fading(1f, speedMultiplier, immediate));
         return co_showing;
     }
 
@@ -51,16 +51,16 @@ public class CanvasGroupController
     {
         if (isHiding)
         {
-            DialogueSystem.Instance.StopCoroutine(co_hiding);
+            owner.StopCoroutine(co_hiding);
             co_hiding = null;
         }
         else if (isShowing)
         {
-            DialogueSystem.Instance.StopCoroutine(co_showing);
+            owner.StopCoroutine(co_showing);
             co_showing = null;
         }
 
-        co_hiding = DialogueSystem.Instance.StartCoroutine(Fading(0f, speedMultiplier, immediate));
+        co_hiding = owner.StartCoroutine(Fading(0f, speedMultiplier, immediate));
         return co_hiding;
     }
 

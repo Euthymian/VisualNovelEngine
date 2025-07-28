@@ -10,7 +10,7 @@ public class FilePaths
 
     // in Editor, Application.dataPath is Assets/
     // in Build, Application.dataPath will be the path where data is stored
-    public static readonly string root = $"{Application.dataPath}/gameData/";
+    public static readonly string root = $"{runtimePath}gameData/";
 
     public static readonly string gameSaves = $"{runtimePath}SaveFiles/";
 
@@ -21,6 +21,7 @@ public class FilePaths
     public static readonly string resources_bgImages = $"{resources_graphics}BG Images/";
     public static readonly string resources_bgVideos = $"{resources_graphics}BG Videos/";
     public static readonly string resources_transitionEffects = $"{resources_graphics}Transition Effects/";
+    public static readonly string resources_gallery = $"{resources_graphics}Gallery/";
 
     public static readonly string resources_audio = "Audio/";
     public static readonly string resources_sfx = $"{resources_audio}SFX/";
@@ -49,4 +50,23 @@ public class FilePaths
             #endif
         }
     }
+
+    // Its better if we intialize any variables or fields using runtimePath in Awake or Start function instead of static initialization.
+    // Example:
+    /*
+
+            class TestA: Monobehaviour
+            {
+                // NOT RECOMMEND !!!
+                public string path1 = FilePaths.runtimePath + "test.txt"; 
+        
+                public string testPath;
+                void Awake()
+                {
+                    // GOOD PRACTICE!!!
+                    testPath = FilePaths.runtimePath + "test.txt";
+                }
+            }
+
+    */
 }

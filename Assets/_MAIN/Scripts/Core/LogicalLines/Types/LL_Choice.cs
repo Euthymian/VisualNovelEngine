@@ -113,6 +113,12 @@ namespace DIALOGUE.LogicalLines
             Conversation conversationFromChoice = new Conversation(selectedChoice.resultLines, file:currentConversation.file, fileStartIndex:selectedChoice.startIndex, fileEndIndex: selectedChoice.endIndex);
             DialogueSystem.Instance.conversationManager.conversation.SetProgress(data.endIndex - currentConversation.fileStartIndex); 
             DialogueSystem.Instance.conversationManager.EnqueuePriority(conversationFromChoice);
+
+            AutoReader auto = DialogueSystem.Instance.autoReader;
+            if(auto != null && auto.isOn && auto.skip){
+                if(VN_Configuration.activeConfig != null && !VN_Configuration.activeConfig.continueSkipAfterChoice)
+                    auto.Disable();
+            }
         }
 
         public bool Matches(DIALOGUE_LINE line)

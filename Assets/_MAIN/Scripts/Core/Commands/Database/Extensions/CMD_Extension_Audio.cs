@@ -43,15 +43,16 @@ namespace COMMAND
             parameters.TryGetValue<float>(PARAM_PITCH, out pitch, 1f);
             parameters.TryGetValue<bool>(PARAM_LOOP, out loop, false);
 
-            AudioClip audioClip = Resources.Load<AudioClip>(FilePaths.GetPathToResource(FilePaths.resources_sfx, filePath));
+            string resourcePath = FilePaths.GetPathToResource(FilePaths.resources_sfx, filePath);
+            AudioClip audioClip = Resources.Load<AudioClip>(resourcePath);
 
             if(audioClip == null)
             {
-                Debug.LogError($"AudioClip not found at path: {FilePaths.GetPathToResource(FilePaths.resources_voices, filePath)}");
+                Debug.LogError($"AudioClip not found at path: {FilePaths.GetPathToResource(FilePaths.resources_sfx, filePath)}");
                 return;
             }
 
-            AudioManager.Instance.PlaySoundEffect(audioClip, volume:volume, pitch: pitch, loop: loop);
+            AudioManager.Instance.PlaySoundEffect(audioClip, volume:volume, pitch: pitch, loop: loop, filePath: resourcePath);
         }
 
         private static void StopSFX(string data)

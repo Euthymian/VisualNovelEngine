@@ -241,3 +241,14 @@ Example:
 	-> Save the whole conversation then use queue to manage
 - Preview Screenshot
 - Other Data
+
+
+
+----------------- GALLERY --------------
+- Its good practice if we number all images in the gallery,because we want to load them dynamically through Resources and add to array to populate the gallery
+- Using Cinematic panel to display gallery images
+- Current setup is for 1 layer gallery
+
+
+- Maybe we wnat to unlock gallery iamges without open it => seperate command to unlock gallery
+- We may also want a popup message to notify player that a gallery image is unlocked

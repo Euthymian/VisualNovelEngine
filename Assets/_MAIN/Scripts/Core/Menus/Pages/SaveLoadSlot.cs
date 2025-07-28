@@ -1,8 +1,10 @@
+using HISTORY;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VISUALNOVEL;
 
@@ -31,7 +33,7 @@ public class SaveLoadSlot : MonoBehaviour
 
     private void PopulateDetailsFromFile(SaveAndLoadMenu.MenuFunction func, VNGameSave file)
     {
-        if(file == null)
+        if (file == null)
         {
             infoText.text = $"{fileNum}. Empty Slot";
             deleteButton.gameObject.SetActive(false);
@@ -55,19 +57,50 @@ public class SaveLoadSlot : MonoBehaviour
 
     public void Delete()
     {
+        UIConfirmationMenu.Instance.Show(
+            // Title
+            "Are you sure you want to delete this save file? (<i>This cant be undone</i>)",
+            // Choice 1
+            new UIConfirmationMenu.ConfirmationButton("Yes", () =>
+                {
+                    UIConfirmationMenu.Instance.Show("Confirm Deletion",
+                        new UIConfirmationMenu.ConfirmationButton("Delete", OnConfirmedDelete, true),
+                        new UIConfirmationMenu.ConfirmationButton("Cancel", null, true));
+                }, 
+            autoCloseOnQuit: false),
+            // Choice 2
+            new UIConfirmationMenu.ConfirmationButton("No", null, true));
+    }
+
+    private void OnConfirmedDelete()
+    {
         File.Delete(filePath);
         PopulateDetails(SaveAndLoadMenu.Instance.currentFunction);
     }
 
     public void Load()
     {
-        VNGameSave file = VNGameSave.Load(filePath, true);
+        VNGameSave file = VNGameSave.Load(filePath, false);
         SaveAndLoadMenu.Instance.Close(closeAllMenus: true);
 
+        if (SceneManager.GetActiveScene().name == MainMenu.MAIN_MENU_SCENE)
+        {
+            MainMenu.Instance.LoadGame(file);
+        }
+        else
+        {
+            file.Activate();
+        }
     }
 
     public void Save()
     {
+        if (HistoryManager.Instance.isViewingHistory) 
+        {
+            UIConfirmationMenu.Instance.Show("Save while viewing history?", new UIConfirmationMenu.ConfirmationButton("Go Back", null));
+            return;
+        }
+
         var activeSave = VNGameSave.activeFile;
         activeSave.slotNumber = fileNum;
         activeSave.Save();

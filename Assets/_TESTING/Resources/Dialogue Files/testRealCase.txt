@@ -1,16 +1,22 @@
 wait(1)
 
+//using home indicator to specify the custom path
+PlayMusic("~CustomPathHehe/Once Upon a Time")
+PlaySFX(RadioStatic -loop true)
 
 narrator "It's a rainy day"
-
-CreateCharacter("Rae as Raelin"), CreateCharacter("Kyo as KyoyaAkase")
+ShowGalleryImage(creek)
+Narrator "Loading..."
+CreateCharacter("Rae as Raelin"), CreateCharacter("Kyo as KyoyaAkase"), CreateCharacter("Mao")
 SetLayerMedia(background rain -b hurricane), PlayAmbience(RainyMood -cv 0.4)
 
-[waitline]Rae.Move(0.3), Kyo.Move(0.7)
+[waitline]Rae.Move(0.3), Kyo.Move(0.7), Mao.Move(0.5)
 
-[wait]Show(Rae Kyo)
+[wait]Show(Rae Kyo Mao)
 
+HideGalleryImage()
 
+wait(2)
 
 
 Kyo.SetSprite(-l 0 -spt p2), Kyo.SetSprite(-l 1 -spt p2e3)
@@ -29,6 +35,8 @@ Rae "Nice to meet you, Kyo!{wa 0.2} I was just passing by, but I saw you were al
 Kyo "I think we should find a place to sit down, it is raining heavily outside."
 Rae "Yeah, I agree.{wa 0.2} I know a place nearby, it is a small cafe, but it is cozy and quiet."
 
+ShowGalleryImage(forest)
+
 "Oh, hey Kyo, do you want to go to the cafe with me?{wa 0.2} I can show you the way."
 Kyo "Sure, I would love to.{wa 0.2} I have never been there before, but I heard it is a nice place."
 Rae "Great!{wa 0.2} Let's go then."
@@ -37,6 +45,8 @@ Kyo "Remember what our biology instructor said about animals and their habitats 
 "He mentioned all about 'normal' animals. But I believe in urban mythology, and I think there are some creatures that are not normal at all.{wa 0.2} Like the ones that live in the city.{wc 0.8} The Kappa"
 Rae "Kappa?{wa 0.2} I have heard about them, but I thought they were just a myth."
 Kyo "They are not just a myth.{wa 0.2} They are real, and they live in the city. And one of them is staring at us."
+
+HideGalleryImage()
 
 Rae.SetSprite(-l 1 -spt A_Scared)
 Rae "What?{wa 0.2} Where?"
@@ -67,3 +77,14 @@ PlayVoice(exclamation)
 wait(1)
 
 ShowUI(-i true)
+
+??? "Raelin! What are you doing?"
+Rae "Oh no, it's my dad. Hide, Kyo!"
+Rae "Nothing, dad!"
+??? "Im coming in!"
+Kyo "What should I do?"
+CreateCharacter("Dad as Generic")
+[wait] Dad.Move(0.8)
+Dad.Show()
+Dad [Dad] "What are you doing, Raelin? I thought you were studying for your math exam."
+Dad "Who are you?"

@@ -5,8 +5,15 @@ using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
+    // Before we can access to AudioMixer, we need to expose the parameters in the AudioMixer on the Unity Editor manually.
+    public const string EXPOSED_PARAM_MUSIC_VOLUME = "MusicVolume";
+    public const string EXPOSED_PARAM_SFX_VOLUME = "SFXVolume";
+    public const string EXPOSED_PARAM_VOICES_VOLUME = "VoicesVolume";
+    public const float MUTED_VOLUME = -80f; // This is the lowest volume we can set in AudioMixer, which is equivalent to 0% volume in AudioSource.
+
     private const string SFX_ROOT_NAME = "SFX";
-    private const string SFX_NAME_FORMAT = "SFX - [{0}]";
+    public static readonly char[] SFX_NAME_FORMAT_CONTAINER = new char[] { '[', ']' };
+    private static string SFX_NAME_FORMAT = $"SFX - {SFX_NAME_FORMAT_CONTAINER[0]}" + "{0}" + $"{SFX_NAME_FORMAT_CONTAINER[1]}";
     public const float TRACK_TRANSITION_DEFAULT_SPEED = 1;
 
     public static AudioManager Instance { get; private set; }
@@ -32,9 +39,16 @@ public class AudioManager : MonoBehaviour
     public AudioMixerGroup sfxMixer;
     public AudioMixerGroup voicesMixer;
 
+    // This curve will control volume of track in AudioMixer. We need to create this
+    // because the way Mixer controls volume (by Decibels) is different from how Source controls volume (by linear scale).
+    // Min decibel value is -80, which is the lowest volume we can set in AudioMixer.
+    public AnimationCurve audioFallOffCurve;
+
     public Dictionary<int, AudioChannel> channelList = new Dictionary<int, AudioChannel>();
 
     private Transform sfxRoot;
+
+    public AudioSource[] allSFXSources => sfxRoot.GetComponentsInChildren<AudioSource>();
 
     public AudioSource PlaySoundEffect(string filePath, AudioMixerGroup mixer = null, float volume = 1, float pitch = 1, bool loop = false)
     {
@@ -45,12 +59,16 @@ public class AudioManager : MonoBehaviour
             return null;
         }
 
-        return PlaySoundEffect(clip, mixer, volume, pitch, loop);
+        return PlaySoundEffect(clip, mixer, volume, pitch, loop, filePath);
     }
 
-    public AudioSource PlaySoundEffect(AudioClip clip, AudioMixerGroup mixer = null, float volume = 1, float pitch = 1, bool loop = false)
+    public AudioSource PlaySoundEffect(AudioClip clip, AudioMixerGroup mixer = null, float volume = 1, float pitch = 1, bool loop = false, string filePath = "")
     {
-        AudioSource sfxSource = new GameObject(string.Format(SFX_NAME_FORMAT, clip.name)).AddComponent<AudioSource>();
+        string fileName = clip.name;
+        if (filePath != string.Empty)
+            fileName = filePath;
+
+        AudioSource sfxSource = new GameObject(string.Format(SFX_NAME_FORMAT, fileName)).AddComponent<AudioSource>();
         sfxSource.transform.SetParent(sfxRoot);
         sfxSource.transform.position = sfxRoot.position; // Center the source
 
@@ -87,8 +105,7 @@ public class AudioManager : MonoBehaviour
     public void StopSoundEffect(string soundName)
     {
         soundName = soundName.ToLower();
-        AudioSource[] audioSources = sfxRoot.GetComponentsInChildren<AudioSource>();
-        foreach (AudioSource source in audioSources)
+        foreach (AudioSource source in allSFXSources)
         {
             if (source.clip.name.ToLower() == soundName)
             {
@@ -97,6 +114,19 @@ public class AudioManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public bool IsPlayingSoundEffect(string soundName)
+    {
+        soundName = soundName.ToLower();
+        foreach (AudioSource source in allSFXSources)
+        {
+            if (source.clip.name.ToLower() == soundName && source.isPlaying)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public AudioTrack PlayTrack(string filePath, int channelIndex = 0, bool loop = false, float startVolume = 0, float cappedVolume = 1, float pitch = 1)
@@ -138,6 +168,22 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void StopAllTracks()
+    {
+        foreach(AudioChannel channel in channelList.Values)
+        {
+            channel.StopTrack();
+        }
+    }
+
+    public void StopAllSoundEffects()
+    {
+        foreach (var item in allSFXSources)
+        {
+            Destroy(item.gameObject);
+        }
+    }
+
     public AudioChannel TryGetChannel(int channelIndex, bool createIfNotExist)
     {
         if (channelList.TryGetValue(channelIndex, out AudioChannel channel))
@@ -152,5 +198,23 @@ public class AudioManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void SetMusicVolume(float volume, bool muted)
+    {
+        volume = muted ? MUTED_VOLUME : audioFallOffCurve.Evaluate(volume);
+        musicMixer.audioMixer.SetFloat(EXPOSED_PARAM_MUSIC_VOLUME, volume);
+    }
+
+    public void SetSFXVolume(float volume, bool muted)
+    {
+        volume = muted ? MUTED_VOLUME : audioFallOffCurve.Evaluate(volume);
+        sfxMixer.audioMixer.SetFloat(EXPOSED_PARAM_SFX_VOLUME, volume);
+    }
+
+    public void SetVoicesVolume(float volume, bool muted)
+    {
+        volume = muted ? MUTED_VOLUME : audioFallOffCurve.Evaluate(volume);
+        voicesMixer.audioMixer.SetFloat(EXPOSED_PARAM_VOICES_VOLUME, volume);
     }
 }

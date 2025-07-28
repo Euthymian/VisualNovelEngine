@@ -91,4 +91,23 @@ public class VNMenuManager : MonoBehaviour
 
         OpenPage(page);
     }
+
+    public void Click_Home()
+    {
+        VN_Configuration.activeConfig.Save();
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(MainMenu.MAIN_MENU_SCENE);
+    }
+
+    public void Click_Quit()
+    {
+        UIConfirmationMenu.Instance.Show("Are you sure you want to quit the game? Any unsaved progress will be lost.",
+            new UIConfirmationMenu.ConfirmationButton("Yes", Quit, true),
+            new UIConfirmationMenu.ConfirmationButton("No", null, true));
+    }
+
+    private void Quit()
+    {
+        Application.Quit();
+    }
 }

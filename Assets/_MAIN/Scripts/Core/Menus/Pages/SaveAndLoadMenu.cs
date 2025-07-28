@@ -14,7 +14,6 @@ public class SaveAndLoadMenu : MenuPage
     }
 
     public const int MAX_FILES = 24;
-    private string savePath = FilePaths.gameSaves;
     private int currentPage = 1;
     private bool loadedFilesFirstTime = false;
 

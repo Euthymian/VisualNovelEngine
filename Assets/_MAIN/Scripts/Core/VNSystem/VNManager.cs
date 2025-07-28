@@ -9,6 +9,8 @@ namespace VISUALNOVEL
     {
         public static VNManager Instance { get; private set; }
 
+        [SerializeField] private VisualNovelSO visualNovelSO;
+
         public Camera mainCamera;
 
         private void Awake()
@@ -18,25 +20,28 @@ namespace VISUALNOVEL
             VNDatabaseLinkSetup linkSetup = GetComponent<VNDatabaseLinkSetup>();
             linkSetup.SetupExternalLink();
 
-            VNGameSave.activeFile = new VNGameSave();
+            if(VNGameSave.activeFile == null)
+                VNGameSave.activeFile = new VNGameSave();
         }
 
-        public void LoadFile(string filePath)
+        private void Start()
         {
-            List<string> lines = new List<string>();
-            TextAsset file = Resources.Load<TextAsset>(filePath);
+            LoadGame();
+        }
 
-            try
+        private void LoadGame()
+        {
+            if (VNGameSave.activeFile.newGame)
             {
-                lines = FileManager.ReadTextAsset(file);
+                // Load the first chapter file
+                List<string> lines = FileManager.ReadTextAsset(visualNovelSO.firstChapter);
+                Conversation startConversation = new Conversation(lines, file:visualNovelSO.pathToFirstChapter);
+                DialogueSystem.Instance.Say(startConversation);
             }
-            catch
+            else
             {
-                Debug.LogError($"Failed to load file: {filePath}. Not exist in the Resources folder.");
-                return;
+                VNGameSave.activeFile.Activate();
             }
-
-            DialogueSystem.Instance.Say(lines, filePath);
         }
     }
 }

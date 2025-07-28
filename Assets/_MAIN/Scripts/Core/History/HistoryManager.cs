@@ -17,6 +17,8 @@ namespace HISTORY
         public HistoryNavigation historyNavigation;
         public HistoryLogManager historyLogManager { get; private set; }
 
+        public bool isViewingHistory => historyNavigation.isViewingHistory;
+
         private void Awake()
         {
             Instance = this;
